@@ -1,2 +1,4 @@
 User-agent: *
+Allow: /
 Disallow: /freshface/
+Sitemap: https://hecticsoftware.com/sitemap.xml
