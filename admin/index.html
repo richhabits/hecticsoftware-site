@@ -25,6 +25,6 @@ const fl=document.getElementById('dfiles');fl.innerHTML='';d.files.forEach(x=>{c
 document.getElementById('dstatus').value=p.status;document.getElementById('dquote').value=p.quote||'';document.getElementById('dnotes').value=p.admin_notes||'';
 const m=document.getElementById('dmsgs');m.innerHTML='';d.messages.forEach(x=>{const e=document.createElement('div');e.className='msg '+x.author;e.textContent=x.body;m.appendChild(e)});document.getElementById('detail').scrollIntoView({behavior:'smooth'})}
 document.getElementById('save').onclick=async()=>{await api('/update',{method:'POST',body:JSON.stringify({id:cur,status:document.getElementById('dstatus').value,quote:document.getElementById('dquote').value,notes:document.getElementById('dnotes').value,reply:document.getElementById('dreply').value.trim()||null})});document.getElementById('dreply').value='';document.getElementById('saved').textContent='Saved.';open(cur);list()};
-document.getElementById('go').onclick=()=>{key=document.getElementById('key').value.trim();try{sessionStorage.setItem('hs-admin',key)}catch{}list().catch(()=>alert('Wrong key'))};
+document.getElementById('go').onclick=()=>{key=document.getElementById('key').value.trim();try{sessionStorage.setItem('hs-admin',key)}catch{}list().catch(()=>{document.querySelector('#login .note').textContent='That key didn’t work.'})};
 if(key)list().catch(()=>{});
 </script></body></html>
