@@ -256,6 +256,37 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
 .visual.type.red{background:var(--red)}
 .visual.type b{font:italic 400 clamp(90px,14vw,230px)/.8 var(--didone);letter-spacing:-.05em;text-align:center}
 .visual.site img{object-position:top}
+
+.eco{display:grid;grid-template-columns:repeat(3,1fr)}
+.eco article{padding:clamp(28px,4vw,52px);border-right:1px solid var(--ink);display:grid;gap:16px;align-content:start}
+.eco article:last-child{border-right:0}
+.eco h3{font:400 clamp(44px,5vw,76px)/.88 var(--didone);margin:0;letter-spacing:-.03em}
+.eco h3 em{color:var(--red)}
+.eco .stand{font:italic 400 21px/1.3 var(--didone)}
+.eco ul{list-style:none;margin:0;padding:0}
+.eco li{padding:10px 0;border-top:1px solid var(--rule);font-size:15px;color:#3a3936}
+.eco li b{color:var(--ink);font-weight:600}
+.loop{background:var(--night);color:var(--paper);padding-block:clamp(50px,7vw,90px)}
+.loop .wrap{display:grid;grid-template-columns:1fr 1.6fr;gap:48px;align-items:center}
+.loop h3{font:400 clamp(48px,6vw,96px)/.9 var(--didone);margin:0}
+.loop h3 em{color:var(--red)}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font:500 15px var(--sans)}
+.flow span{border:1px solid #3a3a3a;padding:10px 14px}
+.flow i{color:var(--red);font-style:normal}
+.bounds{display:grid;grid-template-columns:repeat(4,1fr)}
+.bounds div{padding:30px 26px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:grid;gap:8px;align-content:start}
+.bounds div:nth-child(4n){border-right:0}
+.bounds b{font:italic 400 30px/1 var(--didone)}
+.bounds small{font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.bounds p{font-size:15px;color:#3a3936}
+.road{display:grid;grid-template-columns:repeat(3,1fr)}
+.road div{padding:30px;border-right:1px solid var(--ink)}
+.road div:last-child{border-right:0}
+.road h4{font:400 44px/.9 var(--didone);margin:0 0 14px}
+.road h4 em{color:var(--red)}
+.road li{padding:8px 0;border-top:1px solid var(--rule);font-size:15px;list-style:none}
+.road ul{margin:0;padding:0}
+@media(max-width:960px){.eco,.road{grid-template-columns:1fr}.eco article,.road div{border-right:0;border-bottom:1px solid var(--ink)}.loop .wrap{grid-template-columns:1fr}.bounds{grid-template-columns:1fr 1fr}.bounds div:nth-child(2n){border-right:0}}
 </style>
 </head>
 <body>
@@ -287,7 +318,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
 <div class="ticker" aria-hidden="true"><div><span>iPhone <i>✦</i> iPad <i>✦</i> Apple Watch <i>✦</i> Mac <i>✦</i> Apple TV <i>✦</i> Vision Pro <i>✦</i> Payments <i>✦</i> Booking <i>✦</i> On-device AI <i>✦</i> Messaging <i>✦</i></span><span>iPhone <i>✦</i> iPad <i>✦</i> Apple Watch <i>✦</i> Mac <i>✦</i> Apple TV <i>✦</i> Vision Pro <i>✦</i> Payments <i>✦</i> Booking <i>✦</i> On-device AI <i>✦</i> Messaging <i>✦</i></span></div></div>
 <section aria-label="By the numbers"><div class="wrap pagehead"><span class="kicker">By the numbers</span><span class="folio">P. 04</span></div>
   <div class="numbers">
-    <div class="rv"><b>10</b><span>Products live</span></div>
+    <div class="rv"><b>22</b><span>Products &amp; concepts</span></div>
     <div class="rv"><b>6</b><span>Apple platforms</span></div>
     <div class="rv"><b>36</b><span>Languages shipped</span></div>
     <div class="rv"><b><em>1</em></b><span>Engineer you talk to</span></div>
@@ -299,6 +330,8 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
   <div><span class="kicker" style="color:var(--red)">Contents</span><h2>In this <em>issue</em></h2></div>
   <ol class="toc">
     <li><span class="n">06</span><a href="#streamall">StreamAll</a><span class="t">Feature</span></li>
+    <li><span class="n">10</span><a href="#ecosystems">The Ecosystems</a><span class="t">Special report</span></li>
+    <li><span class="n">12</span><a href="#boundaries">Pushing boundaries</a><span class="t">Technology</span></li>
     <li><span class="n">14</span><a href="#volero">Volero</a><span class="t">Feature</span></li>
     <li><span class="n">22</span><a href="#dreamspire">DreamSpire</a><span class="t">Feature</span></li>
     <li><span class="n">26</span><a href="#biteclub">Bite Club LDN</a><span class="t">Feature</span></li>
@@ -320,6 +353,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     <li><span class="n">58</span><a href="#blam">BLAM</a><span class="t">Concept</span></li>
     <li><span class="n">60</span><a href="#hecticsuite">HecticSuite</a><span class="t">Concept</span></li>
     <li><span class="n">62</span><a href="#hecticmag">HecticMag</a><span class="t">Concept</span></li>
+    <li><span class="n">63</span><a href="#roadmap">Now &amp; next</a><span class="t">Roadmap</span></li>
     <li><span class="n">64</span><a href="#archive">The Archive: live, in production, concepts</a><span class="t">Index</span></li>
     <li><span class="n">68</span><a href="#studio">The Studio</a><span class="t">Editorial</span></li>
     <li><span class="n">74</span><a href="#collection">The Collection</a><span class="t">Services</span></li>
@@ -327,6 +361,41 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     <li><span class="n">86</span><a href="#qa">Q&amp;A</a><span class="t">Questions</span></li>
   </ol>
 </div></section>
+
+<section id="ecosystems">
+  <div class="wrap pagehead"><span class="kicker">Special report · The Ecosystems</span><span class="folio">P. 10</span></div>
+  <div class="wrap" style="padding-block:60px 30px;display:grid;gap:18px">
+    <span class="kicker" style="color:var(--red)">Not apps. Systems.</span>
+    <h2 class="serif" style="font-weight:400;font-size:clamp(56px,9vw,150px);line-height:.85;letter-spacing:-.04em;margin:0;max-width:12ch">Three worlds, one <em>studio.</em></h2>
+    <p style="max-width:62ch;font-size:18px;color:#3a3936">Every product here is built to connect: to the customer's other Apple devices, to the business behind it, and to the rest of the Hectic world. The aim is to give people and companies a whole system they own, rather than one more app on a home screen.</p>
+  </div>
+  <div class="eco">
+    <article class="rv"><span class="kicker">For people</span><h3>Your <em>life</em>, connected.</h3><p class="stand">Private, everyday tools that follow you from phone to TV to Mac.</p>
+      <ul><li><b>StreamAll</b> — TV on every screen, synced by iCloud</li><li><b>PIING</b> — messaging and calls, encrypted end to end</li><li><b>Volero</b> — your Mac, from iPhone, iPad and Watch</li><li><b>SAM</b> — a free AI assistant that runs on your own Mac</li><li><b>FlipIt</b> — money discipline, practised on paper</li></ul></article>
+    <article class="rv"><span class="kicker">For businesses</span><h3>Your <em>business</em>, in their pocket.</h3><p class="stand">Ordering, booking, payments and loyalty that the owner keeps, with no marketplace fees.</p>
+      <ul><li><b>Main Line</b> — ordering, till, Apple Pay and Wallet loyalty</li><li><b>Fresh Face</b> — booking engine, clinic dashboard, shop, AI</li><li><b>Forged Landscapes</b> — website and client portal</li><li><b>Sourced London · Bite Club · DreamSpire</b> — premium retail and sourcing</li><li><b>Hectic client portal</b> — briefs, quotes, messages and files for every client</li></ul></article>
+    <article class="rv"><span class="kicker">For creators</span><h3>Your <em>audience</em>, owned.</h3><p class="stand">Broadcast, video and culture channels that don't depend on someone else's algorithm.</p>
+      <ul><li><b>Hectic Radio</b> — stations, DJ booth and live chat</li><li><b>HecticTV</b> — shows and publishing on iPhone, Apple TV and Vision Pro</li><li><b>RadioBox</b> — radio apps on two app stores</li><li><b>DJ Danny Hectic B</b> — artist home</li><li><b>HecticMag · BLAM</b> — culture and music discovery, in concept</li></ul></article>
+  </div>
+  <div class="loop"><div class="wrap">
+    <h3>How it <em>connects.</em></h3>
+    <div class="flow"><span>A customer finds you</span><i>→</i><span>Books or orders in your app</span><i>→</i><span>Pays with Apple Pay</span><i>→</i><span>Gets a Wallet card</span><i>→</i><span>Is reminded on their Watch</span><i>→</i><span>Comes back</span><i>→</i><span>You see it all on your iPad</span></div>
+  </div></div>
+</section>
+
+<section id="boundaries">
+  <div class="wrap pagehead"><span class="kicker">Pushing boundaries · The technology</span><span class="folio">P. 12</span></div>
+  <div class="bounds">
+    <div class="rv"><small>PIING</small><b>Post-quantum</b><p>Messaging protected against tomorrow's computers, not just today's.</p></div>
+    <div class="rv"><small>Fresh Face · SAM</small><b>On-device AI</b><p>Assistants that run on the phone or Mac: private, and close to free to run.</p></div>
+    <div class="rv"><small>StreamAll · Volero</small><b>Six platforms</b><p>One codebase for iPhone, iPad, Watch, Mac, Apple TV and Vision Pro.</p></div>
+    <div class="rv"><small>Fresh Face</small><b>Own booking engine</b><p>Bookings on Apple's iCloud, with no per-booking marketplace fees.</p></div>
+    <div class="rv"><small>Volero</small><b>Zero-account pairing</b><p>Remote desktop paired through iCloud, with no sign-up and no relay server.</p></div>
+    <div class="rv"><small>Bite Club</small><b>36 languages</b><p>A London brand, ready for the world from day one.</p></div>
+    <div class="rv"><small>Main Line</small><b>Wallet loyalty</b><p>Loyalty cards in Apple Wallet, with no plastic and no extra app.</p></div>
+    <div class="rv"><small>Studio</small><b>£0 to run</b><p>Sites and back ends designed to cost the owner nothing until they grow.</p></div>
+  </div>
+</section>
 
 <div id="work"></div>
 <section id="streamall">
@@ -590,6 +659,15 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
       <p class="body">A concept for a digital magazine of the Hectic world: features, mixes and culture.</p>
       <div class="facts"><div><b>Stage</b><span>Concept</span></div><div><b>Type</b><span>Publication</span></div><div><b>Platform</b><span>iOS, web</span></div></div>
     </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap pagehead"><span class="kicker">Now &amp; next · Roadmap</span><span class="folio">P. 63</span></div>
+  <div class="road">
+    <div class="rv"><h4>Out <em>now</em></h4><ul><li>StreamAll on the App Store</li><li>PIING on the App Store</li><li>Hectic Radio, Main Line, Forged, Sourced live</li><li>SAM for Mac</li></ul></div>
+    <div class="rv"><h4>In <em>review</em></h4><ul><li>Volero 1.0</li><li>HecticTV for iPhone and Apple TV</li><li>StreamAll for Apple TV and Mac</li><li>Fresh Face beta on TestFlight</li></ul></div>
+    <div class="rv"><h4>On the <em>horizon</em></h4><ul><li>StreamAll on Android, Fire TV, Roku and smart TVs</li><li>DreamSpire native and Bite Club apps</li><li>BLAM music recognition</li><li>HecticSuite, one hub for the group</li></ul></div>
   </div>
 </section>
 
