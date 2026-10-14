@@ -229,6 +229,28 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
 .shelf li i{font:500 10px var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);white-space:nowrap}
 .shelf li a:hover b{color:var(--red)}
 @media(max-width:960px){.archive{grid-template-columns:1fr}.shelf{border-right:0;border-bottom:1px solid var(--ink)}}
+
+/* Scale: numbers, gallery, cover story, bigger masthead */
+.masthead{font-size:clamp(110px,26vw,440px)}
+.numbers{display:grid;grid-template-columns:repeat(4,1fr)}
+.numbers div{padding:clamp(28px,4vw,56px) 24px;border-right:1px solid var(--ink)}
+.numbers div:last-child{border-right:0}
+.numbers b{display:block;font:400 clamp(72px,10vw,160px)/.8 var(--didone);letter-spacing:-.04em}
+.numbers b em{color:var(--red);font-style:italic}
+.numbers span{display:block;margin-top:14px;font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
+@media(max-width:860px){.numbers{grid-template-columns:1fr 1fr}.numbers div:nth-child(2){border-right:0}.numbers div{border-bottom:1px solid var(--ink)}}
+.gallery{display:flex;gap:2px;overflow-x:auto;scroll-snap-type:x mandatory;background:var(--ink);scrollbar-width:thin}
+.gallery figure{margin:0;flex:0 0 auto;height:min(78vh,720px);scroll-snap-align:start;position:relative;background:#111}
+.gallery img{height:100%;width:auto;object-fit:cover}
+.gallery figcaption{position:absolute;left:14px;bottom:12px;color:#fff;font:600 10px var(--sans);letter-spacing:.2em;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+.story{display:grid;grid-template-columns:1fr;place-items:center;text-align:center;padding-block:clamp(70px,12vw,170px)}
+.story q{font:italic 400 clamp(44px,7.4vw,124px)/.95 var(--didone);letter-spacing:-.03em;max-width:16ch;quotes:"\201C" "\201D"}
+.story q em{color:var(--red)}
+.story cite{margin-top:30px;font:600 11px var(--sans);font-style:normal;letter-spacing:.24em;text-transform:uppercase}
+.wide{display:grid;grid-template-columns:1fr;border-top:1px solid var(--ink)}
+.wide .visual{min-height:0;aspect-ratio:16/9;max-height:88vh}
+.wide .copy{border:0;border-top:1px solid var(--ink);display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:40px;align-items:end}
+@media(max-width:900px){.wide .copy{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -258,6 +280,15 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
 </div></section>
 
 <div class="ticker" aria-hidden="true"><div><span>iPhone <i>✦</i> iPad <i>✦</i> Apple Watch <i>✦</i> Mac <i>✦</i> Apple TV <i>✦</i> Vision Pro <i>✦</i> Payments <i>✦</i> Booking <i>✦</i> On-device AI <i>✦</i> Messaging <i>✦</i></span><span>iPhone <i>✦</i> iPad <i>✦</i> Apple Watch <i>✦</i> Mac <i>✦</i> Apple TV <i>✦</i> Vision Pro <i>✦</i> Payments <i>✦</i> Booking <i>✦</i> On-device AI <i>✦</i> Messaging <i>✦</i></span></div></div>
+<section aria-label="By the numbers"><div class="wrap pagehead"><span class="kicker">By the numbers</span><span class="folio">P. 04</span></div>
+  <div class="numbers">
+    <div class="rv"><b>10</b><span>Products live</span></div>
+    <div class="rv"><b>6</b><span>Apple platforms</span></div>
+    <div class="rv"><b>36</b><span>Languages shipped</span></div>
+    <div class="rv"><b><em>1</em></b><span>Engineer you talk to</span></div>
+  </div>
+</section>
+
 
 <section id="contents"><div class="wrap contents">
   <div><span class="kicker" style="color:var(--red)">Contents</span><h2>In this <em>issue</em></h2></div>
@@ -297,6 +328,22 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
       <div class="facts"><div><b>Platforms</b><span>Mac, iOS, Watch</span></div><div><b>Pairing</b><span>iCloud</span></div><div><b>Account</b><span>None</span></div></div>
     </div>
   </div>
+  <div class="wide">
+    <div class="visual"><img src="/img/volero-mac.webp" alt="Volero host app on Mac" width="1800" height="1125" loading="lazy"><span class="tag kicker">Mac</span></div>
+    <div class="copy rv"><h3 style="margin:0">The <em>Mac</em> side.</h3><p class="stand">A quiet menu-bar host that pairs once and stays out of the way.</p><p class="body">Screen, sound and files stream over your own network, with nothing stored on anyone else's server.</p></div>
+  </div>
+</section>
+
+
+<section aria-label="Gallery"><div class="wrap pagehead"><span class="kicker">Portfolio · Shot on device</span><span class="folio">P. 18</span></div>
+  <div class="gallery" tabindex="0">
+    <figure><img src="/img/volero-mac.webp" alt="Volero on Mac" width="1800" height="1125" loading="lazy"><figcaption>Volero · Mac</figcaption></figure>
+    <figure><img src="/img/streamall-iphone.webp" alt="StreamAll on iPhone" width="828" height="1800" loading="lazy"><figcaption>StreamAll · iPhone</figcaption></figure>
+    <figure><img src="/img/biteclub.webp" alt="Bite Club LDN render" width="1800" height="1013" loading="lazy"><figcaption>Bite Club LDN · Render</figcaption></figure>
+    <figure><img src="/img/volero-iphone.webp" alt="Volero on iPhone" width="828" height="1800" loading="lazy"><figcaption>Volero · iPhone</figcaption></figure>
+    <figure><img src="/img/streamall-tv.webp" alt="StreamAll on Apple TV" width="1800" height="1013" loading="lazy"><figcaption>StreamAll · Apple TV</figcaption></figure>
+    <figure><img src="/img/dreamspire.webp" alt="DreamSpire shop" width="399" height="866" loading="lazy"><figcaption>DreamSpire · iPhone</figcaption></figure>
+  </div>
 </section>
 
 <section id="dreamspire">
@@ -333,6 +380,13 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     <div class="shelf rv"><span class="kicker">From the sketchbook</span><h3><em>Concepts</em></h3><ul><li><div class="row"><div><b>BLAM</b><span>UK music recognition for grime, drill, garage and more</span></div><i>Concept</i></div></li><li><div class="row"><div><b>HecticSuite</b><span>Self-hosted hub and admin for the Hectic brands</span></div><i>Concept</i></div></li><li><div class="row"><div><b>HecticMag</b><span>A digital magazine for the Hectic world</span></div><i>Concept</i></div></li><li><div class="row"><div><b>Your idea</b><span>The next one could be yours</span></div><i>Open</i></div></li></ul><a class="btn" style="margin-top:22px" href="/start/">Commission yours</a></div>
   </div>
 </section>
+
+
+<section class="story"><div class="wrap" style="display:grid;place-items:center">
+  <span class="kicker" style="color:var(--red)">Cover story</span>
+  <q>Software people <em>love</em> is made, not assembled.</q>
+  <cite>Romeo Valentine · Founder, Hectic Software</cite>
+</div></section>
 
 <section id="studio">
   <div class="wrap pagehead"><span class="kicker">Editorial · The Studio</span><span class="folio">P. 34</span></div>
