@@ -137,9 +137,29 @@ section{padding-block:96px;border-top:1px solid var(--line)}
 footer{padding-block:40px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Motion */
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.hero h1 .ln{display:block;animation:rise .9s cubic-bezier(.2,.7,.2,1) both}
+.hero h1 .ln:nth-child(2){animation-delay:.08s}.hero h1 .ln:nth-child(3){animation-delay:.16s}
+.hero .lede{animation:rise 1s .3s cubic-bezier(.2,.7,.2,1) both}
+@supports (animation-timeline: view()){
+  .reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% entry 40%}
+}
+.marquee{overflow:hidden;border-block:1px solid var(--line);padding:18px 0;mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee div{display:flex;gap:48px;width:max-content;animation:slide 32s linear infinite;font:800 clamp(28px,4vw,48px)/1 var(--display);font-variation-settings:"wdth" 70;letter-spacing:-.02em;color:#2d2d33}
+.marquee b{color:var(--fg);font-weight:800}
+@keyframes slide{to{transform:translateX(-50%)}}
+.svc,.item,.step{transition:transform .35s cubic-bezier(.2,.7,.2,1),background .35s}
+.svc:hover{transform:translateY(-4px);background:#121215}
+.cta{transition:transform .2s,box-shadow .2s}.cta:hover{transform:translateY(-1px);box-shadow:0 10px 30px -10px var(--accent)}
+.glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(600px circle at var(--x,50%) var(--y,20%),rgba(255,77,46,.10),transparent 60%)}
+main,header,section,nav,footer{position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.hero h1 .ln,.hero .lede,.reveal{animation:none!important}.marquee div{animation:none}.glow{display:none}}
 </style>
 </head>
 <body>
+<div class="glow" aria-hidden="true"></div>
 <nav><div class="wrap">
   <a class="brand" href="/"><img src="/apple-touch-icon.png" alt="">Hectic Software</a>
   <div class="navlinks"><a href="#work">Work</a><a href="#services">Services</a><a href="#different">Why Hectic</a><a href="#process">Process</a><a href="#faq">FAQ</a></div>
@@ -148,54 +168,55 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 
 <header class="hero"><div class="wrap">
   <span class="mono">Hectic Software Ltd · London · Est. by Romeo Valentine</span>
-  <h1 style="margin-top:22px">Apps that feel<br>like <em>Apple</em><br>made them.</h1>
+  <h1 style="margin-top:22px"><span class="ln">Apps that feel</span><span class="ln">like <em>Apple</em></span><span class="ln">made them.</span></h1>
   <div class="lede">
     <p>We design, build and launch native apps for every Apple screen, and the platforms, payments and AI that sit behind them. One studio from first sketch to App Store, then looking after it for years.</p>
     <div class="platforms"><span>iPhone</span><span>iPad</span><span>Apple Watch</span><span>Mac</span><span>Apple TV</span><span>Vision Pro</span><span>Web</span></div>
   </div>
 </div></header>
+<div class="marquee" aria-hidden="true"><div><span><b>iPhone</b> · iPad · <b>Apple Watch</b> · Mac · <b>Apple TV</b> · Vision Pro · <b>Payments</b> · Booking · <b>AI</b> · Messaging · </span><span><b>iPhone</b> · iPad · <b>Apple Watch</b> · Mac · <b>Apple TV</b> · Vision Pro · <b>Payments</b> · Booking · <b>AI</b> · Messaging · </span></div></div>
 
 <section id="work"><div class="wrap">
-  <div class="sechead"><span class="mono">01 · Selected work</span><div style="display:grid;gap:14px"><h2>Built, shipped,<br>looked after.</h2><p>Consumer apps, client apps and platforms, across messaging, streaming, retail, hospitality, health and finance.</p></div></div>
+  <div class="sechead reveal"><span class="mono">01 · Selected work</span><div style="display:grid;gap:14px"><h2>Built, shipped,<br>looked after.</h2><p>Consumer apps, client apps and platforms, across messaging, streaming, retail, hospitality, health and finance.</p></div></div>
   <div class="work">
-    <div class="item"><span class="n">01</span><h3>StreamAll</h3><p>A native streaming player for your own playlists on iPhone, iPad, Mac, Apple TV, Watch and Vision Pro, with iCloud sync, widgets and Siri.</p><div class="tags"><span>Consumer</span><span>6 platforms</span><span>App Store</span></div></div>
-    <div class="item"><span class="n">02</span><h3>PIING</h3><p>A private messenger with end-to-end encrypted chats, groups and stories, voice and video calls, and post-quantum key exchange.</p><div class="tags"><span>Messaging</span><span>Security</span><span>Real-time</span></div></div>
-    <div class="item"><span class="n">03</span><h3>Volero</h3><p>Apple-only remote desktop: control your Mac from iPhone, iPad and Watch, paired securely over iCloud.</p><div class="tags"><span>Productivity</span><span>Networking</span></div></div>
-    <div class="item"><span class="n">04</span><h3>HecticTV</h3><p>A video platform with apps for iPhone, Apple TV and Vision Pro, playlists, subscriptions and a web companion.</p><div class="tags"><span>Media</span><span>Platform</span><span>tvOS</span></div></div>
-    <div class="item"><span class="n">05</span><h3>Fresh Face London</h3><p>A client app for an award-winning skin clinic: skin diary, clinical camera, on-device AI assistant, own booking engine, shop and iPad clinic dashboard.</p><div class="tags"><span>Client</span><span>Health &amp; beauty</span><span>Booking</span></div></div>
-    <div class="item"><span class="n">06</span><h3>Main Line Provisions</h3><p>Ordering and loyalty for a café: native app with Apple Pay, Wallet card, Maps and a secure admin panel with two-factor sign-in.</p><div class="tags"><span>Client</span><span>Hospitality</span><span>Payments</span></div></div>
-    <div class="item"><span class="n">07</span><h3>SAM &amp; FlipIt</h3><p>An AI assistant platform with a trading companion add-on: paper, demo and live modes, built native for Mac and iPhone.</p><div class="tags"><span>AI</span><span>SaaS</span><span>Finance</span></div></div>
-    <div class="item"><span class="n">08</span><h3>DreamSpire</h3><p>A streetwear brand app rebuilt native for iPhone, Mac and Vision Pro, connected to the brand's online store and creator programme.</p><div class="tags"><span>Client</span><span>E-commerce</span></div></div>
-    <div class="item"><span class="n">09</span><h3>Bite Club LDN</h3><p>A custom grillz brand: app, website and 3D product renders, with founder tools and a 36-language experience.</p><div class="tags"><span>Client</span><span>Retail</span><span>Web</span></div></div>
-    <div class="item"><span class="n">10</span><h3>Hectic Radio</h3><p>Live radio across web and apps, with a listener platform and database behind it.</p><div class="tags"><span>Media</span><span>Streaming</span></div></div>
+    <div class="item reveal"><span class="n">01</span><h3>StreamAll</h3><p>A native streaming player for your own playlists on iPhone, iPad, Mac, Apple TV, Watch and Vision Pro, with iCloud sync, widgets and Siri.</p><div class="tags"><span>Consumer</span><span>6 platforms</span><span>App Store</span></div></div>
+    <div class="item reveal"><span class="n">02</span><h3>PIING</h3><p>A private messenger with end-to-end encrypted chats, groups and stories, voice and video calls, and post-quantum key exchange.</p><div class="tags"><span>Messaging</span><span>Security</span><span>Real-time</span></div></div>
+    <div class="item reveal"><span class="n">03</span><h3>Volero</h3><p>Apple-only remote desktop: control your Mac from iPhone, iPad and Watch, paired securely over iCloud.</p><div class="tags"><span>Productivity</span><span>Networking</span></div></div>
+    <div class="item reveal"><span class="n">04</span><h3>HecticTV</h3><p>A video platform with apps for iPhone, Apple TV and Vision Pro, playlists, subscriptions and a web companion.</p><div class="tags"><span>Media</span><span>Platform</span><span>tvOS</span></div></div>
+    <div class="item reveal"><span class="n">05</span><h3>Fresh Face London</h3><p>A client app for an award-winning skin clinic: skin diary, clinical camera, on-device AI assistant, own booking engine, shop and iPad clinic dashboard.</p><div class="tags"><span>Client</span><span>Health &amp; beauty</span><span>Booking</span></div></div>
+    <div class="item reveal"><span class="n">06</span><h3>Main Line Provisions</h3><p>Ordering and loyalty for a café: native app with Apple Pay, Wallet card, Maps and a secure admin panel with two-factor sign-in.</p><div class="tags"><span>Client</span><span>Hospitality</span><span>Payments</span></div></div>
+    <div class="item reveal"><span class="n">07</span><h3>SAM &amp; FlipIt</h3><p>An AI assistant platform with a trading companion add-on: paper, demo and live modes, built native for Mac and iPhone.</p><div class="tags"><span>AI</span><span>SaaS</span><span>Finance</span></div></div>
+    <div class="item reveal"><span class="n">08</span><h3>DreamSpire</h3><p>A streetwear brand app rebuilt native for iPhone, Mac and Vision Pro, connected to the brand's online store and creator programme.</p><div class="tags"><span>Client</span><span>E-commerce</span></div></div>
+    <div class="item reveal"><span class="n">09</span><h3>Bite Club LDN</h3><p>A custom grillz brand: app, website and 3D product renders, with founder tools and a 36-language experience.</p><div class="tags"><span>Client</span><span>Retail</span><span>Web</span></div></div>
+    <div class="item reveal"><span class="n">10</span><h3>Hectic Radio</h3><p>Live radio across web and apps, with a listener platform and database behind it.</p><div class="tags"><span>Media</span><span>Streaming</span></div></div>
   </div>
 </div></section>
 
 <section id="services"><div class="wrap">
-  <div class="sechead"><span class="mono">02 · Services</span><div style="display:grid;gap:14px"><h2>Everything an app<br>business needs.</h2><p>Pick one or let us run the lot. Every project is designed and engineered in-house.</p></div></div>
+  <div class="sechead reveal"><span class="mono">02 · Services</span><div style="display:grid;gap:14px"><h2>Everything an app<br>business needs.</h2><p>Pick one or let us run the lot. Every project is designed and engineered in-house.</p></div></div>
   <div class="services">
-    <div class="svc"><span class="mono">Apple apps</span><h3>Native apps</h3><p>Swift and SwiftUI for iPhone, iPad, Watch, Mac, Apple TV and Vision Pro.</p><ul><li>Widgets, Siri, Live Activities</li><li>Apple Watch companions</li><li>Accessibility and dark mode built in</li></ul></div>
-    <div class="svc"><span class="mono">Platforms</span><h3>SaaS &amp; back ends</h3><p>The accounts, data and dashboards your app runs on.</p><ul><li>Secure accounts and admin panels</li><li>Real-time sync and messaging</li><li>Web apps and client portals</li></ul></div>
-    <div class="svc"><span class="mono">Commerce</span><h3>Payments &amp; e-commerce</h3><p>Get paid the right way inside your app.</p><ul><li>Apple Pay, Stripe and Klarna</li><li>Subscriptions and memberships</li><li>Bookings, deposits and stock</li></ul></div>
-    <div class="svc"><span class="mono">Intelligence</span><h3>AI features</h3><p>Useful AI that respects privacy.</p><ul><li>On-device assistants</li><li>Camera and image analysis</li><li>Smart summaries and actions</li></ul></div>
-    <div class="svc"><span class="mono">Security</span><h3>Privacy &amp; security</h3><p>Built in from the first line.</p><ul><li>End-to-end encryption</li><li>Two-factor and passkeys</li><li>Apple privacy rules and GDPR</li></ul></div>
-    <div class="svc"><span class="mono">Launch</span><h3>App Store &amp; care</h3><p>We get you live and keep you there.</p><ul><li>Listings, screenshots, App Store review</li><li>TestFlight betas for your team</li><li>Updates for every new iOS</li></ul></div>
+    <div class="svc reveal"><span class="mono">Apple apps</span><h3>Native apps</h3><p>Swift and SwiftUI for iPhone, iPad, Watch, Mac, Apple TV and Vision Pro.</p><ul><li>Widgets, Siri, Live Activities</li><li>Apple Watch companions</li><li>Accessibility and dark mode built in</li></ul></div>
+    <div class="svc reveal"><span class="mono">Platforms</span><h3>SaaS &amp; back ends</h3><p>The accounts, data and dashboards your app runs on.</p><ul><li>Secure accounts and admin panels</li><li>Real-time sync and messaging</li><li>Web apps and client portals</li></ul></div>
+    <div class="svc reveal"><span class="mono">Commerce</span><h3>Payments &amp; e-commerce</h3><p>Get paid the right way inside your app.</p><ul><li>Apple Pay, Stripe and Klarna</li><li>Subscriptions and memberships</li><li>Bookings, deposits and stock</li></ul></div>
+    <div class="svc reveal"><span class="mono">Intelligence</span><h3>AI features</h3><p>Useful AI that respects privacy.</p><ul><li>On-device assistants</li><li>Camera and image analysis</li><li>Smart summaries and actions</li></ul></div>
+    <div class="svc reveal"><span class="mono">Security</span><h3>Privacy &amp; security</h3><p>Built in from the first line.</p><ul><li>End-to-end encryption</li><li>Two-factor and passkeys</li><li>Apple privacy rules and GDPR</li></ul></div>
+    <div class="svc reveal"><span class="mono">Launch</span><h3>App Store &amp; care</h3><p>We get you live and keep you there.</p><ul><li>Listings, screenshots, App Store review</li><li>TestFlight betas for your team</li><li>Updates for every new iOS</li></ul></div>
   </div>
 </div></section>
 
 <section id="process"><div class="wrap">
-  <div class="sechead"><span class="mono">03 · Process</span><div style="display:grid;gap:14px"><h2>From idea to<br>App Store.</h2></div></div>
+  <div class="sechead reveal"><span class="mono">03 · Process</span><div style="display:grid;gap:14px"><h2>From idea to<br>App Store.</h2></div></div>
   <div class="steps">
-    <div class="step"><span class="mono">Week 0</span><h3>Discover</h3><p>We learn your business, your customers and what success looks like.</p></div>
-    <div class="step"><span class="mono">Then</span><h3>Design</h3><p>Your brand, screens and flows, designed the way Apple designs.</p></div>
-    <div class="step"><span class="mono">Then</span><h3>Build</h3><p>Native engineering with a working beta on your phone early.</p></div>
-    <div class="step"><span class="mono">Then</span><h3>Beta</h3><p>You and your team test through TestFlight and send feedback in seconds.</p></div>
-    <div class="step"><span class="mono">Live</span><h3>Launch &amp; care</h3><p>App Store launch, then updates, fixes and new features.</p></div>
+    <div class="step reveal"><span class="mono">Week 0</span><h3>Discover</h3><p>We learn your business, your customers and what success looks like.</p></div>
+    <div class="step reveal"><span class="mono">Then</span><h3>Design</h3><p>Your brand, screens and flows, designed the way Apple designs.</p></div>
+    <div class="step reveal"><span class="mono">Then</span><h3>Build</h3><p>Native engineering with a working beta on your phone early.</p></div>
+    <div class="step reveal"><span class="mono">Then</span><h3>Beta</h3><p>You and your team test through TestFlight and send feedback in seconds.</p></div>
+    <div class="step reveal"><span class="mono">Live</span><h3>Launch &amp; care</h3><p>App Store launch, then updates, fixes and new features.</p></div>
   </div>
 </div></section>
 
 <section id="why"><div class="wrap">
-  <div class="sechead"><span class="mono">04 · Why native</span><div style="display:grid;gap:14px"><h2>Built properly<br>pays back.</h2><p>Many apps are built once with cross-platform tools or app builders. We build with Apple's own technology.</p></div></div>
+  <div class="sechead reveal"><span class="mono">04 · Why native</span><div style="display:grid;gap:14px"><h2>Built properly<br>pays back.</h2><p>Many apps are built once with cross-platform tools or app builders. We build with Apple's own technology.</p></div></div>
   <div class="tablewrap"><table class="compare">
     <thead><tr><th></th><th>Typical app-builder or cross-platform build</th><th>Hectic Software</th></tr></thead>
     <tbody>
@@ -209,19 +230,19 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 </div></section>
 
 <section id="different"><div class="wrap">
-  <div class="sechead"><span class="mono">05 · Why Hectic</span><div style="display:grid;gap:14px"><h2>Small studio.<br>Serious engineering.</h2><p>Big agencies sell headcount. We sell craft, speed and straight answers.</p></div></div>
+  <div class="sechead reveal"><span class="mono">05 · Why Hectic</span><div style="display:grid;gap:14px"><h2>Small studio.<br>Serious engineering.</h2><p>Big agencies sell headcount. We sell craft, speed and straight answers.</p></div></div>
   <div class="services">
-    <div class="svc"><span class="mono">Direct</span><h3>Talk to the engineer</h3><p>You work with the person designing and building your app. No account managers, no hand-offs, no lost messages.</p></div>
-    <div class="svc"><span class="mono">Every screen</span><h3>All six Apple platforms</h3><p>iPhone, iPad, Watch, Mac, Apple TV and Vision Pro from one codebase, with widgets, Siri and Live Activities.</p></div>
-    <div class="svc"><span class="mono">Yours</span><h3>You own it</h3><p>Your app, your App Store listing, your code and your customers' data. No platform lock-in.</p></div>
-    <div class="svc"><span class="mono">Private</span><h3>On-device AI</h3><p>Assistants, camera analysis and smart actions that run on the phone, so customer data stays private and AI costs stay near zero.</p></div>
-    <div class="svc"><span class="mono">Early betas</span><h3>See it on your phone</h3><p>A working TestFlight beta early in the build, so decisions are made on the real thing, not slides.</p></div>
-    <div class="svc"><span class="mono">Clear</span><h3>Fixed, written quotes</h3><p>Scope, price and timeline agreed in writing before we start, then weekly progress you can tap through.</p></div>
+    <div class="svc reveal"><span class="mono">Direct</span><h3>Talk to the engineer</h3><p>You work with the person designing and building your app. No account managers, no hand-offs, no lost messages.</p></div>
+    <div class="svc reveal"><span class="mono">Every screen</span><h3>All six Apple platforms</h3><p>iPhone, iPad, Watch, Mac, Apple TV and Vision Pro from one codebase, with widgets, Siri and Live Activities.</p></div>
+    <div class="svc reveal"><span class="mono">Yours</span><h3>You own it</h3><p>Your app, your App Store listing, your code and your customers' data. No platform lock-in.</p></div>
+    <div class="svc reveal"><span class="mono">Private</span><h3>On-device AI</h3><p>Assistants, camera analysis and smart actions that run on the phone, so customer data stays private and AI costs stay near zero.</p></div>
+    <div class="svc reveal"><span class="mono">Early betas</span><h3>See it on your phone</h3><p>A working TestFlight beta early in the build, so decisions are made on the real thing, not slides.</p></div>
+    <div class="svc reveal"><span class="mono">Clear</span><h3>Fixed, written quotes</h3><p>Scope, price and timeline agreed in writing before we start, then weekly progress you can tap through.</p></div>
   </div>
 </div></section>
 
 <section id="faq"><div class="wrap">
-  <div class="sechead"><span class="mono">06 · FAQ</span><div><h2>Good questions.</h2></div></div>
+  <div class="sechead reveal"><span class="mono">06 · FAQ</span><div><h2>Good questions.</h2></div></div>
   <div class="tablewrap"><table class="compare"><tbody>
     <tr><td>How much does an app cost?</td><td colspan="2">It depends on scope. After a short call we send a fixed written quote with what's included, so there are no surprises.</td></tr>
     <tr><td>Do I own the app and the code?</td><td colspan="2">Yes. On completion the app, its App Store listing and the source code belong to you.</td></tr>
@@ -232,7 +253,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 </div></section>
 
 <section id="stack"><div class="wrap">
-  <div class="sechead"><span class="mono">07 · Toolkit</span><div><h2>What we build with.</h2></div></div>
+  <div class="sechead reveal"><span class="mono">07 · Toolkit</span><div><h2>What we build with.</h2></div></div>
   <div class="stack"><span>Swift</span><span>SwiftUI</span><span>SwiftData</span><span>CloudKit</span><span>HealthKit</span><span>WidgetKit</span><span>App Intents &amp; Siri</span><span>Apple Intelligence</span><span>Vision &amp; AVFoundation</span><span>StoreKit</span><span>Apple Pay &amp; Stripe</span><span>WatchKit</span><span>visionOS</span><span>tvOS</span><span>Cloudflare</span><span>Postgres</span><span>Next.js</span></div>
 </div></section>
 
@@ -248,5 +269,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 </div></section>
 
 <footer><div class="wrap"><span>© 2026 Hectic Software Ltd · London</span><span>Native apps for Apple devices</span></div></footer>
+<script>
+(()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const g=document.querySelector('.glow');let r=0;
+addEventListener('pointermove',e=>{if(r)return;r=requestAnimationFrame(()=>{g.style.setProperty('--x',e.clientX+'px');g.style.setProperty('--y',e.clientY+'px');r=0})},{passive:true})})();
+</script>
 </body>
 </html>
