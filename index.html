@@ -214,11 +214,26 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
 @keyframes rv{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
 @keyframes par{from{transform:scale(1.12) translateY(-3%)}to{transform:scale(1.02) translateY(3%)}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before{animation:none!important;transition:none!important}}
+
+/* Archive */
+.archive{display:grid;grid-template-columns:repeat(3,1fr)}
+.shelf{border-right:1px solid var(--ink);padding:30px}
+.shelf:last-child{border-right:0}
+.shelf h3{font:400 46px/.9 var(--didone);margin:8px 0 18px;letter-spacing:-.02em}
+.shelf h3 em{font-style:italic;color:var(--red)}
+.shelf ul{list-style:none;margin:0;padding:0}
+.shelf li{border-top:1px solid var(--rule)}
+.shelf li>a,.shelf li>div.row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 0;text-decoration:none}
+.shelf li b{font:500 20px/1.15 var(--didone)}
+.shelf li span{display:block;font-size:13.5px;color:var(--grey);margin-top:2px}
+.shelf li i{font:500 10px var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--grey);white-space:nowrap}
+.shelf li a:hover b{color:var(--red)}
+@media(max-width:960px){.archive{grid-template-columns:1fr}.shelf{border-right:0;border-bottom:1px solid var(--ink)}}
 </style>
 </head>
 <body>
 <header class="bar"><div class="wrap">
-  <nav><a href="#work">Features</a><a href="#collection">Collection</a><a href="#studio">Studio</a></nav>
+  <nav><a href="#work">Features</a><a href="#archive">Archive</a><a href="#collection">Collection</a><a href="#studio">Studio</a></nav>
   <a class="mark" href="/">HECTIC</a>
   <div class="right"><a class="btn" href="/start/">Commission</a></div>
 </div></header>
@@ -251,6 +266,7 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     <li><span class="n">14</span><a href="#volero">Volero</a><span class="t">Feature</span></li>
     <li><span class="n">22</span><a href="#dreamspire">DreamSpire</a><span class="t">Feature</span></li>
     <li><span class="n">28</span><a href="#more">PIING, HecticTV, Fresh Face &amp; more</a><span class="t">Portfolio</span></li>
+    <li><span class="n">30</span><a href="#archive">The Archive: live, in production, concepts</a><span class="t">Index</span></li>
     <li><span class="n">34</span><a href="#studio">The Studio</a><span class="t">Editorial</span></li>
     <li><span class="n">40</span><a href="#collection">The Collection</a><span class="t">Services</span></li>
     <li><span class="n">48</span><a href="#process">How it's made</a><span class="t">Process</span></li>
@@ -306,6 +322,15 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
     <article class="rv"><span class="kicker" style="color:var(--red)">Hospitality</span><h4>Main Line</h4><p>Café ordering with Apple Pay, a Wallet loyalty card, Maps and a secure admin panel.</p></article>
     <article class="rv"><span class="kicker" style="color:var(--red)">AI &amp; finance</span><h4>SAM &amp; FlipIt</h4><p>An AI assistant platform with a trading companion: paper, demo and live modes.</p></article>
     <article class="rv"><span class="kicker" style="color:var(--red)">Luxury retail</span><h4>Bite Club</h4><p>A custom grillz brand: app, website and 3D product renders in 36 languages.</p></article>
+  </div>
+</section>
+
+<section id="archive">
+  <div class="wrap pagehead"><span class="kicker">The Archive · Everything we've made</span><span class="folio">P. 30</span></div>
+  <div class="archive">
+    <div class="shelf rv"><span class="kicker">Out now</span><h3><em>Live</em></h3><ul><li><a href="https://streamall-flax.vercel.app" rel="noopener" target="_blank"><div><b>StreamAll</b><span>Streaming player for six Apple screens</span></div><i>App Store</i></a></li><li><a href="https://www.piingapp.co.uk" rel="noopener" target="_blank"><div><b>PIING</b><span>Private messenger: chats, calls, stories</span></div><i>App Store</i></a></li><li><a href="https://radiohectic.com" rel="noopener" target="_blank"><div><b>Hectic Radio</b><span>Station site, listener app and DJ booth</span></div><i>Live</i></a></li><li><a href="https://web-eight-phi-90.vercel.app" rel="noopener" target="_blank"><div><b>Main Line Café</b><span>Website, ordering and till for a Watford café</span></div><i>Live</i></a></li><li><a href="https://forgedlandscapes.vercel.app" rel="noopener" target="_blank"><div><b>Forged Landscapes</b><span>Landscaping website and client portal</span></div><i>Live</i></a></li><li><a href="https://sourcedlondon.vercel.app" rel="noopener" target="_blank"><div><b>Sourced London</b><span>Luxury vehicle sourcing and sales</span></div><i>Live</i></a></li><li><div class="row"><div><b>SAM</b><span>Free, private, local-first AI assistant for Mac</span></div><i>Live</i></div></li><li><a href="https://divine-app-sable.vercel.app" rel="noopener" target="_blank"><div><b>Divine</b><span>Web app</span></div><i>Live</i></a></li><li><div class="row"><div><b>DreamSpire Store</b><span>Streetwear storefront and shop back end</span></div><i>Live</i></div></li><li><div class="row"><div><b>RadioBox</b><span>Radio apps for iPhone and Android</span></div><i>App &amp; Play Store</i></div></li></ul></div>
+    <div class="shelf rv"><span class="kicker">On the bench</span><h3>In <em>production</em></h3><ul><li><div class="row"><div><b>Volero</b><span>Mac remote desktop for iPhone, iPad, Watch, TV, Vision Pro</span></div><i>In review</i></div></li><li><div class="row"><div><b>HecticTV</b><span>Video platform for iPhone, Apple TV and Vision Pro</span></div><i>In review</i></div></li><li><div class="row"><div><b>Fresh Face London</b><span>Clinic app with booking engine and on-device AI</span></div><i>Beta</i></div></li><li><div class="row"><div><b>DreamSpire Native</b><span>Native shopping app for iPhone, iPad, Mac, Vision Pro</span></div><i>Building</i></div></li><li><div class="row"><div><b>Bite Club LDN</b><span>Custom grillz app, site and 3D renders</span></div><i>Building</i></div></li><li><div class="row"><div><b>FlipIt</b><span>Paper-trading discipline app and site</span></div><i>Building</i></div></li><li><div class="row"><div><b>StreamAll everywhere</b><span>Android TV, Fire TV, Roku, Samsung, LG and web</span></div><i>Building</i></div></li><li><div class="row"><div><b>Ghost Detail</b><span>Car detailing website</span></div><i>Building</i></div></li><li><div class="row"><div><b>DJ Danny Hectic B</b><span>Artist website</span></div><i>Building</i></div></li><li><div class="row"><div><b>HecticBullz</b><span>Booking website</span></div><i>Building</i></div></li></ul></div>
+    <div class="shelf rv"><span class="kicker">From the sketchbook</span><h3><em>Concepts</em></h3><ul><li><div class="row"><div><b>BLAM</b><span>UK music recognition for grime, drill, garage and more</span></div><i>Concept</i></div></li><li><div class="row"><div><b>HecticSuite</b><span>Self-hosted hub and admin for the Hectic brands</span></div><i>Concept</i></div></li><li><div class="row"><div><b>HecticMag</b><span>A digital magazine for the Hectic world</span></div><i>Concept</i></div></li><li><div class="row"><div><b>Your idea</b><span>The next one could be yours</span></div><i>Open</i></div></li></ul><a class="btn" style="margin-top:22px" href="/start/">Commission yours</a></div>
   </div>
 </section>
 
