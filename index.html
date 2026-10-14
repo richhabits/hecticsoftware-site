@@ -23,7 +23,7 @@
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:url" content="https://hecticsoftware.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Archivo:wdth,wght@62..125,400..800&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@500&display=swap">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[
 {"@type":"Organization","@id":"https://hecticsoftware.com/#org","name":"Hectic Software Ltd","url":"https://hecticsoftware.com","logo":"https://hecticsoftware.com/icon-512.png","founder":{"@type":"Person","name":"Romeo Valentine","jobTitle":"Founder & Lead Engineer"},"sameAs":[]},
 {"@type":"ProfessionalService","name":"Hectic Software","url":"https://hecticsoftware.com","image":"https://hecticsoftware.com/og.png","parentOrganization":{"@id":"https://hecticsoftware.com/#org"},"address":{"@type":"PostalAddress","addressLocality":"London","addressCountry":"GB"},"areaServed":["GB","IE","EU","US"],"priceRange":"££","knowsAbout":["iOS app development","SwiftUI","iPad apps","Apple Watch apps","macOS apps","tvOS apps","visionOS apps","App Store launch","Stripe payments","Apple Pay","on-device AI","booking systems","e-commerce apps","SaaS platforms"],
@@ -45,7 +45,7 @@
 /* Layout: a printed fashion magazine — cover with a giant Didone masthead and cover lines, a contents page,
    full-bleed feature spreads with folios, an editorial with a drop cap and pull quote, then "The Collection" and "Commission us". */
 :root{
-  --paper:#f6f5f2; --ink:#0d0d0d; --grey:#6b6966; --rule:#d8d5cf; --red:#e8331c; --night:#0d0d0d;
+  --paper:#f6f5f2; --ink:#0d0d0d; --grey:#6b6966; --rule:#d8d5cf; --red:#ff4d2e;--orange:#ff4d2e; --night:#0d0d0d;
   --didone:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif; --sans:"Archivo","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
   color-scheme:light;
 }
@@ -295,19 +295,30 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
 .plat small{font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
 .plat p{font-size:14.5px;color:#3a3936}
 @media(max-width:960px){.plat{grid-template-columns:1fr 1fr}.plat div:nth-child(2n){border-right:0}}
+
+/* Logo: the HECTIC wordmark, bold, orange, sized to fit the screen */
+.masthead{font:900 clamp(48px,18.5vw,300px)/.82 var(--sans);font-stretch:112%;letter-spacing:-.055em;color:var(--orange);margin:22px 0 0;text-align:center;white-space:nowrap}
+.masthead span:last-child{margin-right:-.02em}
+.bar .mark{font:900 24px/1 var(--sans);font-stretch:112%;letter-spacing:-.05em;color:var(--orange)}
+.logo-dot{display:inline-block;width:.12em;height:.12em;border-radius:50%;background:var(--ink);margin-left:.04em;vertical-align:baseline}
+
+html,body{overflow-x:clip}
+.copy,.copy>div,.eco article,.plat div,.bounds div,.shelf,.look{min-width:0}
+.copy h3,.eco h3,.plat h4,.story q,.contents h2,.commission h2{overflow-wrap:anywhere;hyphens:manual}
+@media(max-width:600px){.cover .meta{flex-wrap:wrap;gap:6px 16px}.copy h3{font-size:clamp(44px,13vw,64px)}.facts{grid-template-columns:1fr 1fr}.bar .btn{padding:11px 12px}}
 </style>
 </head>
 <body>
 <header class="bar"><div class="wrap">
   <nav><a href="#work">Features</a><a href="#archive">Archive</a><a href="#collection">Collection</a><a href="#studio">Studio</a></nav>
-  <a class="mark" href="/">HECTIC</a>
+  <a class="mark" href="/" aria-label="Hectic Software home">HECTIC<span class="logo-dot"></span></a>
   <div class="right"><a class="btn" href="/start/">Commission</a></div>
 </div></header>
 
 <main>
 <section class="cover"><div class="wrap">
   <div class="meta"><span class="kicker">Issue 01 · Autumn 2026</span><span class="kicker">London</span><span class="kicker">Every device</span></div>
-  <h1 class="masthead" aria-label="Hectic"><span>H</span><span>E</span><span>C</span><span>T</span><span>I</span><span>C</span></h1>
+  <h1 class="masthead" aria-label="Hectic"><span>H</span><span>E</span><span>C</span><span>T</span><span>I</span><span>C</span><span class="logo-dot" aria-hidden="true"></span></h1>
   <div class="cover-grid">
     <div>
       <div class="coverline"><b>StreamAll</b><span>Television for Apple, Android, Roku and every smart TV</span></div>
