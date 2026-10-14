@@ -1,13 +1,13 @@
 // "Ask Hectic" floating assistant (free Workers AI on our own API).
-(()=>{const API=window.HS_API;const css=`.hs-chat-btn{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:50;background:#ff4d2e;color:#0b0b0d;border:0;border-radius:999px;padding:14px 18px;font:700 15px Archivo,system-ui;box-shadow:0 12px 34px -10px #ff4d2e;cursor:pointer}
-.hs-chat{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(84px,calc(env(safe-area-inset-bottom) + 84px));z-index:50;width:min(380px,calc(100vw - 36px));height:min(560px,70vh);background:#141417;border:1px solid #26262b;border-radius:20px;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;box-shadow:0 30px 80px -20px #000;animation:hsin .3s cubic-bezier(.2,.7,.2,1)}
+(()=>{const API=window.HS_API;const css=`.hs-chat-btn{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:50;background:#0d0d0d;color:#f6f5f2;border:0;border-radius:0;padding:15px 20px;font:600 11px Archivo,system-ui;letter-spacing:.2em;text-transform:uppercase;box-shadow:0 14px 34px -14px rgba(0,0,0,.5);cursor:pointer}
+.hs-chat{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(84px,calc(env(safe-area-inset-bottom) + 84px));z-index:50;width:min(380px,calc(100vw - 36px));height:min(560px,70vh);background:#f6f5f2;border:1px solid #0d0d0d;border-radius:0;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;box-shadow:0 30px 80px -20px #000;animation:hsin .3s cubic-bezier(.2,.7,.2,1)}
 @keyframes hsin{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
-.hs-chat header{padding:14px 16px;border-bottom:1px solid #26262b;font:700 15px Archivo,system-ui;color:#f3f2ef;display:flex;justify-content:space-between}
-.hs-chat header button{background:none;border:0;color:#9d9ba3;font-size:20px;cursor:pointer}
+.hs-chat header{padding:14px 16px;border-bottom:1px solid #0d0d0d;font:italic 600 20px 'Bodoni Moda',Didot,Georgia,serif;color:#0d0d0d;display:flex;justify-content:space-between}
+.hs-chat header button{background:none;border:0;color:#6b6966;font-size:22px;cursor:pointer}
 .hs-log{padding:14px;overflow-y:auto;display:grid;gap:10px;align-content:start;font:15px/1.5 Archivo,system-ui}
-.hs-m{padding:10px 12px;border-radius:14px;max-width:88%;white-space:pre-wrap;color:#f3f2ef}.hs-u{justify-self:end;background:#26262b}.hs-a{justify-self:start;background:rgba(255,77,46,.12)}
-.hs-chat form{display:flex;gap:8px;padding:12px;border-top:1px solid #26262b}.hs-chat input{flex:1;min-width:0;font:15px Archivo,system-ui;color:#f3f2ef;background:#0e0e11;border:1px solid #26262b;border-radius:12px;padding:11px 12px}
-.hs-chat form button{background:#ff4d2e;border:0;border-radius:12px;padding:0 14px;font-weight:700;cursor:pointer}`;
+.hs-m{padding:10px 12px;max-width:88%;white-space:pre-wrap;color:#0d0d0d}.hs-u{justify-self:end;background:#ecebe7}.hs-a{justify-self:start;background:#fff;border:1px solid #d8d5cf}
+.hs-chat form{display:flex;gap:8px;padding:12px;border-top:1px solid #0d0d0d}.hs-chat input{flex:1;min-width:0;font:15px Archivo,system-ui;color:#0d0d0d;background:#fff;border:1px solid #d8d5cf;border-radius:0;padding:11px 12px}
+.hs-chat form button{background:#0d0d0d;color:#f6f5f2;border:0;border-radius:0;padding:0 16px;font:600 11px Archivo;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}`;
 const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
 const btn=document.createElement('button');btn.className='hs-chat-btn';btn.type='button';btn.textContent='Ask Hectic';document.body.appendChild(btn);
 let box=null;const hist=[];

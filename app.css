@@ -1,21 +1,21 @@
-:root{--bg:#0b0b0d;--panel:#141417;--line:#26262b;--fg:#f3f2ef;--muted:#9d9ba3;--accent:#ff4d2e;--display:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:dark}
+:root{--bg:#f6f5f2;--panel:#ffffff;--line:#d8d5cf;--fg:#0d0d0d;--muted:#6b6966;--accent:#e8331c;--display:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--display);-webkit-font-smoothing:antialiased}
 .wrap{max-width:860px;margin:0 auto;padding:40px max(20px,env(safe-area-inset-left,0px)) 80px max(20px,env(safe-area-inset-right,0px))}
-a{color:var(--fg)}h1{font-weight:800;font-size:clamp(34px,6vw,60px);line-height:.95;letter-spacing:-.03em;margin:8px 0 14px;font-variation-settings:"wdth" 75}
+a{color:var(--fg)}h1{font:400 clamp(40px,7vw,76px)/.92 "Bodoni Moda",Didot,Georgia,serif;letter-spacing:-.03em;margin:8px 0 14px}
 .mono{font:500 12px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}.top a{text-decoration:none;font-weight:800}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid var(--fg);padding-bottom:12px}.top a{text-decoration:none;font:700 22px "Bodoni Moda",Didot,Georgia,serif}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;gap:14px;margin-top:16px}
 label{display:grid;gap:6px;font-size:14px;color:var(--muted)}
-input,textarea,select{font:inherit;color:var(--fg);background:#0e0e11;border:1px solid var(--line);border-radius:12px;padding:13px 14px;width:100%}
+input,textarea,select{font:inherit;color:var(--fg);background:#fbfaf8;border:1px solid var(--line);border-radius:12px;padding:13px 14px;width:100%}
 input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
 textarea{min-height:140px;resize:vertical}
-.chips{display:flex;flex-wrap:wrap;gap:8px}.chips label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:9px 14px;color:var(--fg);cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips label{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:0;padding:9px 14px;color:var(--fg);cursor:pointer}
 .chips input{width:auto;accent-color:var(--accent)}.chips label:has(input:checked){border-color:var(--accent);background:rgba(255,77,46,.1)}
-.btn{background:var(--accent);color:#0b0b0d;font-weight:700;border:0;border-radius:999px;padding:13px 22px;font-size:15px;cursor:pointer}
+.btn{background:var(--fg);color:var(--bg);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:12px;border:0;border-radius:0;padding:13px 22px;font-size:15px;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}.btn:disabled{opacity:.5}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:620px){.grid2{grid-template-columns:1fr}}
 .progress{height:4px;background:var(--line);border-radius:4px}.progress i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
-.msg{padding:12px 14px;border-radius:14px;max-width:85%;white-space:pre-wrap}.msg.client{justify-self:end;background:#1d1d22}.msg.hectic{justify-self:start;background:rgba(255,77,46,.12)}
+.msg{padding:12px 14px;border-radius:14px;max-width:85%;white-space:pre-wrap}.msg.client{justify-self:end;background:#ecebe7}.msg.hectic{justify-self:start;background:rgba(255,77,46,.12)}
 .note{font-size:14px;color:var(--muted)}.err{color:#ff8a75;font-size:14px}.ok{color:#7ee2a8}
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font:500 11px var(--mono);text-transform:uppercase}
 .pill{font:500 11px var(--mono);text-transform:uppercase;padding:4px 8px;border-radius:6px;border:1px solid var(--line)}
