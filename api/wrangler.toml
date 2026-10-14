@@ -1,0 +1,23 @@
+name = "hectic-api"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "hectic-portal"
+database_id = "6a153979-8ee9-457c-b1b8-0fce1cac4d14"
+
+[[kv_namespaces]]
+binding = "FILES"
+id = "0ddac1c7f58f45f5b5070ab024611347"
+
+[[kv_namespaces]]
+binding = "RATE"
+id = "453eb3b5920d4e2f9026ff5c2795d617"
+
+[ai]
+binding = "AI"
+
+[vars]
+ALLOWED_ORIGINS = "https://hecticsoftware.com,https://www.hecticsoftware.com,https://hecticsoftware.pages.dev"

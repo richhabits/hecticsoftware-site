@@ -1,0 +1,30 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://hectic-api.forged-landscapes.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"><meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#0b0b0d"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@500&display=swap"><link rel="stylesheet" href="/app.css"><script src="/config.js"></script><meta name="robots" content="noindex,nofollow"><title>Studio · Hectic Software</title></head><body><div class="wrap" style="max-width:1100px">
+<div class="top"><a href="/">Hectic Software</a><span class="mono">Studio dashboard</span></div>
+<div id="login" class="card"><label>Admin key<input id="key" type="password" autocomplete="current-password"></label><button class="btn" id="go">Open dashboard</button><p class="note">The key is kept in this browser tab only and cleared when you close it.</p></div>
+<div id="dash" hidden><h1>Projects</h1><div class="card" style="overflow-x:auto"><table><thead><tr><th>Ref</th><th>Client</th><th>Type</th><th>Budget</th><th>Status</th><th>Updated</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div id="detail" class="card" hidden><span class="mono" id="dref"></span><h2 id="dname" style="margin:0"></h2><p id="dbrief" style="white-space:pre-wrap;color:var(--fg)"></p><div id="dfiles" style="display:grid;gap:6px"></div>
+<label>Status<select id="dstatus"><option>new</option>
+<option>reviewing</option>
+<option>quoted</option>
+<option>accepted</option>
+<option>in_progress</option>
+<option>beta</option>
+<option>live</option>
+<option>closed</option></select></label>
+<label>Quote shown to client<textarea id="dquote"></textarea></label><label>Private notes<textarea id="dnotes"></textarea></label>
+<div id="dmsgs" style="display:grid;gap:10px"></div><label>Reply to client<textarea id="dreply" style="min-height:80px"></textarea></label><button class="btn" id="save">Save &amp; send</button><span class="note" id="saved"></span></div></div>
+</div><script>
+let key='';try{key=sessionStorage.getItem('hs-admin')||''}catch{}let cur=null;
+const api=(p,o={})=>fetch(HS_API+'/api/admin'+p,{...o,headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'}}).then(r=>r.ok?r.json():Promise.reject(r.status));
+const cell=t=>{const td=document.createElement('td');td.textContent=t??'';return td};
+async function list(){const rows=await api('/projects');document.getElementById('login').hidden=true;document.getElementById('dash').hidden=false;const tb=document.getElementById('rows');tb.innerHTML='';
+rows.forEach(r=>{const tr=document.createElement('tr');tr.style.cursor='pointer';[r.id,(r.name||'')+(r.company?' · '+r.company:''),r.project_type,r.budget,r.status,new Date(r.updated_at).toLocaleString('en-GB')].forEach(v=>tr.appendChild(cell(v)));tr.onclick=()=>open(r.id);tb.appendChild(tr)})}
+async function open(id){const d=await api('/project?id='+encodeURIComponent(id)),p=d.project;cur=id;document.getElementById('detail').hidden=false;document.getElementById('dref').textContent=p.id+' · '+p.email+(p.phone?' · '+p.phone:'');document.getElementById('dname').textContent=p.name+(p.company?' — '+p.company:'');
+document.getElementById('dbrief').textContent=[p.project_type,'Devices: '+(p.platforms||'-'),'Features: '+(p.features||'-'),'Launch: '+p.timeline,'Budget: '+p.budget,'Links: '+(p.links||'-'),'',p.description].join('\n');
+const fl=document.getElementById('dfiles');fl.innerHTML='';d.files.forEach(x=>{const a=document.createElement('a');a.href=HS_API+'/api/file?id='+x.id+'&token='+encodeURIComponent(key);a.textContent='⬇ '+x.name;fl.appendChild(a)});
+document.getElementById('dstatus').value=p.status;document.getElementById('dquote').value=p.quote||'';document.getElementById('dnotes').value=p.admin_notes||'';
+const m=document.getElementById('dmsgs');m.innerHTML='';d.messages.forEach(x=>{const e=document.createElement('div');e.className='msg '+x.author;e.textContent=x.body;m.appendChild(e)});document.getElementById('detail').scrollIntoView({behavior:'smooth'})}
+document.getElementById('save').onclick=async()=>{await api('/update',{method:'POST',body:JSON.stringify({id:cur,status:document.getElementById('dstatus').value,quote:document.getElementById('dquote').value,notes:document.getElementById('dnotes').value,reply:document.getElementById('dreply').value.trim()||null})});document.getElementById('dreply').value='';document.getElementById('saved').textContent='Saved.';open(cur);list()};
+document.getElementById('go').onclick=()=>{key=document.getElementById('key').value.trim();try{sessionStorage.setItem('hs-admin',key)}catch{}list().catch(()=>alert('Wrong key'))};
+if(key)list().catch(()=>{});
+</script></body></html>

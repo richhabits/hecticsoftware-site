@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /freshface/
+Disallow: /portal/
+Disallow: /admin/
 Sitemap: https://hecticsoftware.com/sitemap.xml

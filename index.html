@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Hectic Software · iOS &amp; Apple App Development Studio, London</title>
 <meta name="description" content="London iOS app development studio. Hectic Software designs, builds and launches native apps for iPhone, iPad, Apple Watch, Mac, Apple TV and Vision Pro, with payments, booking, AI and secure back ends. Work directly with the engineer.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://hectic-api.forged-landscapes.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#0b0b0d">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -163,7 +163,7 @@ main,header,section,nav,footer{position:relative;z-index:1}
 <nav><div class="wrap">
   <a class="brand" href="/"><img src="/apple-touch-icon.png" alt="">Hectic Software</a>
   <div class="navlinks"><a href="#work">Work</a><a href="#services">Services</a><a href="#different">Why Hectic</a><a href="#process">Process</a><a href="#faq">FAQ</a></div>
-  <a class="cta" href="#contact">Start a project</a>
+  <a class="cta" href="/start/">Start a project</a>
 </div></nav>
 
 <header class="hero"><div class="wrap">
@@ -264,7 +264,7 @@ main,header,section,nav,footer{position:relative;z-index:1}
     <span class="email">romeo.valentine@icloud.com</span>
     <span class="mono" style="margin-top:6px">Helpful to include</span>
     <ol><li>What the app should do, in a few lines</li><li>Who it's for</li><li>Devices: iPhone, iPad, Watch, Mac</li><li>Any designs, brand or examples you like</li><li>Ideal launch date and budget range</li></ol>
-    <a class="cta" style="justify-self:start" href="mailto:romeo.valentine@icloud.com?subject=New%20app%20project">Email us</a>
+    <div class="row" style="display:flex;gap:10px;flex-wrap:wrap"><a class="cta" href="/start/">Start your brief</a><a class="cta" style="background:transparent;color:var(--fg);border:1px solid var(--line)" href="/portal/">My project</a></div>
   </div>
 </div></section>
 
@@ -273,5 +273,6 @@ main,header,section,nav,footer{position:relative;z-index:1}
 (()=>{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const g=document.querySelector('.glow');let r=0;
 addEventListener('pointermove',e=>{if(r)return;r=requestAnimationFrame(()=>{g.style.setProperty('--x',e.clientX+'px');g.style.setProperty('--y',e.clientY+'px');r=0})},{passive:true})})();
 </script>
+<script src="/config.js"></script><script src="/chat.js"></script>
 </body>
 </html>

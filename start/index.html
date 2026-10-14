@@ -1,0 +1,59 @@
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://hectic-api.forged-landscapes.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"><meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#0b0b0d"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@500&display=swap"><link rel="stylesheet" href="/app.css"><script src="/config.js"></script><title>Start a project · Hectic Software</title><meta name="description" content="Tell Hectic Software about your app idea. Takes about three minutes."></head><body><div class="wrap">
+<div class="top"><a href="/">Hectic Software</a><span class="mono" id="stepLabel">Step 1 of 4</span></div>
+<div class="progress"><i id="bar" style="width:25%"></i></div>
+<form id="f" novalidate>
+<input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+<section class="step" data-step="1"><h1>Let's start with you.</h1><p class="note">So we know who to talk to.</p><div class="card">
+<div class="grid2"><label>Your name *<input name="name" required maxlength="120" autocomplete="name"></label><label>Email *<input name="email" type="email" required maxlength="200" autocomplete="email"></label></div>
+<div class="grid2"><label>Company or brand<input name="company" maxlength="160" autocomplete="organization"></label><label>Phone<input name="phone" maxlength="40" autocomplete="tel"></label></div></div></section>
+<section class="step" data-step="2" hidden><h1>What are we building?</h1><div class="card">
+<label>Type of project<select name="projectType"><option>New app</option><option>Rebuild an existing app</option><option>App + website / platform</option><option>Add features to an app</option><option>Not sure yet</option></select></label>
+<span class="mono">Devices</span><div class="chips"><label><input type="checkbox" name="platforms" value="iPhone">iPhone</label>
+<label><input type="checkbox" name="platforms" value="iPad">iPad</label>
+<label><input type="checkbox" name="platforms" value="Apple Watch">Apple Watch</label>
+<label><input type="checkbox" name="platforms" value="Mac">Mac</label>
+<label><input type="checkbox" name="platforms" value="Apple TV">Apple TV</label>
+<label><input type="checkbox" name="platforms" value="Vision Pro">Vision Pro</label>
+<label><input type="checkbox" name="platforms" value="Web">Web</label>
+<label><input type="checkbox" name="platforms" value="Android">Android</label></div>
+<span class="mono">Features you need</span><div class="chips"><label><input type="checkbox" name="features" value="Accounts & sign-in">Accounts & sign-in</label>
+<label><input type="checkbox" name="features" value="Payments">Payments</label>
+<label><input type="checkbox" name="features" value="Subscriptions">Subscriptions</label>
+<label><input type="checkbox" name="features" value="Bookings & calendar">Bookings & calendar</label>
+<label><input type="checkbox" name="features" value="Shop / e-commerce">Shop / e-commerce</label>
+<label><input type="checkbox" name="features" value="Messaging">Messaging</label>
+<label><input type="checkbox" name="features" value="Push notifications">Push notifications</label>
+<label><input type="checkbox" name="features" value="AI features">AI features</label>
+<label><input type="checkbox" name="features" value="Camera & photos">Camera & photos</label>
+<label><input type="checkbox" name="features" value="Maps">Maps</label>
+<label><input type="checkbox" name="features" value="Admin dashboard">Admin dashboard</label>
+<label><input type="checkbox" name="features" value="Apple Health">Apple Health</label>
+<label><input type="checkbox" name="features" value="Widgets">Widgets</label>
+<label><input type="checkbox" name="features" value="Offline mode">Offline mode</label></div></div></section>
+<section class="step" data-step="3" hidden><h1>Tell us the idea.</h1><div class="card">
+<label>Describe the app, who it's for and what success looks like *<textarea name="description" required maxlength="6000" placeholder="e.g. A booking app for my salon so clients can book, pay deposits and get reminders…"></textarea></label>
+<label>Links (website, designs, apps you like)<textarea name="links" maxlength="1500" style="min-height:70px"></textarea></label>
+<label>Files: brand, designs, documents (up to 6 files, 10 MB each)<input type="file" name="files" multiple accept="image/*,.pdf,.txt,.zip,.doc,.docx,.mp4,.mov"></label></div></section>
+<section class="step" data-step="4" hidden><h1>Timing and budget.</h1><div class="card">
+<div class="grid2"><label>Ideal launch<select name="timeline"><option>As soon as possible</option><option>Within 3 months</option><option>3–6 months</option><option>6+ months</option><option>Flexible</option></select></label>
+<label>Budget range<select name="budget"><option>Under £5k</option><option>£5k–£15k</option><option>£15k–£40k</option><option>£40k–£100k</option><option>£100k+</option><option>Not sure yet</option></select></label></div>
+<p class="note">Every project gets a fixed written quote after a short call. Your details are used only to reply to you.</p></div></section>
+<div class="row" style="margin-top:20px;justify-content:space-between"><button type="button" class="btn ghost" id="back" hidden>Back</button><span class="err" id="err" role="alert"></span><button type="button" class="btn" id="next">Next</button></div>
+</form>
+<section id="done" class="step" hidden><h1>Brief received.</h1><div class="card"><p>Your reference is <b id="ref"></b>. Romeo will reply within one working day.</p><p class="note">Bookmark your private project page to track progress, read the quote, message us and add files:</p><a class="btn" id="portalLink" href="#">Open my project page</a><p class="note">Keep this link private: anyone with it can see your project.</p></div></section>
+</div><script src="/chat.js"></script><script>
+const f=document.getElementById('f'),steps=[...f.querySelectorAll('.step')];let s=0;
+const err=document.getElementById('err');
+function show(){steps.forEach((el,i)=>el.hidden=i!==s);document.getElementById('back').hidden=s===0;document.getElementById('next').textContent=s===steps.length-1?'Send brief':'Next';
+document.getElementById('bar').style.width=((s+1)/steps.length*100)+'%';document.getElementById('stepLabel').textContent='Step '+(s+1)+' of '+steps.length;err.textContent='';scrollTo({top:0,behavior:'smooth'})}
+function valid(){if(s===0){if(!f.name.value.trim())return'Please add your name.';if(!/^\S+@\S+\.\S+$/.test(f.email.value))return'Please add a valid email.'}
+if(s===2){if(f.description.value.trim().length<10)return'Please describe your idea in a sentence or two.';const fl=[...f.files.files];if(fl.length>6)return'Up to 6 files please.';if(fl.some(x=>x.size>10*1024*1024))return'Each file must be under 10 MB.'}return''}
+document.getElementById('back').onclick=()=>{s--;show()};
+document.getElementById('next').onclick=async()=>{const v=valid();if(v){err.textContent=v;return}if(s<steps.length-1){s++;show();return}
+const b=document.getElementById('next');b.disabled=true;b.textContent='Sending…';
+try{const r=await fetch(HS_API+'/api/enquiry',{method:'POST',body:new FormData(f)});const d=await r.json();
+if(!d.ok){err.textContent=d.error==='rate_limited'?'Too many attempts. Please try again later.':'Please check the form and try again.';b.disabled=false;b.textContent='Send brief';return}
+f.hidden=true;document.getElementById('done').hidden=false;document.getElementById('ref').textContent=d.ref;document.getElementById('portalLink').href='/portal/#'+d.token;
+try{localStorage.setItem('hs-portal',d.token)}catch{}}catch{err.textContent='Connection problem. Please try again.';b.disabled=false;b.textContent='Send brief'}};
+show();
+</script></body></html>
