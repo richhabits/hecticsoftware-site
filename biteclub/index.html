@@ -1,1 +1,418 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bite Club LDN · Studio handover</title><meta http-equiv="refresh" content="0;url=https://claude.ai/artifact/SSgRQYorVnh6H8YhZEBj3Z"><link rel="canonical" href="https://claude.ai/artifact/SSgRQYorVnh6H8YhZEBj3Z"><style>body{font:16px system-ui;background:#0b0b0d;color:#f3f2ef;display:grid;place-items:center;height:100vh;margin:0}a{color:#ff4d2e}</style></head><body><p>Opening <a href="https://claude.ai/artifact/SSgRQYorVnh6H8YhZEBj3Z">Bite Club LDN · Studio handover</a>…</p><script>location.replace("https://claude.ai/artifact/SSgRQYorVnh6H8YhZEBj3Z")</script></body></html>
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bite Club LDN · Hectic Software</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Bite Club LDN studio handover, built by Hectic Software.">
+<meta name="theme-color" content="#0a0a0a">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://hectic-api.forged-landscapes.workers.dev; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@500;800&display=swap">
+<style>
+/* Layout: a two-act page on Hectic's domain. Act one is the welcome gate (Hectic × Bite Club, sign up or sign in).
+   Act two, after a confetti moment, is the Bite Club handover file in the client's own black / pink / gold vault style. */
+:root{
+  --ink:#0a0a0a; --surface:#141414; --line:rgba(255,255,255,.12); --text:#f5f3ef; --body:#d9d6d0; --muted:#a3a09b;
+  --pink:#ff2e94; --gold:#f2c25e; --orange:#ff4d2e;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --hectic:"Archivo","Helvetica Neue",Arial,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--text);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%;display:block}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--mono);font-weight:800;line-height:1.08;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,7vw,64px)} h2{font-size:clamp(24px,3.6vw,32px)} h3{font-size:16px;text-transform:uppercase;letter-spacing:.04em}
+p{margin:0;max-width:62ch;color:var(--body)}
+a{color:var(--pink);text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--pink);outline-offset:3px}
+.kicker{font:800 12px/1.4 var(--mono);color:var(--pink);text-transform:uppercase;letter-spacing:.12em}
+.muted{color:var(--muted)} .small{font-size:14px}
+
+/* Shared top bar: Hectic × Bite Club */
+.bar{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;background:rgba(10,10,10,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.bar .wrap{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:center;padding-block:14px}
+.co{display:flex;align-items:center;gap:12px}
+.hectic{font:900 22px/1 var(--hectic);font-stretch:112%;letter-spacing:-.05em;color:var(--orange);text-decoration:none}
+.hectic i{display:inline-block;width:.14em;height:.14em;border-radius:50%;background:var(--text);margin-left:.03em}
+.x{color:var(--muted);font:500 14px var(--mono)}
+.wordmark{display:inline-flex;align-items:center;gap:8px;font:800 18px/1 var(--mono);letter-spacing:.04em}
+.pill{background:var(--pink);color:#000;font:800 10px/1 var(--mono);padding:4px 7px;border-radius:99px}
+.who{font:500 12px/1.3 var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.who b{color:var(--text)}
+.linkbtn{background:none;border:0;color:var(--muted);font:500 12px var(--mono);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;padding:0}
+.linkbtn:hover{color:var(--text)}
+
+/* Act one: gate */
+.gate{min-height:calc(100svh - 60px);display:grid;align-items:center;position:relative;overflow:hidden}
+.gate::before{content:"";position:absolute;inset:-20% -10% auto;height:80%;background:radial-gradient(50% 50% at 30% 40%,rgba(255,46,148,.18),transparent 70%),radial-gradient(40% 40% at 80% 30%,rgba(255,77,46,.14),transparent 70%);pointer-events:none}
+.gate .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center;padding-block:48px;position:relative}
+.gate h1{font-size:clamp(40px,7.4vw,84px);line-height:.98}
+.gate h1 em{font-style:normal;color:var(--gold)}
+.gate .lead{font-size:clamp(18px,2vw,21px);color:var(--text);margin-top:18px}
+.gate .shot{border-radius:22px;overflow:hidden;border:1px solid var(--line);margin-top:26px;aspect-ratio:16/9;background:#000}
+.gate .shot img{width:100%;height:100%;object-fit:cover}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(20px,3vw,32px);display:grid;gap:18px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#0d0d0d;border:1px solid var(--line);border-radius:14px;padding:4px}
+.tabs button{border:0;background:none;color:var(--muted);font:800 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:12px;border-radius:10px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--pink);color:#000}
+form{display:grid;gap:14px}
+label{display:grid;gap:6px;font:800 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+input{font:400 16px var(--sans);color:var(--text);background:#0d0d0d;border:1px solid var(--line);border-radius:12px;padding:13px 14px;width:100%}
+.who-pick{display:flex;gap:8px;flex-wrap:wrap}
+.who-pick label{flex-direction:row;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:9px 14px;cursor:pointer;color:var(--text)}
+.who-pick input{width:auto;accent-color:var(--pink)}
+.btn{display:inline-block;background:var(--pink);color:#000;font:800 13px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;padding:15px 18px;border-radius:14px;text-decoration:none;border:0;cursor:pointer;text-align:center}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn[disabled]{opacity:.6;cursor:progress}
+.err{color:#ff8a8a;font-size:14px;min-height:1em}
+.hp{position:absolute;left:-9999px}
+@media(max-width:860px){.gate .wrap{grid-template-columns:1fr}.gate{min-height:0}}
+
+/* Celebration */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:50}
+.cheer{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(10,10,10,.92);text-align:center;padding:24px;animation:fade .4s ease both}
+.cheer h2{font-size:clamp(40px,9vw,110px);line-height:.95}
+.cheer h2 span{color:var(--gold)}
+.cheer p{margin:18px auto 26px;color:var(--text);font-size:clamp(17px,2vw,20px)}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.04);opacity:1}100%{transform:scale(1)}}
+.cheer .inner{animation:pop .7s cubic-bezier(.2,.8,.2,1) both}
+
+/* Act two: handover (the client's own style) */
+.hero .wrap{display:grid;gap:18px;padding-block:56px 32px;position:relative}
+.hero .wrap::before{content:"";position:absolute;z-index:-1;inset:0 0 auto;height:380px;pointer-events:none;background:radial-gradient(60% 60% at 40% 30%,rgba(255,46,148,.14),transparent 70%)}
+.hero p{font-size:clamp(18px,2.2vw,21px);color:var(--text)}
+.shot{margin:8px 0 0;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:#000}
+.shot img{width:100%;height:auto}
+.shot figcaption{font:800 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:12px 14px}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border-block:1px solid var(--line)}
+.strip div{padding:18px 10px;text-align:center;border-right:1px solid var(--line);display:grid;gap:6px}
+.strip div:last-child{border-right:0}
+.strip b{font:800 26px/1 var(--mono)}
+.strip span{font:800 10px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:620px){.strip{grid-template-columns:repeat(2,1fr)}.strip div:nth-child(2){border-right:0}.strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+section{border-top:1px solid var(--line)}
+section .wrap{display:grid;gap:22px;padding-block:52px}
+.head{display:grid;gap:10px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;display:grid;gap:10px;align-content:start;min-width:0}
+.card.live{border-color:var(--pink)}
+.card ul{margin:0;padding-left:20px;display:grid;gap:6px;color:var(--body)}
+.url{font:500 14px/1.4 var(--mono);color:var(--text);word-break:break-all}
+.status{display:inline-flex;align-items:center;gap:6px;font:800 11px/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;padding:6px 9px;border-radius:99px;border:1px solid var(--line);justify-self:start}
+.status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.status.on{color:#4fdc8a}.status.wait{color:var(--gold)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+td,th{text-align:left;padding:12px 10px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:800 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+td:first-child{font:500 14px/1.4 var(--mono);color:var(--text);white-space:nowrap}
+td{color:var(--body)}
+.todo{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.todo li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:14px 0;border-bottom:1px solid var(--line)}
+.todo li::before{content:"";width:18px;height:18px;border:2px solid var(--pink);border-radius:5px;margin-top:3px}
+.todo b{color:var(--text)}
+footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid var(--line)}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{animation:none!important}}
+
+.gift .wrap{gap:26px}
+.gift h2 em{font-style:normal;color:var(--gold)}
+.val{width:100%;border-collapse:collapse}
+.val td{padding:14px 10px 14px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.val td:first-child{white-space:normal;font:500 15px/1.4 var(--sans);color:var(--text)}
+.val td small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.val td:last-child{text-align:right;white-space:nowrap;font:800 15px var(--mono);color:var(--text)}
+.val tr.total td{border-bottom:0;padding-top:18px;font:800 18px var(--mono)}
+.val tr.you td{font:800 clamp(24px,4vw,34px) var(--mono);color:var(--gold)}
+.ribbon{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.ribbon div{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;display:grid;gap:4px}
+.ribbon b{font:800 clamp(24px,3.4vw,34px)/1 var(--mono);color:var(--gold)}
+.ribbon span{font:800 10px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:620px){.ribbon{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="wrap">
+  <div class="co"><a class="hectic" href="https://hecticsoftware.com" aria-label="Hectic Software">HECTIC<i></i></a><span class="x">×</span><span class="wordmark">BITE CLUB <span class="pill">LDN</span></span></div>
+  <span class="who" id="whoTag">Private · Paige &amp; Temi</span>
+</div></header>
+
+<!-- Act one -->
+<main id="gate" class="gate"><div class="wrap">
+  <div>
+    <span class="kicker">Hectic Software presents</span>
+    <h1>Paige &amp; Temi,<br>your studio is <em>ready.</em></h1>
+    <p class="lead">We built Bite Club a website, a members' app and studio tools, as a gift. Sign up or sign in to open your present.</p>
+    <div class="shot"><img src="/img/biteclub.webp" alt="3D render of an 18ct gold grill from the Bite Club app" width="1800" height="1013"></div>
+  </div>
+  <div class="panel">
+    <div class="tabs" role="tablist">
+      <button role="tab" id="tUp" aria-selected="true" aria-controls="fUp">Sign up</button>
+      <button role="tab" id="tIn" aria-selected="false" aria-controls="fIn">Sign in</button>
+    </div>
+    <form id="fUp" novalidate>
+      <div class="who-pick" role="radiogroup" aria-label="Who are you?">
+        <label><input type="radio" name="who" value="Paige" checked> Paige</label>
+        <label><input type="radio" name="who" value="Temi"> Temi</label>
+        <label><input type="radio" name="who" value="Other"> Someone else</label>
+      </div>
+      <label>Your name<input name="name" autocomplete="name" required maxlength="80" placeholder="Paige"></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required maxlength="190" placeholder="you@thebiteclubldn.com"></label>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" type="submit">Create my account</button>
+      <p class="err" id="eUp" role="alert"></p>
+      <p class="small muted">This creates your private Bite Club project page with Hectic Software, for messages, files and updates. Your link is saved on this device.</p>
+    </form>
+    <form id="fIn" novalidate hidden>
+      <p class="small">Signed up on this device before? You'll go straight in. On a new phone, paste the private project link you were given after signing up.</p>
+      <label>Your private project link<input name="link" autocomplete="off" placeholder="https://hecticsoftware.com/portal/#…"></label>
+      <button class="btn" type="submit">Sign in</button>
+      <p class="err" id="eIn" role="alert"></p>
+    </form>
+  </div>
+</div></main>
+
+<canvas id="confetti" hidden></canvas>
+<div class="cheer" id="cheer" hidden><div class="inner">
+  <span class="kicker">Account created</span>
+  <h2>Welcome to the club, <span id="cheerName">Paige</span>.</h2>
+  <p>A gift from Hectic Software: your website, your apps and your studio tools, ready to go.</p>
+  <button class="btn" id="enter" type="button">Open my present</button>
+</div></div>
+
+<!-- Act two -->
+<div id="vault" hidden>
+<div class="hero"><div class="wrap">
+  <span class="kicker" id="hello">Studio handover · Paige &amp; Temi</span>
+  <h1>Your studio is live.</h1>
+  <p>Everything Bite Club needs to run: the website, the members' app on iPhone, iPad and Apple Watch, the studio tools, and your own email. A gift from Hectic Software, with no monthly running costs.</p>
+  <figure class="shot"><img src="/img/biteclub.webp" alt="3D render of an 18ct gold top-six grill on a black mirror" width="1800" height="1013"><figcaption>3D render from the Bite Club app's own model</figcaption></figure>
+</div></div>
+
+<div class="wrap"><div class="strip">
+  <div><b>LIVE</b><span>thebiteclubldn.com</span></div>
+  <div><b>3</b><span>Apple devices</span></div>
+  <div><b>36</b><span>App languages</span></div>
+  <div><b>£0</b><span>A month to run</span></div>
+</div></div>
+
+
+<section class="gift" id="gift"><div class="wrap">
+  <div class="head"><span class="kicker">A gift from Hectic Software</span><h2>Built for Bite Club. <em>Yours, free.</em></h2>
+    <p>This isn't a pitch and there's no invoice. Hectic Software built all of this as a present for Paige and Temi. So you know what you're holding, here's roughly what the same work would cost from a typical UK agency.</p></div>
+  <div class="ribbon">
+    <div><b>£55k–£99k</b><span>Typical agency cost</span></div>
+    <div><b>£0</b><span>What you pay</span></div>
+    <div><b>£0/mo</b><span>To keep it running</span></div>
+  </div>
+  <div class="tablewrap"><table class="val">
+    <tbody>
+      <tr><td>Members' app for iPhone, iPad &amp; Apple Watch<small>3D builder, appointments, live progress, Studio Line chat, invites, check-in</small></td><td>£35,000–£60,000</td></tr>
+      <tr><td>Studio tools for the founders<small>Face ID founder access, appointments, open the room, clients, dashboard, brand settings</small></td><td>£8,000–£15,000</td></tr>
+      <tr><td>Website, thebiteclubldn.com<small>Fit builder, Ask AI with 62 answers, FAQ, glossary, legal pages, 97–100 speed scores</small></td><td>£6,000–£12,000</td></tr>
+      <tr><td>36 languages<small>App translated and laid out for every language</small></td><td>£3,000–£6,000</td></tr>
+      <tr><td>3D product renders<small>Gold grillz modelled and rendered from the app's own model</small></td><td>£2,000–£4,000</td></tr>
+      <tr><td>Email, domains, hosting &amp; security set-up<small>hello@, paige@, temi@, catch-all, HTTPS, Cloudflare, all in your own accounts</small></td><td>£1,000–£2,000</td></tr>
+      <tr class="total"><td>Typical agency total</td><td>£55,000–£99,000</td></tr>
+      <tr class="you"><td>Your price</td><td>£0</td></tr>
+    </tbody>
+  </table></div>
+  <p class="small muted">Figures are typical UK agency estimates for comparable work, for context only. They are not a bill and nothing is owed.</p>
+</div></section>
+<section><div class="wrap">
+  <div class="head"><span class="kicker">1 · The website</span><h2>thebiteclubldn.com</h2>
+    <p>Fast, secure and built for Google. Every page explains grillz in plain English, and the 3D builder lets people design a piece before they ever message you.</p></div>
+  <div class="grid">
+    <div class="card live"><span class="status on">Live</span><h3>Main site</h3><span class="url">https://thebiteclubldn.com</span><a class="btn" href="https://thebiteclubldn.com" target="_blank" rel="noopener noreferrer">Open the site</a></div>
+    <div class="card"><h3>What's on it</h3><ul><li>Fit builder: pick teeth and metal</li><li>Ask AI: Gloss &amp; Grit answer 62 questions</li><li>FAQ, A–Z glossary, Our story</li><li>Terms of sale, Privacy, Hallmarking</li><li>App download page</li></ul></div>
+    <div class="card"><h3>Safe to visit</h3><ul><li>HTTPS only, with browser security headers</li><li>No database or logins on the site to hack</li><li>Google speed score 97–100 on every page</li></ul></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head"><span class="kicker">2 · The apps</span><h2>Bite Club for iPhone, iPad &amp; Watch</h2>
+    <p>Members design their piece in 3D, request private appointments, follow every stage on their Lock Screen and message you on Studio Line. You run the studio from the same app.</p></div>
+  <div class="grid">
+    <div class="card"><h3>For members</h3><ul><li>3D builder and saved fits</li><li>Private appointment requests</li><li>Live progress, wax to snap-fit</li><li>Studio Line chat, urgent alerts</li><li>Invite a friend with their own code</li><li>"I'm here" check-in at the venue</li></ul></div>
+    <div class="card"><h3>On your phones</h3><p class="small">Already installed on Paige's iPhone. Temi's gets the new version next time it's plugged in. Members join through TestFlight until the App Store release.</p><span class="status wait">App Store release next</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head"><span class="kicker">3 · Admin</span><h2>Run it all from the Studio tab</h2>
+    <p>Open Bite Club, go to <b>Studio</b> and tap <b>Verify as a founder</b>. Face ID plus your iCloud account unlocks the studio tools on your phones.</p></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Tool</th><th>Where</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td>Appointments</td><td>Studio → Run the studio</td><td>Your week's requests. Swipe to confirm or cancel, block time off.</td></tr>
+      <tr><td>Open the room</td><td>Studio → Run the studio</td><td>Shows a 4-digit code. Members tap "I'm here" to check in, phone to phone.</td></tr>
+      <tr><td>Clients</td><td>Clients tab</td><td>Every member, their orders and their Studio Line messages.</td></tr>
+      <tr><td>Dashboard</td><td>Studio → Run the studio</td><td>Pieces by stage, who's waiting on you, reply times.</td></tr>
+      <tr><td>Brand settings</td><td>Studio → Run the studio</td><td>Prices, announcement, bookings open or paused, your contact details.</td></tr>
+      <tr><td>Web admin</td><td>thebiteclubldn.com/admin</td><td>Links to email, Google, domains and the App Store in one place.</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head"><span class="kicker">4 · Email</span><h2>Your own addresses, free</h2><p>Mail to these addresses arrives in the inbox you already use. Nothing new to log in to.</p></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Address</th><th>Arrives in</th></tr></thead>
+    <tbody>
+      <tr><td>hello@thebiteclubldn.com</td><td>The studio inbox, thebiteclubldn@gmail.com</td></tr>
+      <tr><td>paige@thebiteclubldn.com</td><td>Paige's own inbox, once Paige taps the Cloudflare "verify" email</td></tr>
+      <tr><td>temi@thebiteclubldn.com</td><td>Temi's own inbox, once Temi taps the Cloudflare "verify" email</td></tr>
+      <tr><td>anything@thebiteclubldn.com</td><td>The studio inbox, so nothing gets lost</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head"><span class="kicker">5 · You own it</span><h2>Your accounts</h2><p>The website, domains and email sit in Bite Club's own accounts, not ours.</p></div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Service</th><th>Account</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Cloudflare</td><td>thebiteclubldn@gmail.com</td><td>Website hosting, email forwarding, security. Free plan.</td></tr>
+      <tr><td>IONOS</td><td>Your IONOS login</td><td>thebiteclubldn .com, .co.uk, .uk and .info, paid to 10 Oct 2027.</td></tr>
+      <tr><td>Apple</td><td>Hectic Software developer account</td><td>The app is published for you. It can move to your own Apple account later.</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="head"><span class="kicker">6 · Your to-do</span><h2>Five things only you can do</h2></div>
+  <ul class="todo">
+    <li><span><b>Tap the Cloudflare verify email.</b> Paige and Temi each get one. It switches on your personal address.</span></li>
+    <li><span><b>Confirm your appointment hours.</b> The app shows Tuesday to Saturday, 11:00–19:00 until you change them.</span></li>
+    <li><span><b>Send your prices and Instagram handle.</b> They're hidden on the site until you confirm them.</span></li>
+    <li><span><b>Register your sponsor's mark</b> with an assay office, so pieces over the weight limits can be hallmarked.</span></li>
+    <li><span><b>Have a solicitor read the Terms of sale.</b> Add your company name and registered office.</span></li>
+  </ul>
+</div></section>
+
+<section><div class="wrap">
+  <div class="card live">
+    <span class="kicker">7 · Your account with us</span>
+    <h2>Your private project page</h2>
+    <p>Messages, files and updates about Bite Club live here. Keep this link private: it's your key on any device.</p>
+    <span class="url" id="myLink"></span>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="openPortal" href="/portal/">Open my project page</a><button class="btn ghost" id="copyLink" type="button">Copy my link</button></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="co"><a class="hectic" href="https://hecticsoftware.com">HECTIC<i></i></a><span class="x">×</span><span class="wordmark">BITE CLUB <span class="pill">LDN</span></span></div>
+  <p class="small muted">Website, apps and studio tools built by Hectic Software Ltd · Romeo Valentine · hecticsoftware.com</p>
+  <p class="small muted">Product images are 3D renders, not photographs of real work. Grillz are removable jewellery, not dental treatment.</p>
+  <button class="linkbtn" id="signOut" type="button">Sign out of this device</button>
+</div></footer>
+</div>
+
+<script src="/config.js"></script>
+<script>
+(() => {
+  const API = window.HS_API || "https://hectic-api.forged-landscapes.workers.dev";
+  const KEY = "bc_handover";
+  const $ = id => document.getElementById(id);
+  const store = { get(){ try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch { return null; } },
+                  set(v){ try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
+                  clear(){ try { localStorage.removeItem(KEY); } catch {} } };
+
+  // Tabs
+  const tabs = [[$("tUp"), $("fUp")], [$("tIn"), $("fIn")]];
+  tabs.forEach(([t]) => t.addEventListener("click", () => tabs.forEach(([b, f]) => { const on = b === t; b.setAttribute("aria-selected", on); f.hidden = !on; })));
+  document.querySelectorAll('input[name="who"]').forEach(r => r.addEventListener("change", () => {
+    const n = $("fUp").elements.name; if (r.checked && r.value !== "Other" && (!n.value || n.value === "Paige" || n.value === "Temi")) n.value = r.value;
+  }));
+  $("fUp").elements.name.value = "Paige";
+
+  function unlock(sess, celebrate) {
+    $("gate").hidden = true; $("vault").hidden = false;
+    const first = (sess.name || "").split(" ")[0] || "there";
+    $("hello").textContent = "Studio handover · Welcome, " + first;
+    $("whoTag").innerHTML = ""; const b = document.createElement("b"); b.textContent = first; $("whoTag").append("Signed in · ", b);
+    const link = location.origin + "/portal/#" + sess.token;
+    $("myLink").textContent = link; $("openPortal").href = "/portal/#" + sess.token;
+    if (celebrate) { $("cheerName").textContent = first; $("cheer").hidden = false; confetti(); $("enter").focus(); }
+    else window.scrollTo(0, 0);
+  }
+  $("enter").addEventListener("click", () => { $("cheer").hidden = true; window.scrollTo(0, 0); });
+  $("copyLink").addEventListener("click", async e => {
+    const t = $("myLink").textContent;
+    try { await navigator.clipboard.writeText(t); e.target.textContent = "Copied"; }
+    catch { const r = document.createRange(); r.selectNodeContents($("myLink")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); e.target.textContent = "Selected, copy it"; }
+  });
+  $("signOut").addEventListener("click", () => { store.clear(); location.reload(); });
+
+  // Sign up → creates the client's real project in the Hectic portal
+  $("fUp").addEventListener("submit", async e => {
+    e.preventDefault(); const f = e.target, err = $("eUp"); err.textContent = "";
+    const name = f.elements.name.value.trim(), email = f.elements.email.value.trim();
+    if (!name) return err.textContent = "Add your name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return err.textContent = "Add a valid email.";
+    const btn = f.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "Creating…";
+    const fd = new FormData();
+    fd.append("name", name); fd.append("email", email); fd.append("company", "Bite Club LDN");
+    fd.append("projectType", "Client handover"); fd.append("platforms", "iPhone"); fd.append("platforms", "Web");
+    fd.append("description", "Bite Club LDN handover account for " + name + " (" + (f.elements.who.value) + "). Website, apps and studio tools built by Hectic Software.");
+    fd.append("links", "https://thebiteclubldn.com"); fd.append("website", f.elements.website.value);
+    try {
+      const r = await fetch(API + "/api/enquiry", { method: "POST", body: fd });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || !j.token) throw new Error(j.error || "failed");
+      const sess = { name, token: j.token, ref: j.ref }; store.set(sess); unlock(sess, true);
+    } catch (x) {
+      err.textContent = x.message === "rate_limited" ? "Too many tries from this network. Wait a little and try again." : "Couldn't create your account just now. Check your connection and try again.";
+    } finally { btn.disabled = false; btn.textContent = "Create my account"; }
+  });
+
+  // Sign in → device memory, or a pasted private project link
+  $("fIn").addEventListener("submit", async e => {
+    e.preventDefault(); const err = $("eIn"); err.textContent = "";
+    const raw = e.target.elements.link.value.trim();
+    const token = (raw.match(/[a-f0-9]{64}/) || [])[0];
+    if (!token) return err.textContent = "Paste the full private link you got after signing up.";
+    const btn = e.target.querySelector("button"); btn.disabled = true; btn.textContent = "Checking…";
+    try {
+      const r = await fetch(API + "/api/portal?token=" + token);
+      if (!r.ok) throw new Error("nf");
+      const j = await r.json();
+      const sess = { name: (j.project && j.project.name) || "", token, ref: j.project && j.project.id }; store.set(sess); unlock(sess, true);
+    } catch { err.textContent = "That link didn't match an account. Check it and try again."; }
+    finally { btn.disabled = false; btn.textContent = "Sign in"; }
+  });
+
+  // Returning on this device: straight in
+  const saved = store.get();
+  if (saved && saved.token) unlock(saved, false);
+
+  // Confetti in the client's colours plus Hectic orange
+  function confetti() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const c = $("confetti"), x = c.getContext("2d"); c.hidden = false;
+    const dpr = Math.min(devicePixelRatio || 1, 2); const W = c.width = innerWidth * dpr, H = c.height = innerHeight * dpr;
+    const cols = ["#f2c25e", "#ff2e94", "#ff4d2e", "#f5f3ef", "#ffd98a"];
+    const ps = Array.from({ length: 220 }, (_, i) => ({ x: W / 2 + (Math.random() - .5) * W * .3, y: H * .55, vx: (Math.random() - .5) * 26 * dpr, vy: -(Math.random() * 26 + 14) * dpr,
+      s: (Math.random() * 8 + 5) * dpr, r: Math.random() * 6.28, vr: (Math.random() - .5) * .3, c: cols[i % cols.length], round: Math.random() < .3 }));
+    const t0 = performance.now();
+    (function tick(t) {
+      x.clearRect(0, 0, W, H);
+      ps.forEach(p => { p.vy += .55 * dpr; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.fillStyle = p.c;
+        if (p.round) { x.beginPath(); x.arc(0, 0, p.s / 2, 0, 6.28); x.fill(); } else x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2);
+        x.restore(); });
+      if (t - t0 < 4200) requestAnimationFrame(tick); else { x.clearRect(0, 0, W, H); c.hidden = true; }
+    })(t0);
+  }
+})();
+</script>
+</body>
+</html>
