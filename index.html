@@ -316,6 +316,7 @@ html,body{overflow-x:clip}
 .show-panel figure{margin:0;background:#141414;display:grid;grid-template-rows:1fr auto;min-height:0}
 .show-panel .frame{display:grid;place-items:center;padding:clamp(18px,3vw,36px);min-height:340px}
 .show-panel img{max-height:560px;width:auto;max-width:100%;object-fit:contain;border-radius:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.show-panel[hidden]{display:none}
 .show-panel.wide{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
 .show-panel figcaption{display:flex;justify-content:space-between;gap:10px;padding:12px 16px;border-top:1px solid #2a2a2a;color:#e9e6e0;font:600 10px var(--sans);letter-spacing:.2em;text-transform:uppercase}
 .show-panel figcaption i{font-style:normal;color:var(--orange)}
