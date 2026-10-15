@@ -3,3 +3,5 @@
 @font-face{font-family:"Bodoni Moda";src:url(/fonts/BodoniModa-Italic.ttf) format("truetype");font-weight:400 900;font-style:italic;font-display:swap}
 @font-face{font-family:"Archivo";src:url(/fonts/Archivo.ttf) format("truetype");font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(/fonts/JetBrainsMono.ttf) format("truetype");font-weight:100 800;font-display:swap}
+@font-face{font-family:"Fjalla One";src:url(/fonts/FjallaOne-Regular.ttf) format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Source Sans 3";src:url(/fonts/SourceSans3.ttf) format("truetype");font-weight:200 900;font-display:swap}
