@@ -1,0 +1,30 @@
+# Hectic Software
+
+> London app studio founded by Romeo Valentine. Designs, builds and launches native apps for iPhone, iPad, Mac, Apple Watch, Apple TV and Vision Pro, plus Android, Windows, smart TVs, voice assistants and the web, with the platforms behind them (accounts, payments, booking, chat, admin panels, client portals, on-device AI).
+
+Contact: hello@hecticsoftware.com · Start a project: https://hecticsoftware.com/start/
+
+## Work
+- [StreamAll](https://hecticsoftware.com/work/streamall/): Your playlists turned into television, on six Apple screens. (Live; iPhone, iPad, Mac, Apple TV, Apple Watch, Vision Pro)
+- [PIING](https://hecticsoftware.com/work/piing/): Private messenger: encrypted chats, groups, stories and calls, with no ads or trackers. (Live; iPhone, iPad, Web)
+- [Hectic Radio](https://hecticsoftware.com/work/hectic-radio/): Station site, listener app and a live DJ booth for London's broadcast network. (Live; Web, iPhone)
+- [Main Line Café](https://hecticsoftware.com/work/main-line/): Website, ordering, a till, Apple Pay and a Wallet loyalty card for a Watford café. (Live; Web, iPhone)
+- [Forged Landscapes](https://hecticsoftware.com/work/forged-landscapes/): Landscaping website with a project planner and client portal. (Live; Web)
+- [Sourced London](https://hecticsoftware.com/work/sourced-london/): Luxury vehicle sourcing and sales. (Live; Web)
+- [SAM](https://hecticsoftware.com/work/sam/): A free, private, local-first assistant that runs on your own devices. (Live; Mac, iPhone, iPad, Apple Watch)
+- [Divine](https://hecticsoftware.com/work/divine/): A web app built and run by the studio. (Live; Web)
+- [Bite Club LDN](https://hecticsoftware.com/work/bite-club-ldn/): Custom grillz designed in 3D, booked and followed from wax to snap-fit, in 36 languages. (Live; Web, iPhone)
+- [DreamSpire Store](https://hecticsoftware.com/work/dreamspire-store/): Streetwear storefront and shop back end. (Live; Web)
+- [RadioBox](https://hecticsoftware.com/work/radiobox/): Radio apps for iPhone and Android. (Live; iPhone, Android)
+- [Volero](https://hecticsoftware.com/work/volero/): Your Mac in your pocket. Fast, private, paired through iCloud. (In production; iPhone, iPad, Mac, Apple Watch, Apple TV, Vision Pro)
+- [HecticTV](https://hecticsoftware.com/work/hectictv/): Shows and publishing for iPhone, Apple TV and Vision Pro. (In production; iPhone, Apple TV, Vision Pro)
+- [Fresh Face London](https://hecticsoftware.com/work/fresh-face-london/): Clinic app with a booking engine, rewards and on-device AI. (In production; iPhone, iPad, Apple Watch)
+- [DreamSpire Native](https://hecticsoftware.com/work/dreamspire/): A native shopping app for iPhone, iPad, Mac and Vision Pro. (In production; iPhone, iPad, Mac, Vision Pro)
+- [FlipIt](https://hecticsoftware.com/work/flipit/): A paper-trading discipline app and site. (In production; iPhone, Web)
+- [StreamAll everywhere](https://hecticsoftware.com/work/streamall-everywhere/): StreamAll for Android TV, Fire TV, Roku, Samsung, LG and the web. (In production; Android TV, Fire TV, Roku, Samsung, LG, Web)
+- [Ghost Detail](https://hecticsoftware.com/work/ghost-detail/): A car detailing website. (In production; Web)
+- [DJ Danny Hectic B](https://hecticsoftware.com/work/dj-danny-hectic-b/): An artist website. (In production; Web)
+- [HecticBullz](https://hecticsoftware.com/work/hecticbullz/): A booking website. (In production; Web)
+- [BLAM](https://hecticsoftware.com/work/blam/): Music recognition tuned to grime, drill, garage and drum & bass. (Concept; iPhone)
+- [HecticSuite](https://hecticsoftware.com/work/hecticsuite/): A self-hosted hub and admin for every Hectic brand. (Concept; Web, Mac)
+- [HecticMag](https://hecticsoftware.com/work/hecticmag/): A digital magazine for the Hectic world. (Concept; iPhone, iPad)
