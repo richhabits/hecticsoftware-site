@@ -400,10 +400,11 @@ footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid v
   // Tabs
   const tabs = [[$("tUp"), $("fUp")], [$("tIn"), $("fIn")]];
   tabs.forEach(([t]) => t.addEventListener("click", () => tabs.forEach(([b, f]) => { const on = b === t; b.setAttribute("aria-selected", on); f.hidden = !on; })));
-  document.querySelectorAll('input[name="who"]').forEach(r => r.addEventListener("change", () => {
-    const n = $("fUp").elements.name; if (r.checked && r.value !== "Other" && (!n.value || n.value === "Paige" || n.value === "Temi")) n.value = r.value;
-  }));
-  $("fUp").elements.name.value = "Paige";
+  // Founders' real addresses, so signing up is one tap.
+  const KNOWN = { Paige: "paigegking@icloud.com", Temi: "temigrant00@gmail.com" };
+  const fill = who => { const f = $("fUp").elements; if (KNOWN[who]) { f.name.value = who; f.email.value = KNOWN[who]; } else if (Object.values(KNOWN).includes(f.email.value)) { f.name.value = ""; f.email.value = ""; } };
+  document.querySelectorAll('input[name="who"]').forEach(r => r.addEventListener("change", () => { if (r.checked) fill(r.value); }));
+  fill("Paige");
 
   function unlock(sess, celebrate) {
     $("gate").hidden = true; $("vault").hidden = false;
