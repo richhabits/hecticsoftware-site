@@ -88,7 +88,7 @@ writeFileSync(root + "work/index.html", shell("Work · Apps, platforms and websi
     { "@type": "CollectionPage", name: "Hectic Software work", url: site + "/work/", hasPart: work.map(w => ({ "@type": "CreativeWork", name: w.name, url: `${site}/work/${w.id}/` })) },
     crumbs([["Hectic Software", "/"], ["Work", "/work/"]]) ] }));
 
-const urls = [["/", "1.0", "weekly"], ["/work/", "0.9", "weekly"], ["/start/", "0.8", "monthly"], ...work.map(w => [`/work/${w.id}/`, w.stage === "Live" ? "0.8" : "0.6", "monthly"])];
+const urls = [["/", "1.0", "weekly"], ["/work/", "0.9", "weekly"], ["/start/", "0.8", "monthly"], ["/privacy/", "0.3", "yearly"], ...work.map(w => [`/work/${w.id}/`, w.stage === "Live" ? "0.8" : "0.6", "monthly"])];
 writeFileSync(root + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, p, f]) => `<url><loc>${site}${u}</loc><lastmod>${today}</lastmod><changefreq>${f}</changefreq><priority>${p}</priority></url>`).join("\n")}\n</urlset>\n`);
 
 writeFileSync(root + "llms.txt", `# Hectic Software\n\n> London app studio founded by Romeo Valentine. Designs, builds and launches native apps for iPhone, iPad, Mac, Apple Watch, Apple TV and Vision Pro, plus Android, Windows, smart TVs, voice assistants and the web, with the platforms behind them (accounts, payments, booking, chat, admin panels, client portals, on-device AI).\n\nContact: hello@hecticsoftware.com · Start a project: ${site}/start/\n\n## Work\n${work.map(w => `- [${w.name}](${site}/work/${w.id}/): ${w.blurb} (${w.stage}; ${w.platforms.join(", ")})`).join("\n")}\n`);
