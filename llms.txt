@@ -1,6 +1,6 @@
 # Hectic Software
 
-> London app studio founded by Romeo Valentine. Designs, builds and launches native apps for iPhone, iPad, Mac, Apple Watch, Apple TV and Vision Pro, plus Android, Windows, smart TVs, voice assistants and the web, with the platforms behind them (accounts, payments, booking, chat, admin panels, client portals, on-device AI).
+> London app studio founded by Romeo Valentine. Designs, builds and launches native apps for iPhone, iPad, Mac, Apple Watch, Apple TV and Vision Pro, and Android, with the websites and platforms behind them (accounts, payments, booking, chat, admin panels, client portals, on-device AI).
 
 Contact: hello@hecticsoftware.com · Start a project: https://hecticsoftware.com/start/
 
