@@ -182,10 +182,18 @@ footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid v
   <div>
     <span class="kicker">Hectic Software presents</span>
     <h1>Paige &amp; Temi,<br>your studio is <em>ready.</em></h1>
-    <p class="lead">We built Bite Club a website, a members' app and studio tools, as a gift. Sign up or sign in to open your present.</p>
+    <p class="lead">We built Bite Club a website, a members' app and studio tools, as a gift. Enter your PIN, then sign up or sign in to open your present.</p>
     <div class="shot"><img src="/img/biteclub.webp" alt="3D render of an 18ct gold grill from the Bite Club app" width="1800" height="1013"></div>
   </div>
   <div class="panel">
+    <form id="fPin" novalidate>
+      <h3>Enter your access PIN</h3>
+      <p class="small muted">Your private PIN came from Romeo at Hectic Software. It unlocks this page.</p>
+      <label>Access PIN<input name="pin" inputmode="numeric" autocomplete="one-time-code" maxlength="12" placeholder="••••••" style="font:800 22px var(--mono);letter-spacing:.3em;text-align:center"></label>
+      <button class="btn" type="submit">Unlock</button>
+      <p class="err" id="ePin" role="alert"></p>
+    </form>
+    <div id="authBox" hidden style="display:grid;gap:18px">
     <div class="tabs" role="tablist">
       <button role="tab" id="tUp" aria-selected="true" aria-controls="fUp">Sign up</button>
       <button role="tab" id="tIn" aria-selected="false" aria-controls="fIn">Sign in</button>
@@ -209,6 +217,7 @@ footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid v
       <button class="btn" type="submit">Sign in</button>
       <p class="err" id="eIn" role="alert"></p>
     </form>
+    </div>
   </div>
 </div></main>
 
@@ -221,171 +230,7 @@ footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid v
 </div></div>
 
 <!-- Act two -->
-<div id="vault" hidden>
-<div class="hero"><div class="wrap">
-  <span class="kicker" id="hello">Studio handover · Paige &amp; Temi</span>
-  <h1>Your studio is live.</h1>
-  <p>Everything Bite Club needs to run: the website, the members' app on iPhone, iPad and Apple Watch, the studio tools, and your own email. A gift from Hectic Software, with no monthly running costs.</p>
-  <figure class="shot"><img src="/img/biteclub.webp" alt="3D render of an 18ct gold top-six grill on a black mirror" width="1800" height="1013"><figcaption>3D render from the Bite Club app's own model</figcaption></figure>
-</div></div>
-
-<div class="wrap"><div class="strip">
-  <div><b>LIVE</b><span>thebiteclubldn.com</span></div>
-  <div><b>3</b><span>Apple devices</span></div>
-  <div><b>36</b><span>App languages</span></div>
-  <div><b>£0</b><span>A month to run</span></div>
-</div></div>
-
-
-<section class="gift" id="gift"><div class="wrap">
-  <div class="head"><span class="kicker">A gift from Hectic Software</span><h2>Built for Bite Club. <em>Yours, free.</em></h2>
-    <p>This isn't a pitch and there's no invoice. Hectic Software built all of this as a present for Paige and Temi. So you know what you're holding, here's roughly what the same work would cost from a typical UK agency.</p></div>
-  <div class="ribbon">
-    <div><b>£55k–£99k</b><span>Typical agency cost</span></div>
-    <div><b>£0</b><span>What you pay</span></div>
-    <div><b>£0/mo</b><span>To keep it running</span></div>
-  </div>
-  <div class="tablewrap"><table class="val">
-    <tbody>
-      <tr><td>Members' app for iPhone, iPad &amp; Apple Watch<small>3D builder, appointments, live progress, Studio Line chat, invites, check-in</small></td><td>£35,000–£60,000</td></tr>
-      <tr><td>Studio tools for the founders<small>Face ID founder access, appointments, open the room, clients, dashboard, brand settings</small></td><td>£8,000–£15,000</td></tr>
-      <tr><td>Website, thebiteclubldn.com<small>Fit builder, Ask AI with 62 answers, FAQ, glossary, legal pages, 97–100 speed scores</small></td><td>£6,000–£12,000</td></tr>
-      <tr><td>36 languages<small>App translated and laid out for every language</small></td><td>£3,000–£6,000</td></tr>
-      <tr><td>3D product renders<small>Gold grillz modelled and rendered from the app's own model</small></td><td>£2,000–£4,000</td></tr>
-      <tr><td>Email, domains, hosting &amp; security set-up<small>hello@, paige@, temi@, catch-all, HTTPS, Cloudflare, all in your own accounts</small></td><td>£1,000–£2,000</td></tr>
-      <tr class="total"><td>Typical agency total</td><td>£55,000–£99,000</td></tr>
-      <tr class="you"><td>Your price</td><td>£0</td></tr>
-    </tbody>
-  </table></div>
-  <p class="small muted">Figures are typical UK agency estimates for comparable work, for context only. They are not a bill and nothing is owed.</p>
-</div></section>
-
-<section id="ask"><div class="wrap">
-  <div class="head"><span class="kicker">Ask Gloss</span><h2>Questions about your studio? Ask here.</h2><p>Gloss knows everything on this page: the site, the app, the studio tools, email and your to-do list.</p></div>
-  <div class="ask">
-    <div class="log" id="aLog" aria-live="polite"></div>
-    <div class="chips" id="aChips"><button class="chip" type="button">How do I unlock the studio tools?</button><button class="chip" type="button">How do family test the app?</button><button class="chip" type="button">What do we own?</button><button class="chip" type="button">What's left for us to do?</button></div>
-    <form class="askform" id="aForm"><input id="aIn" maxlength="500" placeholder="Ask Gloss anything about Bite Club…" aria-label="Your question"><button class="btn" id="aBtn" type="submit">Ask</button></form>
-  </div>
-</div></section>
-
-<section id="try"><div class="wrap">
-  <div class="head"><span class="kicker">Test it &amp; share it</span><h2>Put Bite Club on your family's phones</h2><p>Anyone with an iPhone can try the app before it's on the App Store: family, friends, your first members. Up to 100 people, free.</p></div>
-  <div class="tf">
-    <div class="card live"><h3>Your beta link</h3><span class="url" id="tfLink">https://testflight.apple.com/join/9ZRuwyyW</span>
-      <div class="linkrow"><a class="btn" href="https://testflight.apple.com/join/9ZRuwyyW" target="_blank" rel="noopener noreferrer">Open on iPhone</a><button class="btn ghost" id="tfCopy" type="button">Copy link</button></div>
-      <p class="small muted">Send it by WhatsApp, text or Instagram DM. The link starts working once Apple finishes its quick beta check, usually within a day.</p></div>
-    <div class="card"><h3>How to install</h3><ol><li>Open the link on an iPhone.</li><li>Tap <b>Install TestFlight</b> if asked, then go back to the link.</li><li>Tap <b>Accept</b>, then <b>Install</b>.</li><li>Open Bite Club and sign in.</li></ol></div>
-  </div>
-  <div class="card"><h3>Send us feedback</h3><ol><li>Take a screenshot in the app.</li><li>Tap the screenshot preview, then <b>Done</b> → <b>Share Beta Feedback</b>.</li><li>Add a note and send. It comes straight to Hectic Software.</li></ol></div>
-</div></section>
-
-<section id="pieces"><div class="wrap">
-  <div class="head"><span class="kicker">The pieces</span><h2>Rendered from the app's own 3D model</h2><p>Every image on the site and in the app is generated from the same model members use in the builder.</p></div>
-  <div class="pieces">
-    <figure><img src="/biteclub/img/18ct-top-six-on-mouth-1200.webp" alt="18ct gold top six render" loading="lazy" width="1200" height="675"><figcaption>18ct top six</figcaption></figure>
-    <figure><img src="/biteclub/img/iced-vvs-full-set-1200.webp" alt="Iced full set render" loading="lazy" width="1200" height="675"><figcaption>Iced full set</figcaption></figure>
-    <figure><img src="/biteclub/img/14ct-top-eight-1200.webp" alt="14ct gold top eight render" loading="lazy" width="1200" height="675"><figcaption>14ct top eight</figcaption></figure>
-    <figure><img src="/biteclub/img/silver-bottom-six-1200.webp" alt="925 silver bottom six render" loading="lazy" width="1200" height="675"><figcaption>925 silver bottom six</figcaption></figure>
-    <figure><img src="/biteclub/img/9ct-single-fang-640.webp" alt="9ct single fang render" loading="lazy" width="640" height="360"><figcaption>9ct single fang</figcaption></figure>
-  </div>
-  <p class="small muted">3D renders, not photographs of real work.</p>
-</div></section>
-<section><div class="wrap">
-  <div class="head"><span class="kicker">1 · The website</span><h2>thebiteclubldn.com</h2>
-    <p>Fast, secure and built for Google. Every page explains grillz in plain English, and the 3D builder lets people design a piece before they ever message you.</p></div>
-  <div class="grid">
-    <div class="card live"><span class="status on">Live</span><h3>Main site</h3><span class="url">https://thebiteclubldn.com</span><a class="btn" href="https://thebiteclubldn.com" target="_blank" rel="noopener noreferrer">Open the site</a></div>
-    <div class="card"><h3>What's on it</h3><ul><li>Fit builder: pick teeth and metal</li><li>Ask AI: Gloss &amp; Grit answer 62 questions</li><li>FAQ, A–Z glossary, Our story</li><li>Terms of sale, Privacy, Hallmarking</li><li>App download page</li></ul></div>
-    <div class="card"><h3>Safe to visit</h3><ul><li>HTTPS only, with browser security headers</li><li>No database or logins on the site to hack</li><li>Google speed score 97–100 on every page</li></ul></div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="head"><span class="kicker">2 · The apps</span><h2>Bite Club for iPhone, iPad &amp; Watch</h2>
-    <p>Members design their piece in 3D, request private appointments, follow every stage on their Lock Screen and message you on Studio Line. You run the studio from the same app.</p></div>
-  <div class="grid">
-    <div class="card"><h3>For members</h3><ul><li>3D builder and saved fits</li><li>Private appointment requests</li><li>Live progress, wax to snap-fit</li><li>Studio Line chat, urgent alerts</li><li>Invite a friend with their own code</li><li>"I'm here" check-in at the venue</li></ul></div>
-    <div class="card"><h3>On your phones</h3><p class="small">Already installed on Paige's iPhone. Temi's gets the new version next time it's plugged in. Family and first members join with your beta link (see "Test it &amp; share it") until the App Store release.</p><span class="status wait">App Store release next</span></div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="head"><span class="kicker">3 · Admin</span><h2>Run it all from the Studio tab</h2>
-    <p>Open Bite Club, go to <b>Studio</b> and tap <b>Verify as a founder</b>. Face ID plus your iCloud account unlocks the studio tools on your phones.</p></div>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Tool</th><th>Where</th><th>What it does</th></tr></thead>
-    <tbody>
-      <tr><td>Appointments</td><td>Studio → Run the studio</td><td>Your week's requests. Swipe to confirm or cancel, block time off.</td></tr>
-      <tr><td>Open the room</td><td>Studio → Run the studio</td><td>Shows a 4-digit code. Members tap "I'm here" to check in, phone to phone.</td></tr>
-      <tr><td>Clients</td><td>Clients tab</td><td>Every member, their orders and their Studio Line messages.</td></tr>
-      <tr><td>Dashboard</td><td>Studio → Run the studio</td><td>Pieces by stage, who's waiting on you, reply times.</td></tr>
-      <tr><td>Brand settings</td><td>Studio → Run the studio</td><td>Prices, announcement, bookings open or paused, your contact details.</td></tr>
-      <tr><td>Web admin</td><td>thebiteclubldn.com/admin</td><td>Links to email, Google, domains and the App Store in one place.</td></tr>
-    </tbody>
-  </table></div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="head"><span class="kicker">4 · Email</span><h2>Your own addresses, free</h2><p>We're switching these on now. Once live, mail to these addresses arrives in the inbox you already use, with nothing new to log in to.</p></div>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Address</th><th>Arrives in</th></tr></thead>
-    <tbody>
-      <tr><td>hello@thebiteclubldn.com</td><td>The studio inbox, thebiteclubldn@gmail.com</td></tr>
-      <tr><td>paige@thebiteclubldn.com</td><td>Paige's own inbox, once Paige taps the Cloudflare "verify" email</td></tr>
-      <tr><td>temi@thebiteclubldn.com</td><td>Temi's own inbox, once Temi taps the Cloudflare "verify" email</td></tr>
-      <tr><td>anything@thebiteclubldn.com</td><td>The studio inbox, so nothing gets lost</td></tr>
-    </tbody>
-  </table></div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="head"><span class="kicker">5 · You own it</span><h2>Your accounts</h2><p>The website, domains and email sit in Bite Club's own accounts, not ours.</p></div>
-  <div class="tablewrap"><table>
-    <thead><tr><th>Service</th><th>Account</th><th>Notes</th></tr></thead>
-    <tbody>
-      <tr><td>Cloudflare</td><td>thebiteclubldn@gmail.com</td><td>Website hosting, email forwarding, security. Free plan.</td></tr>
-      <tr><td>IONOS</td><td>Your IONOS login</td><td>thebiteclubldn .com, .co.uk, .uk and .info, paid to 10 Oct 2027.</td></tr>
-      <tr><td>Apple</td><td>Hectic Software developer account</td><td>The app is published for you. It can move to your own Apple account later.</td></tr>
-    </tbody>
-  </table></div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="head"><span class="kicker">6 · Your to-do</span><h2>Your to-do, ticked off as you go</h2></div>
-  <div class="prog"><span id="cCount">0 / 6</span><div class="bar2"><i id="cBar"></i></div></div>
-  <div class="checks" id="checks"><label><input type="checkbox" data-k="c0"><span><b>Tap the Cloudflare verify email.</b> Paige and Temi each get one. It switches on your personal address.</span></label><label><input type="checkbox" data-k="c1"><span><b>Confirm your appointment hours.</b> The app shows Tuesday to Saturday, 11:00–19:00 until you change them.</span></label><label><input type="checkbox" data-k="c2"><span><b>Send your prices and Instagram handle.</b> They're hidden on the site until you confirm them.</span></label><label><input type="checkbox" data-k="c3"><span><b>Register your sponsor's mark</b> with an assay office, so pieces over the weight limits can be hallmarked.</span></label><label><input type="checkbox" data-k="c4"><span><b>Have a solicitor read the Terms of sale.</b> Add your company name and registered office.</span></label><label><input type="checkbox" data-k="c5"><span><b>Send the beta link to family and friends.</b> Their feedback helps before launch.</span></label></div>
-</div></section>
-
-
-<section id="faq"><div class="wrap">
-  <div class="head"><span class="kicker">What you might be wondering</span><h2>FAQ</h2></div>
-  <div class="faq">
-    <details><summary>Do we have to pay anything?</summary><p>No. Everything here is a gift from Hectic Software, and it runs on free plans, so there's no monthly bill.</p></details>
-    <details><summary>Who owns the website and domains?</summary><p>You do. The site, domains and email are in Bite Club's own Cloudflare and IONOS accounts.</p></details>
-    <details><summary>When does the app go on the App Store?</summary><p>Once you've confirmed your hours, prices and Terms of sale and tested it, we submit it under the Bite Club name.</p></details>
-    <details><summary>Can members see the studio tools?</summary><p>No. They unlock only on the founders' phones with Face ID and your iCloud account.</p></details>
-    <details><summary>How many people can test the app?</summary><p>Up to 100 with your beta link, all free.</p></details>
-    <details><summary>Who do we call if something breaks?</summary><p>Message us from your private project page below, or send Share Beta Feedback from the app. Romeo at Hectic Software looks after it.</p></details>
-  </div>
-</div></section>
-<section><div class="wrap">
-  <div class="card live">
-    <span class="kicker">7 · Your account with us</span>
-    <h2>Your private project page</h2>
-    <p>Messages, files and updates about Bite Club live here. Keep this link private: it's your key on any device.</p>
-    <span class="url" id="myLink"></span>
-    <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn" id="openPortal" href="/portal/">Open my project page</a><button class="btn ghost" id="copyLink" type="button">Copy my link</button></div>
-  </div>
-</div></section>
-
-<footer><div class="wrap">
-  <div class="co"><a class="hectic" href="https://hecticsoftware.com">HECTIC<i></i></a><span class="x">×</span><span class="wordmark">BITE CLUB <span class="pill">LDN</span></span></div>
-  <p class="small muted">Website, apps and studio tools built by Hectic Software Ltd · Romeo Valentine · hecticsoftware.com</p>
-  <p class="small muted">Product images are 3D renders, not photographs of real work. Grillz are removable jewellery, not dental treatment.</p>
-  <button class="linkbtn" id="signOut" type="button">Sign out of this device</button>
-</div></footer>
-</div>
+<div id="vault" hidden></div>
 
 <script src="/config.js"></script>
 <script>
@@ -417,12 +262,12 @@ footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid v
     else window.scrollTo(0, 0);
   }
   $("enter").addEventListener("click", () => { $("cheer").hidden = true; window.scrollTo(0, 0); });
-  $("copyLink").addEventListener("click", async e => {
+  document.addEventListener("click", async e => { if (!e.target || e.target.id !== "copyLink") return;
     const t = $("myLink").textContent;
     try { await navigator.clipboard.writeText(t); e.target.textContent = "Copied"; }
     catch { const r = document.createRange(); r.selectNodeContents($("myLink")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); e.target.textContent = "Selected, copy it"; }
   });
-  $("signOut").addEventListener("click", () => { store.clear(); location.reload(); });
+  document.addEventListener("click", e => { if (e.target && e.target.id === "signOut") { store.clear(); try { localStorage.removeItem("bc_pin"); } catch {} location.reload(); } });
 
   // Sign up → creates the client's real project in the Hectic portal
   $("fUp").addEventListener("submit", async e => {
@@ -463,8 +308,31 @@ footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid v
   });
 
   // Returning on this device: straight in
-  const saved = store.get();
-  if (saved && saved.token) unlock(saved, false);
+  // Sealed vault: the handover is encrypted with the client's PIN (AES-GCM, PBKDF2).
+  const PK = "bc_pin";
+  async function openVault(pin) {
+    const S = JSON.parse($("sealed").textContent), b = x => Uint8Array.from(atob(x), ch => ch.charCodeAt(0));
+    const km = await crypto.subtle.importKey("raw", new TextEncoder().encode(pin), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey({ name: "PBKDF2", salt: b(S.s), iterations: S.i, hash: "SHA-256" }, km, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+    const html = new TextDecoder().decode(await crypto.subtle.decrypt({ name: "AES-GCM", iv: b(S.v) }, key, b(S.c)));
+    const m = $("vault"); m.innerHTML = html;
+    m.querySelectorAll("script").forEach(o => { const n = document.createElement("script"); n.textContent = o.textContent; o.replaceWith(n); });
+  }
+  const pinOK = () => { $("fPin").hidden = true; $("authBox").hidden = false; };
+  $("fPin").addEventListener("submit", async e => {
+    e.preventDefault(); const pin = e.target.elements.pin.value.trim(), btn = e.target.querySelector("button"), err = $("ePin"); err.textContent = "";
+    if (!pin) return err.textContent = "Enter your PIN.";
+    btn.disabled = true; btn.textContent = "Unlocking…";
+    try { await openVault(pin); try { localStorage.setItem(PK, pin); } catch {} pinOK(); }
+    catch { err.textContent = "That PIN didn't work. Check it and try again."; }
+    finally { btn.disabled = false; btn.textContent = "Unlock"; }
+  });
+  (async () => {
+    let pin = null; try { pin = localStorage.getItem(PK); } catch {}
+    if (!pin) return;
+    try { await openVault(pin); pinOK(); const saved = store.get(); if (saved && saved.token) unlock(saved, false); }
+    catch { try { localStorage.removeItem(PK); } catch {} }
+  })();
 
   // Confetti in the client's colours plus Hectic orange
   function confetti() {
@@ -487,37 +355,7 @@ footer .wrap{display:grid;gap:8px;padding-block:36px 48px;border-top:1px solid v
 })();
 </script>
 
-<script>
-(() => {
-  const API = window.HS_API || "https://hectic-api.forged-landscapes.workers.dev";
-  const GLOSS = "For this chat, ignore the Hectic Software website role. You are Gloss, the guide on Bite Club LDN's private handover page, talking to the founders Paige and Temi. Facts: Hectic Software built them, as a free gift, the website thebiteclubldn.com (fit builder, Ask AI with 62 answers, FAQ, glossary, legal pages, speed 97-100), the Bite Club app for iPhone, iPad and Apple Watch (3D builder, appointments, live progress wax to snap-fit, Studio Line chat, invites, I'm here check-in, 36 languages), and studio tools. Unlock studio tools: open the app, Studio, Verify as a founder, Face ID plus iCloud. Tools: appointments, open the room (4-digit code), clients, dashboard, brand settings, web admin at thebiteclubldn.com/admin. Email: hello@, paige@, temi@ and a catch-all, which will forward to existing inboxes (being switched on now). They own Cloudflare and IONOS accounts; the app is on Hectic Software's Apple account and can move later. Family testing: TestFlight link testflight.apple.com/join/9ZRuwyyW, up to 100 people, live after Apple's beta check. To-do: verify Cloudflare emails, confirm hours (default Tue-Sat 11-19), send prices and Instagram, register sponsor's mark, solicitor reads Terms of sale. Running cost £0 a month. Answer in 2-4 short, friendly sentences. Never invent prices or dates; if unsure, say Romeo will confirm.";
-  const log = document.getElementById("aLog"), form = document.getElementById("aForm"), input = document.getElementById("aIn"), btn = document.getElementById("aBtn");
-  const add = (c, t) => { const d = document.createElement("div"); d.className = "msg " + c; d.textContent = t; log.appendChild(d); log.scrollTop = log.scrollHeight; return d; };
-  add("ai", "Hi, I'm Gloss. Ask me anything about your new studio.");
-  const hist = []; let busy = false;
-  async function ask(q) {
-    if (busy || !q.trim()) return; busy = true; btn.disabled = true;
-    add("me", q); hist.push({ role: "user", content: q }); const out = add("ai", "Thinking…");
-    try {
-      const r = await fetch(API + "/api/ask", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: [{ role: "user", content: GLOSS }, { role: "assistant", content: "Understood. I am Gloss." }, ...hist.slice(-8)] }) });
-      const j = await r.json().catch(() => ({})); if (!r.ok) throw r.status;
-      out.textContent = j.reply; hist.push({ role: "assistant", content: j.reply });
-    } catch (e) { hist.pop(); out.textContent = e === 429 ? "Lots of questions right now. Try again in a minute." : "Sorry, I couldn't answer just now. Message Romeo from your project page below."; }
-    finally { busy = false; btn.disabled = false; }
-  }
-  form.addEventListener("submit", e => { e.preventDefault(); const q = input.value; input.value = ""; ask(q); });
-  document.querySelectorAll("#aChips .chip").forEach(c => c.addEventListener("click", () => ask(c.textContent)));
-  document.getElementById("tfCopy").addEventListener("click", async e => {
-    try { await navigator.clipboard.writeText(document.getElementById("tfLink").textContent); e.target.textContent = "Copied"; }
-    catch { const r = document.createRange(); r.selectNodeContents(document.getElementById("tfLink")); const s = getSelection(); s.removeAllRanges(); s.addRange(r); e.target.textContent = "Selected"; }
-  });
-  const K = "bc_checks"; let saved = {}; try { saved = JSON.parse(localStorage.getItem(K) || "{}"); } catch {}
-  const boxes = [...document.querySelectorAll("#checks input")];
-  const upd = () => { const n = boxes.filter(b => b.checked).length; document.getElementById("cCount").textContent = n + " / " + boxes.length; document.getElementById("cBar").style.width = (n / boxes.length * 100) + "%"; };
-  boxes.forEach(b => { b.checked = !!saved[b.dataset.k]; b.closest("label").classList.toggle("done", b.checked);
-    b.addEventListener("change", () => { saved[b.dataset.k] = b.checked; b.closest("label").classList.toggle("done", b.checked); try { localStorage.setItem(K, JSON.stringify(saved)); } catch {} upd(); }); });
-  upd();
-})();
-</script>
+
+<script id="sealed" type="application/json">{"s":"Pw/698h4b59u8w5V0Grb5w==","v":"DPenkQ01Trt+ca2v","i":600000,"c":"FcQBeLl7jQLSC93KzQxrbNXcAYzC6lueIM6BnUPcpdyY9cwAld7TC099fYvvNR5RnQ4qnbJyfX7x+PaSmYy6Ud6y0Ry92/krHQO+Ww4SsBHpVGoyPPpCNB5uJYnEAFBXkkr0IZSWxDYmumMwgnYk/Pq+BjUyZxMQEtabtbTSLzmwHBKTOwAEjHUP4kNiP7WS7MJ+D2kijh+Xk9+tW1qyMsuDKqnW1+coMUgITrwbOhElguTI0x6NYRPB+YG30kBsgy8cXNsSnUe8tJR+S3b/XltVfOTbvc7l9TH1MIYW9x2xthuDXcw0WBwgXxBakMf2/G+JnsQ+eo6s3RibLg9wc+ZebwBbQ9tYUdDgmIeibO72E6805X4yFSMsvB+72ENEkc33v5G0g0seRjsJy+Dx2KIDmrWMcH9foLPk0FA/nPewHSgkrV4guj6YRtMQUMfklhW22NH9U6mQxP2Ke8aVX6EhUOpWXqJNFhXffRRqRYZjM2DLyCSewp5A8yIu5/0CdmiZl03wXri4SRUfOCuaHwQNQVFTWiRRCYuCzjf+AZkkW1uXw4xsPWO+I32e9oNQSMoQB6J6aQ7iGuwacj4CEyDFVFo52kb9N/oD9PwIO5x24JJdnRhoOAz3KJk8YHPpBmATJfpaABA0lVZ1h0ikbhWp+U1bTBOiYUIDRGGJE90xrHs7McKL2ot+XWemIXncfl91B5DmqBVLMsPiA6OZIcVcqt5xxqKDZD9t1O1UxQGwB2HFClBCaBz2ajjt8uqXrS+KzLgjDYzVS0SMK1hycMXUA/7V3yPp3rW3OHxV1VMSj0OvIelqBifTqqE2FOX3ZVLZP2tS3lz2T3amFzT/IJafr6bnKC1HQsdiW0gBN7+Nnv5vh24bgFAXJg4FMVNaPcqIAYVg9GMIeCBM1ex+hj5SFhZE39CYRFS8ogPJlauvbTTzxFKUp4vXBqJ/KvM+OxpuxB8Sd+EaURThLr/lfZPM+em+QOAF4ftwJG0nduILYP6OuxC+assDezyz3GBBCjpBPLeiUl/t6+WZgLl+OzKzCrsVSXw45FS52RIAqaL4W9URw66cLNm5/KVjHLeE0GAK8GX5a5zXagU0izVBVhBao2daPPk4FP7ZL3JGkAZcY7L6imRYKZWrtMBb1X3+o64KLTb9An4YABHzhOuZKp/XMD57Tcr+1nZT4v7qhk5C/ZtCkQtGkAzNpTvTBy4+lyeQfRGc4bTsbck5Ok4vMCPh1ObR/LrhXICTvwyd6meSekqmJafQr42ZXjz8T5vac+3Rs2U7fP1Hq23Fvuu2jmlqBj0KASwoVSHKswgDUJZe9duJp7bOj1JroS7e/3JZvZULDGZ014PPEqdpyaS46IJ1SIL+TU9MsFHvnkiT9mjquhSyuxHZmiT8JZ7E3h3UMS+hbXyTFYnNlxcXDjjS6fiCjhINjoXdqTuToIsND0UoGX3Y8Sr/+3y3YjyKETgBkkJNEUT4hAfQFCWy2zLoyYvjLvNRluYUeYT4xkh89SlKL9EzEYUS5i2CodY9SMteb8bdBn478c4Mvj21kvGRlqW4T3PcKPezna66J9rjJle34rfnfCJLKzr7S7hXu9HqS8n6XgIoHEIoZM9MWT/RB8xrdgk+mWPx7j4wbDTjob8F6uqhACOXq4byG/jda9N7Wv7+lCqjU5qJWBioViHGzgaSKQyY/bhohPHJnd2BlXbZ1iFlf5zkV2fxG9CSexgp1oFmCNwCkzBnTM4PXFbRX/xobzCcH2V83lpJ9fad2gGQ6IW1HJi4Gl0kMDd0XBJUipgVcgZ0OVV88NqN8HXcv6xkkQ8Pvbp8vkfDdGoRc8z4wEU3lG91e/7GNr/sH+mgaxH+sDh+HRiLsVjMSApWcCEvfMXLWu1nciXzcHlpCYu8lrwq4WrMkHzOvBsN0gG9i/J4u/VxBn7/Er0GIyAruf729FnTmp/LGTRQaXd28X1HxACND4u/vQH1wtF4D4d9VlWXbQRBeeJGpJty0pKGxxQ0ijOVuWbF1T3iHEW1IvrQ3LqqdCDYeQ81G3Hwet8oVsUzQjosUb0olu2mYsVYatSKqJmgnLMzZJP4Nl4nV6W9SKzJAe229+IfbDfAVwaveOQ5Zh2OFqfUX2bOYOu9iNiGr5Wla6xWczsJ2A2ZJfunMWI3EH9pAOk/PXKV+6uRoEpm+VKgv6P9mGkKtzvUeeFnOWHNsV48RSpejJrRfj8vGQjMnCPp6NNNQY5jxqW01p0Rs1o4gI6RwgGXpbmjQD+eD6QLy/yG3eLREqCLN1+rhPX1kARmdX8111qOrggUPw9fHM+FrEla8hSgpV5kR7zPxDxahKxRbsbGNa2YScLd1cBuvx5WD5kOkoR/DXOzsA4QNmC/tadg8C1mxbM4XArCJc16zdBv0wMSXA75mtyqEA0jesqN4gHxuInSm2ORg1hXZ/WbwNp1C1xPoWsSX59jo4tydEMKqxVCp7g0rntrNiRIiYlwuR07i50YQjp5lnAOl6u+Sy2KGDDFfEr7IojFr7EdhZlHaSxFpsxhAK1InRn7S3oI/HnUAaPKyVHQFpssde7YsGcBzpwc7+OgjSueuWEcyr+BCOmrfO1KK37792Uh20kLRbM2E8TWWMb9Q5VVSbxmpLoPF9+KH3rWW2yDkWdL9eDmOLaK3+SXzxdkhOL4/uprveWSGFL3x9acl8cw3IJOrUeHEEhuwfvJEiOlgOXvC4svMwocl/P0XswAIeWHQ6PdMcgxq63hraKUPNk/VzVnayjjWPhwtib6U7NdQDgVTcB7yZ9TPbsyKsglpKDx/5ptKYYfnXrPSDqyt7eVKkoKvYabVeGgFt1IHQuFvjOAHjgXbA6ayDOcR3EHsDVQB+g2S+r9lPJD42uh2UwJqDT3oLmqumWZtFTAvjzQA36W9ZJw9y9OUv5nAc75oQcvdYA1pnAU98kvYTSchUBFI5kpeBtCTaC0y6A2fZq1yZEsZnzzfxxiA8wQ25kRBfC3cgMJudtL+38+UQ3srkSAjJBKcRaN8V+WjbFLmFisbTGsDUwR6SnPsFzGKCa8KUZUEC5ACwIjG2z6bd0AO6d0/adQeIdrfxFi3o+Yxj8VxUrsDK4Z4udsL4yZsSyMXZ/Pvbd3cESM2ifbTI+OOjtoU+SKNOgJ4tgcWWRn5B7Coe6fqXZ/10CLCuJknNHATqqSHMBgDfV1amUWe6axb9uBBFWXcWL7PKZr4N6JyhGrhAWgLmG2FQ81a847TwnNDoJQ8gW35SzOWISo7hpwEsQDejg/jystcIq5HG79nqZhKPpjg3yI1GYrrV1bE4G6rCi+wB6LcofIP3KrhvlPoP4oZzY6TDhypSJpuQ1lSOE1o6H5EsGVn3d6fS0qfeBiX4k93Y4jSPq9zr4/uMTjb5jJLwpkVrxPA0cX8gw+sCEw3sbZEP6JHxw6pWNHBsZYxQeGIwp5wed0owSoUchDxk4Nd1KZaC/zscRTutAqg6iyUVOtQfk5YtYP6T56nMCb9QAd8/xl/R4GRO53bDOhE+/8RIL56A1eY3owNVmNT8ZujZHjO7nFMYXhLBRTNFz6L/U+NuvGyZyK+9jms+jM/ZTjM1n+svRWRXuVpsdRFJboYNXy6xBowmbcl0mKHXOygvBpm8J1Nkby7PQ/AyJPp2lxty0PuQv8PPoztLtlb1m9BM+jVwm7Nb/9Ts74kAKnuP22wuTJ/bdgTclRfFbmZ+6ijzf9eUK0SMZjd3GPQuj4FK+cw1U3otmqtnC2n8xocm1AdpXodyMU8hm76H1gxJKWxqdx06Pv+RzCCzUoS3+s6Nx9Sj1257bhlt5bm2tx1O4e9jfxrOp7iDf+DGmMrnRO44lLfmJ+H6KYMLFqjsIthe8LNa8pCEvuAIozO/Ft4j8WzIlK5p3eJSWh8axjL3KrIopUjpjn9Wrtu0fwLvXj3r0ZdCZrr1HvY1P7UVNJVspuAVLU5ZB6uBlOitx3/Xy/2USPB7gHNI6TT54w9zfsJTaeBt71pYIzmY448JKfOgCjuoa2bBAWQdvnzQxkCnNKeXbcgFkjM1hE0caHFIRJEE/R3COJtLz9LVl0FYUwZe8A2Kf66uKUZQEVq0LrTsBJa6dn+/wLE76p0LGEcyzI1eXNV6S9Z/VlNmg3mgR6mjGMgziORW1eN8Djv04YNswBpfaMREWxuSsolVRy8IpTXfR1s6GRRrj2W3cI8E/khVFU3jZxxK9+YkxerKQkVXBfSyK57HEmqv+QbwZUfCc6q93grYvPNjNbnbRf+PQzqUdWisGi5bpd22JdOaHdjCclEotSTM3wcqMD4aOWhwPZXVuVmDoY5JveC1wQVQbwczWI9WEsl0b2Nnm2YsHyv8OIvwin7yZUYFo3lh4bcw/70+unNOTEQqC0E4xFAHQ0jgTlbNZd9fcp2yTMKr4VEHdB11pZoQ/LcE+6fPyte6igUgSOUv8k33pBFObXcWd16/Y3s1ytpd3irQA1vagqNqUTxt5yDEiPxUQF8khYHmM3PxRm0xcvsdhCPDeUrZ+iIzL+PG5dN9HGl8dw4bsOWqRK69A9VW7hBj1FJq+LFRxRyDuIHVEAR83+syaJxBjkCYO00fXGbp9uaMozytGDtzf1Agce9RDSedwe8ZeoLEl25GnhlUCK5V114vXugnn2sDcm2QZmLKWVFSEW00CQrkfpgHTyzY9A5ScO6v5Hk6srcPXzjbVGtZzz6x8gBGQFvq+ySk2DJx89Bwid4Fzja9cMg/FYedn9yxaQA+LSLBEk6WiO00umkGnbcPjNYv65LO4hqnq3vsiG14pSG9cUYDDsEDJRubdT8plo2xpMad4ZvUyhvzKNgV2rYMf6aNXLNrqm/g1UNl4/yaupHifIzO2IG0m5bD04eCxIP7chsWrlmqP9+c5ec68c+soyxW5upc52BdDSPYYJ7mGcGNgGoniaQpw0pyzGsRT4/tvA0TbQUf0vYWaSnoCUp33ttEUIfLQrKAr9gJhoykEFINJGY+CJH2R+RBRIr+LX3+4Q5gKxldlkiFbpkmUuAK5KbUqEuwD0zX/IAMRGLz0GKadNw89LP0pk4qP3CGJaqXos1OHwz8Y3t8ZmJiBTRCNlpy0wEbB7C91iIhDamUQPr444mfJ3B0jz+IlzibmZH9km/dyCI0PPf8rZc4EymTNRejhODye2amWcRTTHDnvnaNlRP2xIevEOQmpzEbdjDsAi0IqWrE5wAh9CJ5HnfFrHzVsDe1VQbzCB9EoNKy6AY4oVlFF/btaSd+/lq2jbMTGSNM8ai5TckN/cZercoxkxtHN49yuUcJHrqPmPWMVmgd1vLFz8xMTNsKRnVNGh9uuI0NJN5WVDEErezXeXJisbcJTGjBQtr+AdE+c4xNU6QvI48wjiGFs+4h4xe34ZuukGnBYCvNJKOFgrpTVjouKFAIKgPJPP/YqsaS7U45r+HmS9j7RJm5BcHhmz7SNhZ8f7NcErceHB86UlbvDokW41pelXejm+V8zUbiGInnbiHltjpLrwZVKD0RedGy15GQwbWR5Lc0kVXPtutxzBEEkKJ2wseKLBPwzZikl7+TjKJ+gvTX3xXRQFjDv4+U7TPOqpB7WDyLAQl+Jty3lSYjrVg87sgcWec135RLGBC2CAaE1p9AmoEocelhDLgMI5FxGsnKOMfFVJQZue6G/Wyuysg8lYVbTOE2JwEtpwrEAVbrTa0pABMU9T3+AbTdsYUlBlS8kIL51IPdenqenz2G2L17nrYvA2YU7hHu40KeEmi19JusqpDA0q48xo4QypJ8+tlD+aTZLuxiSjr//3f4sxgadBtbCRNasaWg6IxBW8mpWQoCZW1AA8jKg2KwMWjOJqpOXPv+4N5VgSO5FluNa2LzjllU6lH6ZkTMgV+ndWFZtzgGGhLqCucgDun+dbjFuSQGxf/GiSdvhApPPQ9Z+v6/tmm/RXb0G7NAAXT5WgxoMtrscqPPqdup84O2rZTuU7vFVEi12o0AgbukDQlcxSLKVhSCwg/KPNtjNiQ75bfjc6sO34+4UNsP01Z9zRKM/fbo6kHBS3lvjZs0bv+l6NFdpOARftXAVpsLTzByUd/MBiCBm7q94I20UixppNPyBSO7gUUYi1D6/td3q5QMAYWaFpoCxsgoa/6wmEgojrgkjt4IFfud5kcHegcB5u7IHldy38CgliMWJIGvHw6ISBHv8cjAmU4m94sDayZ3C4L2ATR1xlClCqw+EIozp34eGNvsZrPzHcQmeMChQucbrzVPUtPkOoBlMnWE0jp+W4DRcK3JwjAnRgyi7Nsvi8P+pqz/GkITS1lj0xdfOGoZFtMRKh4ZBlnMaIgPnGrueFHNNk5hA1p7cAvA1rGJeF7YPEc1lnUfClGKXe7XdNm++uc09UxE9q+9fJfOGgeA/rPPao0sqfTu7PGPNJXOqVOT24FcqN1U79IT8AZZS2+GXbl62Jawv++ZJlNLlntggjLo+awcJerT4aNhKscSFeYZSJOj34KAEOlOcmlNt4bbHb7NapgMx/4yvF5bb0/zgjDjVLJHobujcENMirPaN70iPSXjGgQ7lG38QmLAm7LQkv4pF+I7aUT1rvGiL3N6CHt6uHsC+WRufnkU1bsuRXNmKQXzTg1SE/QvgD64ELOTewjr2tZ229dbXrK+bJsGpu0kRtOe6QdURuKL4kXR5KMF7xc2WVMghR40tLz7iasf5ncaRK0Iy6miR/3fRFVJG6fIMIMYn3pAP0pUYVnUvEWW86ELK67RSuZ56/cJI57jsnlgmbgghRyzvZZmTX9oJptzGcFMYOYedy7qcUVbYn8wXn282Fqu8YaPczVtq/tnuGtb8ANJd2kPP5x8E1OI49p3FUb0s/w5DprO6L0ZWklvshJSO4RxjnDT/GvfjptgWH/j1q7rt2KFgrckJep3jBW56nCDC3BhsA8ih1SieZtj5idM7kwGjqPFJR26gzwOkt7rNs3h8Fp9ELgucys8JcRw5i8mhHibfneXV+rz4ExXny/LGQyXLrwPEaHzCyxrm723v1a1SAnddcA471ayXN3IEFWREo7P6lemSu1dV6qp6Q+f12DmPiDZivWrjxJEbtTLcpCP9Wfnu3x7OFSKNNhH29rpr7oi0PY1H53fKetpAGasgtPopSGdac9JA/56zCC/nQ87bPr9Clfl3T6b9PjbSto35gt64ALkH/fYEaQqvI3i4kHxLx0KPQSTGvdCzntD4yl0CTAJymIsSetO86ZEefnXnzkhRr6VFSmLpwk1cSCeLYZ6rAP/zXsETR3Ns5+UREGb7vJTlM4JHRqWy0IW0wW5GnVVSA7qS6h+6CCjpth0lY1XRed/MU1casy2IyWNERBHw3IWg9AxYSZ+ZOc4Ce7r6PKb/kcybovLQ2hGyyKC98ETzzG2enjUqtbRuUAF/pe3E1MAyBpp6z4VVbVOELTnJQj/fxxfsEGA3O/+GFQxvR6nJ8D+z1sTdfAXhDgvkE3a6mL7eCcqGaMGcR1pNiUzbSa47DC7JYTHqiLoXg7FnUAtBa3kwUlhlwIEhLIlSn8IRtFGA5d/ZRqpiuKMslda3NRpH+wEPDMlZdcrKvS09E/SXZ+erROSueoVmJIcHJg0rXtVQ6EH/XJLGqIqDoKcoQwq2uCBvi3qz5E73YfGCbge2AqUlddapViGmzYsA6ZcHajUAbmLMFuszoc5hHzfyL6276KulpLBYmWgJ0TmrOig425Y9vuB0xu5pTo9GQDGxW1Smk4hrjEb5Mcl8rfynmCVyeKloBJiH/7tmhUBdogIDpydv1+1MvKSwRpeidMGJ6H5xPh3gVSbF2SXfA8lM+smnsybUu+xBDsRyskmoMh0WI3I0ewFFnzmKepPHDMCKKTLDVfkkH1I4zmKY++jZ2tb/t07ydPgwJhLAkmOJA6mFHHUF5puPgrMrQeuFUZ8wpk3mpnrG8VqbEjrv85IjIMVXZrtSSTfFj9x7YJycJijLOv5J9hY6eRkW0vOdzmhAasRTPjtA2bdzKus3QoAsxOLp8MQqCdxY83ygf4XgzjSgGPEbVO5363lC2OSifC8eQGnPLrsfl7Lw5+SW1hHJooMEhefgckMHtz6D7nr6+r/YSRePokeM6ww/qtPTq+Y3Gh5HrPq8qEznSx/JDoNXcViWSBMPsgvHWP5twqIVbB+drBqGAhxWy5klPwgMuFOCJSMwDPObCBV5pS/uSAKjUbfexIko0bwtKgm0OSMv4bftJ/UHoIXhA9nBArQD6BE4XEGS9XwlcUQJYFTBs4U84JxAl1TATILEvDGzaCeNkgvPOh2q/XLJ5DOInHRTv3MhSuCX5brbG0+ZA/2jYmXn3IVPHO+kGeCm/SiAM05mZV1NcP+3LK2XS2k6QndscM8Xgp0DRI+Xl94YsileQ3LRCbz4+Lstj7GWpQGkumHtW16yENpV0JZ822qHAVh/JRajqFC8UEjn9u15EZMDKgOcekoMBAzwHM1Va2OdNg3aVmuRf9pAKqfuGzqyPeYX2pc3aCYUg5AwfZspHJY5eP4lWXxGzz5ri0IYm37uwJdPmMpUdSTEEvm8DhZBjAfap82GDeyPa8tRAY5H3bfCX0rg3BPmsvCqTFIQ67sCrGWMo+6ZIjaRMopFGqLZ0KGNygOYYMMIWoB7KogvQ/sXmY1CyK/ZmhesQHRVLjuT7ZVvBX+eMcOgoz4FQNocOcD0Kjwb+F0jruNwDiRwsCK8f1PYR76G6Dxi3ulU4KnmrgYxDuiobqCgLESB08QkByBpfIRFcePmBZx3/WDh6RWKjCfgaFfQ3e/YQh4G7MjUVNnjID8jbNAmmto2leV8LZfxkTFmW6y+M6Fjhq0G5CtQevKEW8bnjXRf9tEWQuYMgs0AjPUHCIr/f1gEjuqPpgvbEkvjSG8qT6f6WyjcYq6n74jSJPfS4Lcl6o+o86GfpwffSOKzjkhx4LbwiwAQLvaWiakGcpGqOf69eFVKZceLxiX55pjFcb06PNA6e3/5kbaz8YuiyuOQZZVLeErjLGIB/an0Rv9iQBH6MCOWbu0qSLQeIazN4fYvl1YHHUM5WtsJZZU7MKouIm5Xj28lQP6XgdMdyjCmY+ijMB4zFn5nl5XvOt2FUa5WAt/Ow/9tdkWfkXO5lYYOpUxuqkoLXqup1i1BOZONDnlYhLIsEkxG1z7Sb+Ph6WkK7csBv71/G+OLwF7jth3hsCNNoj0Mym7Ti/mBTJrj20OQKn5KmfjRkVaeAxZea8blVKzBRIg9ksNIiUX6yiR27k+sg+d24Bt7fvmXV+b0Bz9sTb5uAH09l/5ghxgGOUmaosYOeOE/SlCGHnNciEcUCxDMMdEmU8UZbY4Gd4JTr3oj15SmVeU7ZJmRUsdBJG+ZFYw6Rkifc9C0Mq3I5NoiS3pmKV29VekFeqPS6erRMJzekFoBSECK0kuwmrM3Dpu8dnK8Ow50NpDzMyki+EUh6yhPB1y+JBGH9EwoQT5VQ0IZzrJDKyIsi70ufb+Pzk0Sq9XA0mVEgG5c1rX5Mpf414WzUvHKOP4D5qHhb4gL9Xx7M55xC+rSBigCkCfkr3oaFBeP05YAlUnpkh4EYvGb5H2gcOVjuAsMMCBzi+fWbdzpXKUPMImmnyuDI7ZF8Eg6aMNVRTneh+G8S5dPsj6SCMh8bzf6wBKZ8E2s1da1jG35DtuznOW8Oxf8puRsGXrAu5Bga6E2DEkCvEx6HoB62jAoha7vd7mneH1FxONn28X2bzwkXqrT8QDGDOGObs2BInU+AycQINv1lff5lK6+/hdULkDDbOWO9pVhXp9LgPHzGvjE6ii+amRiD6Pb2hv2uJLjTYQYfe2V5+1aOknmmZy0+OvuSxoClOIY2mhq7EV17TXndj1zD8C2Fz7SAVCz7EFQq0tSDknLbmBasmPmbvTuGMwisUdTAXd3OfnfQvPjpDpwIrn2usZF/OCofo0eqiE/29N4B0CpVScf1Clcj+V8dFL9p/Vt7YGB1Zrg6hT/QwhHwN+1at5EAtkGJ7WGpehgJXBNkH6zoo7S4poh9ebK6DbMTsXyp6DAMCZQvQJo6l7Q+4VbV0xCrMhDkFypNtMURN+hAvgvj9g/TZ4X+GF950faG6ApDFjYiNKBlLbWbSvljw9UZ7eGPIvMZHP/JPd2w4MDCw7E5HdAptysnZ2Haf8nX2MyjunL/ZtLh+5l9D8ReqYjHec6JiegXbWdLl07sr0HokD3xK52ku14TRrHvwuJuHCl+UjyOmhgNcPrKkQr8oO9BotahbDrW+gZMdHoCNKl1IlYRs7seHAjR0rV8UNfbUjBpQWzt1atoZ2970ny9jDzJosIIAnvBcy7uILoHWbtnrlX2LOnBGE/1r9hRfGpb2gt6ZeK3v1+TrR4GnyE3ulpvUoEZuE4iNJvH2lKbfTTRTsseYXFJdelGyaEmiWho58wUtnSOGMPhXazx9RHb6wACqCMnsUOW+g+IrsGrFD77rEqWhuv6M+JdXHGiDawM/GwfI2JMgCAEvKdf/DKCxLfDEdFcIsxCj9y8xeypFdH52heDHcyerPrsdFgk5+80HCmS4VGbQtariel4Z/y2kuB1vhcbu4sz/suGAnA4MigBytNISoSf25R+bSKAD+dC5TidFcxksdo2mMcxNPXfa7jRKpxY9ORfN7HaS6cDwTxQ1ARFaGdan3UUwvI7e7PU9aJufbUvMeMlibyYFKeeenygvIIJAwsIkjLQi6J4INgcpkBdByixZsy6LX5UkBq4mOOCvZLPHwfGnN8p0qNSHl/jkEEsBe8DPHTMHGOWM1BoEE3/zwoUjNzdHI9QDYvtNjIpVRVJLbI+Uu7pXRPmC7QwzKhb9D+hFeDFDqYJ480dq/rTEKp9eEJdsREO44IKHY/OqZ2jVzfZXxp7j5+UeB2Vm8wCM6VFsv05MWwuFyu00qVTNmV2pGkAX/jOlcr3IibyNzwBx7GMUmt6LROpQ9YNK7vfkHsaqcDX9fq/QBlJrdaUFW3pdflv6VHaGTjZMwNHyX5JWly8JsbG+haCqNusY0XDRf9RDxiotlXnyGkrdGxAjUZv75oVADuSSIsubWWIhbr78dEMvAYS2PywalzZHlR7RQPNw/2EnjjHANECy4vUdS3LVFTK0ChDADJ8ED3nmSgQ/NZX2XZfobEZ1p60XOdz3LNsttAne9sWbbw6p16iUtwv/1DPZIP9EDL6Z20WrH4d0NNX9tbKKrfNYYG25skyO7rSxIwWUWXyP7LjjzRtUUU9UZWAz6leZ0yb4k2WcGkR+xMpNXA9soIDC7enLsSB4d0bip9kIoXgIP+H0t41Y513cdmiZsdepjprvndZDzzU8nwZHZNntuSOCGqZtQuGHaz6b33qsGzwOAdn98G+30eudIWfZqGqtyfH8X4uN9ZfAWm6tttBgdiXLoTrQcSoV4QZP6vvIYMYv8UUBr4MfSEcGHX1WISIPnXNK8i0MJiP73weE2E7NaMgmfnKIHz9SpEgtcGAwBpXEIlf7E7T/EuaAuNpZhZ4OE7LiKfAeLfaRczgZBZncGsX953DXIW2Yl5XUmg/rRivzeTzN0uIPbLH9PgLpNGKs9nFcU4e+x80933loAM1Uurz3sUXwS1mOkZ/M0yEqwm14qWr7I7gkLxjCZ6gr//YBfwftexuXWMNAA8IM/wygkJF7EVFDx991X8UYLkIEGFcwjp1Z+bxs0svOvDtDmGaBCoU051h0Rk9mhVejz0ynce5RtytwHdcFcJczbos2TMpSetm4AjXUivhu+xIwpiaxTrBXmsZ3HYYAiDgUisjj9jIe/2xOAhtLr+9sWFLOq55uXIfzGRn0lSEuUmtfUnEsOy1wJfSg4gbDLDopPY4B+2xLvpmNUahsCd8U4VC05YvBx0Nzgla+ZIfkx7tGkaJScr16rP0bMi0JzAkXrOfc6A1wx6v+OArITkqtqkgf2335ZB6drzy7SX3/Egrhavlx2fpDBXuxKh65XeqxkDkJ4SYPWRiSitOMCd+Wv42+1A4RkRfqdN9BiDMTqBjN4IAwnGTj7mzh1YpoG3QTGoybJ390hIAIptWJvt8BfwoQiVKdtU44HZN2qKEEnYVTezPWqTEDGjRKDPEtRnSGzthoODqQveBp2IqUKXzXzhfB+v72pTEVaUlhcYI6yf298Wo/7lRYbWyU4XZgGzJMzhDNC92XwPF1MWbQm/itN9/oG7V128XD+1t3/c5kb06jF8mgElRh95K7N1M2xXxdcVUleAGQ9ykC8E+5VVuiMmZKUmS8E5ONDFPinB1njtSAu2KXnZonW213I2e0FnbXnDB+BLyRwbF8YmjMQq2OVOe43wnl4xjMtDrppT1x42utHozWdxhHVXstgF+pPwv8tPpM71vZgDYqjkqew4s6c18uq2B5vbDjKBtKHd/JxjtIMog44RU2XzgNczHyU9OQRUIeovqzuGPp/MjXpQFUB3fO1XU4IvrhFJnGFCkdNU4I+zJXE5B4yWBeyxtd5GqCmADzlB6XCbiqVNmJZHUNRTtvM1jLpXlXPxEcrl/cxilSfWVeiwAt6iyv4OdKm1wV5vkotF1wcqL0dzL+j1rbd6xXUMofrwYP0qs8w8azify32Zw9JjXELvxqCrojkOuvsGnBhx3Lg2vVpzr4Bqt71KIp5OWS81bYGQ+yajSZRoasAcEO/Lt/rFbmJrymAJRJ5M8d9dC8+Lr6PDsTY0h8URvCdcenAq576xgYuFtOPxfLt0hSM9DrQeoUeLrSqtAwGykz3L0UaVr7gwagstOJOBiFu5Txg2X94yw9fu0hpZZ9P7P6WSvP5Uvc/48o11STB5e+PBGvDmkun7DkqxbRCNmVXf9U+hS9MHS2pJg/R+HiTXPQaxPROO0EjJrcMcxTHtNRYA+sJ9rBF24vUhSawL98frLm8puqMQk3W607T+6NRlTTkmAwe1WZOCvjE7ykK815ASov7llL+yJk/J+pGt+pCdJdWIvmqGP3he8+1IKgSWg+hVJltYPApds8VoD0kBfSKfO3PfRrv6NVlC3l4i7OAuh4c7DvbjvrrWwg2NYJ+Lls8N25R7pO4XhLp04YuWZfNH1zBzVXN0d4XtN3YiATD+t5CPEkg2Llj2cnjHjbWaDB+8gfVWh7/Kxk4qcR27ollrVgtCaJNds1EzseCoc8fbidNlbxCtH3BEMt1Q3gQLOpn2VelMcYYzssHJnP5LInpPTorGvyDhJxYc4CwWVtNRDZgYRZjVvHprUs2TVjICXQlcux9iNjyyjAc4Tceq3JD+r1nZgQGPVTApyu4N0KOwzda6igakgCCtxFsfkGiV6G64cpQjxOidANDBCwYon4cC3/sEKVV9VZ/eHaoQdEC2O6B0AsQiht1QiOfE3nUsiVSR9lxvFcBZlAaQClVpMbOFMK1xGmneY50CCU49IbZVoHgmyyALWBQjeYwzhgTPaZckwF6N4FXt1TOiba92GRD6fuG0ItMbVl5Anzg1mJ8aDsXyFjSX4x+gA9OoM4WKqWHVBtK6JxSng/fybQYzI6EBWr6CHBDSH/usidp8KX2FHTvSu6ZQd+BRQX6RQsNbEkXvIAaHkLhtX4pAdB0sFRpF73XpRcqeJ1dSnfwcKKGC1O9ov1D+It2oEadqW6F8eeUHmkdbnrq30s6qQG5i9TktbgqwlRSTQJZ1hKFwAMJa78YmetgMfDqtugJbSe8mCTls1py4GAtijrZ3NM5uk/oAYuN+LS0so94VJR/6c+u2avOclUiF74Ue9ZdRvE7F6RXqZeWhdro4DAzPqUMxqHN6HSE3A+PqMS4SNta/3X5erv/fRPXGHAlPMBzHYZz7M4bCrMZD9c7gjfC3gr7KwL1z2jgCW/Xfxw4qgByuBvuCwV0xG8W4Vy2s8cTmzcPM7piWrEHTbGi/OHZ7LzRY2aH4oebb5h9fluWrDc3XTBCnwcnQRl1yTVOfw8KdGZOY/f1L+RcWXEgzuBV9Nz9RMPzvdCzz6pWzEUokpWT9vFqs7fWJoy97VCftKWLYrfGjkK6xKOVEQyl9VfzH2KzIrFik/PC6DWn9f/2jQA+7p9D6xIXmo/gh7caPZsLU8TEoYLBEaOvw7Eth6iwyhNx5jjA2a2WWodXytH5Gh9dy48pmnNiH1aBfNwrIXdQn5yo+DIUy8sCTMIb1hJAjpGU/yITJ5bN1yj7egIVtybpF0d48L31EpEut5nC8JJCmgy/2wIA3TAu0Gp7gYvwzCsXOwYWDWq7Hy0Zxb/059XtDQW7UMne7je2q4HQCQAB19YiiyckcPX1LKrQTxmjnLHWAQhisuR92PuQasjGb7YAZX4hYC4OYIwAGkQoATcaB24HyfxQrcPlE+PqTigkzqwKmJLj18D4uevP5F4x7Jd79LI144/gDRB+9MIbNWV2FM4H1npToMlfjybhJUO2f6p7nD0XURQIh+l6qZbPvLIpo0fIDCXN8EnniIXZCmCbMMRtW7vvnOeXkZfbCM9+Kv/MjRSegm6Ao+gmx9HW2beY/1XYc9Qv8KVazGhXMBmB7CzgOzfQQJe//uIDynOqExXyg09M2P9j2tc2DZL/JHyngTjO8CS05Jr4ZbaAY1NFf49vBm+ZebvRLxzW/yrmdMn4RlcqvLA0MYZh5GrMSyydsLxEjWVRsNz6CbeKmavxx//4YoyPtA0attvH7zZT39+J0hzGD9ABiqB4ymo+sHAe9ccMp5kPdbjDn3f6JmKI6bGJN9wJmojgBbEwJSl4VDKwWNVefB3n9XEiHOD0zLhS0oBE7tyYDP+AVIbRv/ow/ExFQoN5Jh3VXPKAS5vwDT1e8z6OngkTwkD7br9KFQ6G0+88zaAIt/qUobflxErwdYmacVy4smRSashNcYPvUj4RvDSoCQIbrid6MRcW2xjOiB7TXbm6KueQsp8IpBa3Op5vpkc4ePXIYMjg+5ENvRCuXkAZT2Q4wS77K55Vv2Xfb1D9mqx5IgWgus9ut2eOfYX6au0lmDdm9Ii5aEoWD9zBVOTRV9y5+u9Qfx0y3PlinBO1PbYPpPFqDXzdkefdCI1oWctAcwxFB7Vnb0v+esc6WFFf9H4HlhrszezxEsnXTk9Dq8djJtdGjzZ+wsYi5TrHb557HQtj3KeBK7Y4s4uhVwnfrTFSxK2VRv8Gia1igOjNSrZAyWsd5st96VM2Cb6jJoIUt3IclLGYghpQHGNarTz6yaToNLW3XDikZjcoaXdO/w3hXstV8Sb7bERUAEqasbUJJZkxrhXXAhAjKU+b+0FGzRMT34SMZjxLB7Bt6nBD0uhHpfcdVRmFITABW8oG477KiLFwUy1Rfk6EA5n3BTM8JHzvauxT1bT6KGhjC5K34tRqkXvjcwfw8EqCSVjbEHlRFNAQJrjTIcOQBYBkVsJbL+FOgyjh08f9jczV0R/+aLRViBCA9ZIngqcTn4Gycph5ZhDRren6i0qRZmD4eCdeZLlT97wnXyZ/oJ3n23fMH86CQE8T2M5HjzGLmrMKf+D1IIiexfr2f7Ql0q8o1ez+ktIUSTbHiAyKFOBint5Z2GRMof7zos3K+SGbk4DnB2EVifJwUbn+kbPoWwC8x0Dq4bd6UCiW3sEiJjntEu6yWYv1iSBFbut8CVu6Zer7Fov8/R+4ikXDOAO+hH8W0CuvwEhS6tRSxxZJhSsH3WiEPKcSRBtIszE3G3beOCmoju9unEPDL4CQCNAS3TIojjN4jv1rf/sglb4J4NzaCBYtlFyisNXmWsRZkT3KO3mjspfmLLUkzKByc9qQGoSxRPX6UuepCrhNV/gb2UBCtrPr+BlSeoTzJVo269e+cJg3TCegC0A+6flaH2Bceqo/0O7gBUUo7v8oi+y3/UMhECF5WnhFC6m8CwmsBev4jqRKBLw4sBqggvZTf8kVlnPtUvFLhTkKArmh3SHiRQbxHaSU3oxs/JSSUvqc1dUdIl/m/zDrDfYN7l8bnlhG+dmZE0Fzd9SdT1DPzGLq8If4H2gM3k3cDrnhLrbSuFYedMj4lAG/Rr7UnAyKTrLGHpzMFqeS+Sn9uITUofWFlbr+xXc4zBlPr7IhG8m7gf8yL21YNP08fASxxJ1zg1QHHPf78yhHMcgYjqQkegqpRp7HLMbtiG1CjpWbiYgAaZzOrba/kjOsGKbiL8l8gAe6wN3JkAGAREV4DJXNnQayZzM6MqgTwiHIUx1iedO1w6wI2hfXcqScD/Ugi3c2cnBq8is8n0bIKpvZ6IRMcHxfgAXwxp+s1u+x0BL0EK2wsv7vGYXOfnmU13TJDbjyuPJclkxMPYexABOWrZNHUnt5ki0vSMg2U5RM2v3hh/3JJ4m9t6kam3gztPtK3SVnbDWTgQMrKlUYdxnGJDZ6NYSllHoZoVMqjMlwbXuIjVrDIaODRn7AF+jfLWVBEV2g6UeBEaw8BHSDqMsDvZ+nPYRz+KhJXkeWalKlUIlO949otNysgGA4JHmlnFOyjyy1MfLdcAoNmolRBbDya7sRt61EhKVymfev7SZ31FcC49mmHeo468C+YocDwhv5A9VaJOSO0K2TElO3msuxvTB9bZE9w53QBKpLpX7X6+bpoLqbPAGiYA+jxsmQa93WJHpdWNulofNrmXqAAu7849KGQwZAmUHBnomVYiouoItrM2qb7+FjY1je05QcxOy8hTZByD1JxdV/U7qM/mMrShveS4iBOd+NXoRsVpJxaRdGvUT2cdWAAcjGFgIPA6/e6LSMLYUwFU0QGoqaswW7BinMKRhCzXe+Lb7ltZt9cHKMa675g1AOaFCz+XqyZfZ7dFBywQ1xvNzB5eyqs9XgtdfJ0TJ1n9WdRmJVQbhohIygcJ61qlkQ1KvLlb3wHqlJK//CVR9A+KarM6k13tHkOAkmqbvTenG5bQrJsQJHuxbDH/bG+ibP6/uuLL2CA0kDzT9LpjjEkVd5WrFkltQV4gCbx1moQ/znLbzqnEJJs/dz2M442HezZ3/iTH6eX+ql4V954fBpCBURxrza4FUPLw6j7ol9aP70SZ8uajHaaCMWyvWblNY7rdLK3y6X9v1SYGhEDUcKxo/frHM2eIqllDlNCBHoPtnOmR63hXqo6XCP/8cAd5/s0HVs1TyZLPYSz6P1JNHf/IEjhgFkw4KfWGzzZ+QrRvYm9tLq8xgrISes7ZAUctkRrrwiTeZYz3MreZ8alhB5iASnlF9PfU4HLWHR7/qqE2GyM+rLVT8OdojgvtrS6dJilzxc2p3jTHhljbECmEP7kUqaM/oRKm3w1r04+rqKz0olydOcoOs1Bh7AUf+Wc26fRFRKiolFScuk9E8oKELQMZOnaB1fnLfIZNq6LZGjuVIC35B+AWYZuqsHAx0XK01RQcZ9uj6vpakTgrjsr+sK56PoHZMrtlqVOtCNrnDrY7yQUYLrxCf9JUgtKDJtW+6fOuAQUZUukC3WQCUvhACrVwtdlgnkHylDaL7DK8MJGP8yGIJDPsCVZb7c1vFt7rHZ4Tjg9BjW8eqrWyilbd7EZqQ+/vq4UIAie4ZZFgzQpDeRm49BMcfRuVn6nxFw7XI+PhhyeJsU+IpjXjJEIneyF0SgE7WiAH4ECA02jm/09RDnN0CdQ0q76B47Hiwf4JI0fNddw/G1cv3Vh1qWZm181xyPyhH5VF3bWudnMTFwaJFZdtNBbVYIVGMwXoL+/TQzLxvhIkOejTOu0A0bFuRL2o/hEF1c23Y4ugAlQmoc1hSWVmHE4CBKs8p4P18Uq6Rq72EFxnZKs9aSFKHX9+JnOtJKrEsinqhkaYq4nP1MV5/xKx12c98tHHJB4+St9QOQnqHKlNDfe1OdL/2Rfm+ZNW3XUQE5LS7SEd6dvPkk7p/ZVljgNOadUl8PWeKe1Pyf5py365PDF5nqWgwBbcptavS66JBZslO85t+83z4vLem99ICMQb2xWJs2XE1ERGigRz62rM4ydPT7KKrDvVUuFw1nHTE3Kl36l18rvmZQ/a4PRwybOi5rtLoaD5YIeDX5Y93FK8ZQ9JwArVKc1fD87aTY2MzkWcrUxPhq1zcqPhtRC0wtcCsXojOFv4WbHej68JRgZN8wR5zDX+JhBBamAljkuzEiIMzRb/Czy2LybOeQ4/EA+5bo+N2NhPG6y12Q1DXWpFlf87gHRJF5SPDKi0Ctl9t2+i/mMGBzjVSSWTB9q8vqN1WGyzFQj0pJZZ+7dNzddHLvG1LJtXaJmdqtEkN+N87h0eBEZaxVk7J1ePlX/ArVG7JTrYS3Bp8DvjJ3NMq/c3V3kOCB8h+YBQHUhLhHTPjS0j4A3S64uO/tihLr5acC7KkY3U7w5c8I7bLWTueaZZw734yEpTKyYuh4IMUO7mq61ch8CNF7VK5ACo4SgJoVDgOse8hN3oU+99A0EwC7mGeY3xi3Pt3pEzAvKRqdezThxSIYpUVXqHDEbUH6+DaTYRQe5bSDwnE9AXO6cwhIJJKKQDS7me/h2+2FX3ixxYsGEHt28oPT7ZoUW+Bb+I3ndhsVUjnoDEHph6NJ/+J82NinJC85SCJylSv8pojbcrx/JMrki7lPij8aKelwcmWzaL6xpdjYIAd5KkeHPZ8GfFIaQmU9Q3PSWAIMswZUTSx+XR0PX53AHX/b3zOeiW3mGg9M/JzajL6TcvzVbGSx3oj2wb4cAr9dClJOUuGjacfSOBvc8ymDH6p4g4KFT4jP02O0gwmthqqU1Pu5bb8w3ZONP3inXwPb7XZ/66tt4uC1ko+zmUq8erJdSIRAnxJezUT3Z34fz6SeO6/dFHEJ9fkKw7fr3CVIcbtVl+eEp3M1e8UMdmIdRDh5UTJqoqtTW8Lkk7YpEn32p9VH1YcXsB93HmZ5ne0jINF7pYTDTOaEsgs4oc9dPNVM1J++ia6iLh8zwLilpD9cpg5g72Es/BXx6VcR5kyjnMACGcaztz0ZsrU1CUAGNX55hdoIyZIWceHkyTyFFsAcWf8FgYEkKXoKwhafJgGZPn04eaxbnAx/PFtir19BysIBLWyEpeyXIt3npT4nRRJrktBYVLY4BRt66D1KDm8FzpknOV/6K9PpRYTSASlckzTHB1RfDbhf3LJjTGBedTzb6d0Mq4Pm/21jpnEXMnRoqRIQZcUo4gyojvzo8bAN2oUMcbK0xnCdSXfz7MLYD8gHKOhC4o6F6MUJas/9/iTssuaWFL1y15pY1ca3OPOyoN1mMbTlzyfaTD9OxIFUoJzBUuhpPvPMzWWT9jY2Frm4sgFjSbzRd5NxXy1NSJNCAu4nQNfPD1iqZqbkgqKgE1efEEJwSnsR7L2i3B7yj/cIML+ybWjG6cCXKTaqHRkroNQPu1YZEgtD/IWhPw5BMoo/gjSqsPqmKZhPEXzC7tQEi0NnEs92/M+v9gOrjhpJ5pef7LNStwF/zuYTajt88q6Iu0jPBt5Y6gPJzTUt/D0Fdvn4tL284bJomg77b0d/CTIZmih/xQk3//RX75lJhjS/+s37qYKwPyQCbGvEKZ43ubniviMjpW4FCf4ACEb4rG5KW2lUzXZ7vZNnFDCRwDeWUPv+2j2/oGVY4euQxnBkDgtPCspdFvb96T4Os+fx5ivgsZzVQSpgklX8RDx40e646XvQGCMldTKFGFrOXBgzykVnxFkgHfZP/XMv2Z3/qF+LH1559CI8kPaCgfSm596Fyt0t7G4nzGFps0JC4/+cU3cj+bhB4pN1ku6XBVnh9dclhzuFMBsgTCl4ARveym4E1MosBP6pnNNi+qTDY+aBrD9KpUaVHgamt0kEBzdEkTPosFI0ua4QRACicrNgLEymet0EYnONh4BnM/Dy5ygLB/ZqXZ3VExxXWQPcw+Vpx9DXU+oxMZWM31bdhwsdmBk4PKkpl8EFpVyLWLrhL4ynSRMQpa56260crwhe4dF63flfoXkL34lybON04Fvl6RikatpVtRgXfCcYMO7Zar4hFGQhxjME0svYFQ3p/mQe1RKf1P1TnmPmRXn0DWPtMwW0OpPZ/7LQgWDkC7Sz9O1jY5krPqVVYUDyxfQytgLk6P62RYqllcl1oqNpssi7BO/683si1lTVe7Td46ENAFIunlXfnyKVMKZ+xzn1ja2TIFmTA9nyjEOJt1qIqAntOtCo/9A0M7C48YnCm39QUH5bvXar8vgS4c9GKTwv4dbrk/3j3MvnORhnSnoQLpollEgfESE7DvWSk903dydGXlGkixc9f9TIuyOc6PsbROO3xRRcg1EhHVFWNE+PAb6+0JkpVTmX+HMvV2oIFrKjaMAZweshiJXgRSjcOIFHqrcDZNT10N5iBDRexT8xB2kFc8swesVJaEt73McU2PocM6F6hewiof/WpBgCq9At0Mp3dUF3OT3p7+aUWaxTG9CnfO977SwBKZccKZGNSTBapmiBKVos02oS5wPQRwsJoBqwR78kvPvv9xUNOMzL+FhEw1tWLQcQiW2TVrcFjGGhEqSLTd3Xpki9XsGZxXbj3UyLR9C5ZqkkLnOM4yFJbTOfvckp2D2/4scjQNKL9ZCV+lHGn410NJU0JMQK06wl5AKPjJRowscHWflUZIs6+FBjptMJ7u0BK7GhgwXNtOcgLWkNKRDtP+kWZUx5dsc8rq1iLZ08lfatDgqH7WAV8/IQNVfe3bxIoGv9LVWsQYcGQU3sEs7OgCFFQEqsVdED63cS87ZntDlCi/hTl3NjE7NsF232CrSRhqMr4clOUQk+ksX42bGymboirQb5fwIBVZnpJEeukd8Fo2wVIbkCVE/7wwx2bfHpOSNxKs+XATpszD8rcslO+Fi/CTJNG+7CTNNe1oKRGCR+ZxrN12uZKCmMa/HLCWucvRaWOXTGp7s8x7OA88PRwR4baR+NAC03Tdj28bWu5X60E/Y9d/v4f2KrX/owGLeJf4TcT4CvlkuFOfNpiHWL0tK7Bmh0nUTt9QKvKyAGdX1r26oCBDmlH8DAYkHaqED28707NuseBzwQlIg6xOf+yvH20cumynkX36zr1+cI9oQtNVTOpi153VPPifHbRskFLIuldd9IaycL992FknVagYDOpt5RvP3Rk70noL6DzXh3pXxzqPMEzqJxZB2CI4+gs6oWV3aZM6o415gIuLAAozFDkfu0oOFkh3kkCRhb191w+etltHi+RM9QQA8nR61CDjDiRelBDns35rIKLJ95PxuKW+UpTXVKf5OEljd5sj0SONBla78ZnxhX7Mb2feTM6sdEHmf+D1Woat9r0p31Pg6sA1fRWFmgBJ5Kf3+UGrtFrjcg2GF8LHwMOFYfoSqjGen/Y5gsnVNpjVtGjzW6nb9cs6a2TeWjNBkRtG5nDIF2lR6uHutFIwoGlq6isvd2+BLLffSNUkcW6duly5ezbAYpPU0eda/ULjSijE/bhWxtrXofutdNQfqbWI88WOHRfOW2tj6c3mxVhpnA1YTqk+q86gSTC9P33RY1iIteNj9BuermcQcKJHsWdacqvQsjESPPy586F5cpFDikYlIKDlXl1eueRPHX/wvzsKDPOZnK6PzJxMhMrz7It2hRwLGpqAPRw+pg5sFoIuTpqBRqmwR4Vh+8wlx5Dgltq1EmEICXeEU/WsTUf5F0y+c0LCw3T9Hm6kzY23A1l/re9Zj/C4TCtQSGit57F4oOnfR5ngMEiM2uFixRWV4yAftp3nJwX1rbyHEbNgDrQAxhYBdJSEhKwhhFI5oPnoFgczwv6dWYj+EXPGos1XIqdEdU6Lc2wm7LDxvKXaboccvAvNUD+sH6t8cjZUc8lQBzelcA03DWLFV5/us8n+TwTAntyTKGQBe9RU4SV1eIxVkEMWZmRQ945Eah1sF5nHtj2ZxTnEJJOra48yT9eZ6ZC98oWUVcqVrqR3d8oIuIRbfZUondPqaB/o5wqWkdTQMAMqXYMCQnGynX1+2DW8n+GMILDB4kX7xEPyk/MVXJap9r9X6bdb/pExSe3u6pKQfdm7Ae5n+qHqpljkRoWYpk8VP6gWqgIuu63RlmR5M7/LqjKHCNFwv/Wxarp+Bu3uKXhW3J8WS/QvPppQDI+yIi3Hhgfi0oG+oy4h+fA6TpjdiOQw7dTI+mFJEXxnyXByyzipod4k9/FEBgqAvI4oiq63R0vI/zeA5rgXY0fmrjUrcDCqhjJAK8AdroOqmDhWDO30Zk7xUii8+iz+8rGVxIcscAVinknAL4qAWnWxmx1mslfMmOQtSv7kOw8DavlizhM0tsRNt5WSVLegO0ITHfQe1obznvn77CR4/wV+fDOGvJLtxofFmlKLh/swxFkIDk2c6IECBvTHJscBcfLhYnDRzuaWdFdMrcT+qwNePhgTm9g/nbqZ0Tk/wtqN7dn4sVGow2z4H0MSMhPIhsXA5X6Vt/EXT7XoD+J95MUQi5XukaotmfF7UOGFSoHwUOVZawMw3ga4hj7xJgfD4oxA37FgH32Bzgq7fSQaQFfkDV+1d3HPu5MEfou/RCWiP3YJyx/xpAr1YpfaOCedZjTfYgxhKSF8PV5U11Dge32F15dyHLEqGLt+ruPlJLccogwQn8szYx0SUyI6xzR7C29wx2oXKCph0cX/JfyVSngaa5geEKyi3b4AI7mPLPUuwDKPO8c7Rxqoiy2/Gd9tucuGhN/Zc8vWBhdcjFVsP9YQrfcpG5VWFB5ypYNTIbxvY+HheqmjLuPkYEWnvh5hKdcSnmw0KOMAyLr46xL4e4RiYXkQZ0aFcPB9C2cz2T+nva6S63uUhke12BEsFEoai/AwZnsw6MuC80tayXqPf4smfGO2g/nfhdqYz8GvOBMlQJZVPXWsBBtQs9dKA0R8FRztiP5C7XUZrfAdslPY+HWAA5lVp1xiCP9E3r4EfpDwOiJSyNiy98HD35JO1h4aEjnHD/JorhhXbkV/5u1HxF9V2gXxlq0XeO+A7ZqdXt39fK+JYzdajg+Hezsapb6dbx3Rit8dfOF8UQPYxPHKv+kvGD/tpnXjsE9c88J2KgRLj+xm0G88xyPhZiunY2lXMxPxC2sHq1uxiXtihBGEoixe1WgoSnWWL2RYsfNVRSy4DTKEGlbrqZyjheENwfUm4maqdgV+uhAR0QwHYeTa5kG9Y86jCJWKmSXMoZTLDyLPmqrbHXLYNtWqUzcMvQiGpfza0ncJ+MisfxBM8ASXLRlnkOiGr2mNS9Z4QNT1objM9lt7iwty816V8/57BSwjf6cr2IEEHpkoRF5pcYg2noD2injO1kLVj3+OOm644qMS2+0Ii3wr3ikDthntkQ/7eMWk00S8YGB17ozhEwULjFd2PvHkoNpk1wpC0fHACrM0rwKDcb1YH8TtLD/QlBE6KRPPocVVLSliYIN8oJtu2mnMHI0lhnnpPx7cbgQ6KTg/lbOq2yPqeymPZNmo9jtI8vpuAMF/G0vKW7XiPbih2T/g5LZ1FJ+isjwagAoigy1w7AHTgtTcxhyzaykHuUJXuqHKzxesfgLJluc20CZ7wmpzUWjQpGhHkbuRXWEteg5HdxcPwmk8N+x/NQrwYLMrKaAAb6k/bfGghd6uiC1LEFQMq90g5aaBhFdoil+a6GReSDI27Fv8DZHNwkOn9JR1PBUv7eFGUuFDc2noYEfMc1+4ngg9cmcL1HYTtVSmyKBZFmROlOmol5E2C4YHU+1RPnWV/YA/IB68vi0RGl0+AvpNjNg1PD2W800nFx0hLnUnFmgImo9+Cf3WY28ax3GKdmzGs6y0jRYWcR1AWvzOAdcougIiVgFM8OZ/jRCtRBLdyj2TfKySGg4+t+eVHG+u0ZMHhas2L/f++YL4Qo3T7DozqZEzWv9tg42vabM4XcUFPbGX/1zJoDg+JSr/Oiso/a/b6qBWsbq8M2Z6ErGncj4lhor7iKwKDiz8kPy2ui0D3FbYP7vqZHuxoI6Ponb1GsImfiqLrl5AA4g16hd6dQd1HshDSCeBE6QoEW0P2WVgzCP0BK9dnNKM63mke/OB3riPapK0rUmLCjmx1Vw9lfVuqaq6yMuBK4XI/Es4dZDo+tDfR1l6X88SmyhuVZwfz7gR1kRNMxHkchiy9hZC67nCZPzkWesAB/K9mZ4k/f3/DnvyVQwBcjQlWk9ltjtZAauzQ1HhncqneD0Pzw5eojm5Hd8NGX7TAvkhvextev4Exd6QxKdoMwtEzMaFMW9l3JEAMWJOpu0u6wa0v4tE460tW5ZVqK6ya3CkFPFCgTvlF86zHSzxZQj2LKCeZ1dZ2mpEYqrW/+G4Lh+N5bE4KsA4OPFQvqFXgEMBCP8+abGD5Yv1ufoEtxvfykvwa4TG+TAsUf2VHXSeyaXcgp76sCQHfgSkp5fXBlBniZzer5njhameXOkVpEOk5LGW9I992id6ViXy0jEuKurX5FP7uCHWK2ppjaaQv6urUvhC7WA7w3tndIUu/QugNuBrVcE4bSZ77hRP1arqmxUEvsMC3MqOgkONI6q1rIwR0f4I2ZxWZBJll3zyBGf1dZFhPxZcUo9lK9M1VrHJna5h+nrcOImJW9p4RqxzxY1QoZSIUa1B4LF73FBcAl2/N97C/GsQRDqZLiyhesIlgGYyihc3j8+8eRqBerngh86baflaexOTEpNUQCSaV/gtQdXlz6iLwEVyTCIRaNbGhD66ySSLDwzChcWZGeW5iY5RSH8p2TlzY0JLU2EXXY7ZhFKBUQz7inVztGcmthdTHlz6fbk8g7boghYO64Jdn/pTJdvkArrinBFrOgOJsyu+aB6+7Vmgnm2McHomnZ5U19jt6I017ksgysEQYqPLfoZ06v5azagyTWhsUOGq0oX18NL9acUpwhbX5wl80q6WdmTwpJVdgRXHXXaW8C4L4OK0GgFvm/Ibtl4r8Zo0MRgRv1zivDbEdrpTNHU2xQg5jRzMbjXuPITxqAmGDUrB/kkot9djqNeFcmL9oTMBYuMqOYRM1kIiKZf96as0p/Pf4BpPvHJ2uSdC2Tdw4QU1mNZkcKbuLXjDnfBi3MpMj2E4tyn8JRK39ZNM74ckmheCUa4ZhCVYH0nWqylNAPHaL7JO0b5V8qKkmepbV+uvihnGBhfN+hd++JADtP9NIdHUDVbbmmxntnNwIJ1qLE7ZHUd8wUAvmVsLJfeNldV+r27F9640+mhes2RT0aUh8yAJqGa8p7G+PMYyscbsEpYe7ti438HQKBFhvtLHWkiho22ARJK+JIgwL6oZNnz/4e9WUZUZXWEoVCm1PCur4F+gLr6wieOEhtj2PMXp8KtE98DAjN9emuUOg5YmXBQ4vOFwsWXtasDysoVgpK8PcQLJ6NOSfrNURjlib6wpDVn6ov7mMNgIlDDqDx1YOvoj5RO+i6xCPGcRcWKemeF0rndyGTd6ijdAgyN1zELn2A8BFQRxC3pXuYG9+IfhSh7sZMC237rOOCoPuM2N0L8+8FfHJO4AcSqn1EHsZ1b5JXUmOqsaAeAD6/30ShR9X/0J8HfNgJhcA+cLbxcpm2K7H/NriM6GGgp9CQ1kIDJNEJWV/fBEUkYYlCbrrPHtgC2p9NX2lLAkBxro/TGT5Wv+m/PAQvhy4ZRektyBNLiF3eoE4VenDn7I2dxxfTFzl8MrjHM+rSU/VBR3XHbKE8bSmt2OxHDDOzaUBGJTDPQXh3jjz+kddrQsTAN1uPjEWs36zg48VR2eDYFN4viDxTh7hPw0dNfKAcc02RFmA2LtrOuvUDTrFhtG2XZ8yg36I6aMdFG2LOTycGoa6QEyOihkqQoMW5BGmgXpwd8XhN3fPPZS4XLqSvWefiU1f4mJYaZ0uRIjRjmBCiq/bkEFpAIuwc9t9bm3PIYyiEDk8sIfWA=="}</script>
 </body>
 </html>
