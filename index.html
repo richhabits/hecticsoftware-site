@@ -325,6 +325,11 @@ html,body{overflow-x:clip}
 .show-note p{color:#3a3936;font-size:15px;max-width:70ch}
 
 .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.promise{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));column-gap:32px;border-top:1px solid var(--ink)}
+.promise li{padding:18px 0;border-bottom:1px solid var(--rule);display:grid;gap:4px;min-width:0}
+.promise s{font:600 13px var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--grey);text-decoration-color:var(--red)}
+.promise span{font-size:18px}
 </style>
 </head>
 <body>
@@ -394,6 +399,7 @@ html,body{overflow-x:clip}
     <li><span class="n">60</span><a href="#hecticsuite">HecticSuite</a><span class="t">Concept</span></li>
     <li><span class="n">62</span><a href="#hecticmag">HecticMag</a><span class="t">Concept</span></li>
     <li><span class="n">63</span><a href="#roadmap">Now &amp; next</a><span class="t">Roadmap</span></li>
+    <li><span class="n">63</span><a href="#promise">Everything people hate about developers. Fixed.</a><span class="t">Promise</span></li>
     <li><span class="n">64</span><a href="#archive">The Archive: live, in production, concepts</a><span class="t">Index</span></li>
     <li><span class="n">65</span><a href="/work/">Every project, page by page</a><span class="t">Archive</span></li>
     <li><span class="n">68</span><a href="#studio">The Studio</a><span class="t">Editorial</span></li>
@@ -748,6 +754,13 @@ html,body{overflow-x:clip}
   </div>
 </section>
 
+<section id="promise">
+  <div class="wrap pagehead"><span class="kicker">The Hectic promise</span><span class="folio">P. 63</span></div>
+  <div class="wrap" style="padding-block:28px 56px">
+    <h2 class="serif" style="font-weight:400;font-size:clamp(48px,7vw,112px);line-height:.88;letter-spacing:-.04em;margin:0 0 28px;max-width:16ch">Everything people hate about developers. <em style="color:var(--red)">Fixed.</em></h2>
+    <ul class="promise"><li><s>Hidden costs</s><span>A fixed written quote that lists exactly what's included. No surprises.</span></li><li><s>Handed to juniors</s><span>You work directly with Romeo, the engineer building your app, from first call to launch.</span></li><li><s>Ghosted after signing</s><span>A direct line on PIING and in the Hectic app. Every update is dated and visible.</span></li><li><s>Nothing to see for months</s><span>A working beta on your own phone early in the build, and new versions as we go.</span></li><li><s>Not owning your code</s><span>On completion the app, its store listing and the source code belong to you.</span></li><li><s>Abandoned after launch</s><span>Care plans cover updates for each new iOS and Android, fixes and new features.</span></li><li><s>Your users tracked and sold</s><span>No advertising, no tracking, no selling data. In your app and ours.</span></li></ul>
+  </div>
+</section>
 <section id="archive">
   <div class="wrap pagehead"><span class="kicker">The Archive · Everything we've made</span><span class="folio">P. 64</span></div>
   <div class="archive">
