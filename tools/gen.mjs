@@ -42,12 +42,12 @@ const shell = (title, desc, path, body, ld) => `<!doctype html>
 <meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${site}${path}">
 <meta property="og:image" content="${site}/og.png"><meta property="og:type" content="article"><meta property="og:site_name" content="Hectic Software"><meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="theme-color" content="#f6f5f2">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..700&family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/fonts/fonts.css">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <style>${css}</style></head><body>
 <header class="bar"><div class="wrap"><a class="mark" href="/">HECTIC<i>.</i></a><nav><a href="/work/">Work</a><a href="/#ecosystems">Ecosystems</a><a href="/#platforms">Platforms</a><a href="/start/">Start a project</a></nav></div></header>
 <main>${body}</main>
-<footer><div class="wrap">© 2026 Hectic Software Ltd · London · <a href="/">hecticsoftware.com</a></div></footer></body></html>`;
+<footer><div class="wrap">© 2026 Hectic Software Ltd · <a href="/">hecticsoftware.com</a> · <a href="/privacy/">Privacy</a><br>Hectic Software Ltd · Registered in England &amp; Wales, company number 17514067 · Registered office: Unit 1c Sandown Road Industrial Estate, Watford WD24 7UB</div></footer></body></html>`;
 
 const crumbs = (items) => ({ "@type": "BreadcrumbList", itemListElement: items.map((x, i) => ({ "@type": "ListItem", position: i + 1, name: x[0], item: site + x[1] })) });
 

@@ -1,0 +1,5 @@
+/* Self-hosted fonts (SIL Open Font License, see OFL.txt). No requests to Google. */
+@font-face{font-family:"Bodoni Moda";src:url(/fonts/BodoniModa.ttf) format("truetype");font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:"Bodoni Moda";src:url(/fonts/BodoniModa-Italic.ttf) format("truetype");font-weight:400 900;font-style:italic;font-display:swap}
+@font-face{font-family:"Archivo";src:url(/fonts/Archivo.ttf) format("truetype");font-weight:100 900;font-stretch:62% 125%;font-style:normal;font-display:swap}
+@font-face{font-family:"JetBrains Mono";src:url(/fonts/JetBrainsMono.ttf) format("truetype");font-weight:100 800;font-display:swap}

@@ -8,16 +8,16 @@
 .hs-m{padding:10px 12px;max-width:88%;white-space:pre-wrap;color:#0d0d0d}.hs-u{justify-self:end;background:#ecebe7}.hs-a{justify-self:start;background:#fff;border:1px solid #d8d5cf}
 .hs-chat form{display:flex;gap:8px;padding:12px;border-top:1px solid #0d0d0d}.hs-chat input{flex:1;min-width:0;font:15px Archivo,system-ui;color:#0d0d0d;background:#fff;border:1px solid #d8d5cf;border-radius:0;padding:11px 12px}
 .hs-chat form button{background:#0d0d0d;color:#f6f5f2;border:0;border-radius:0;padding:0 16px;font:600 11px Archivo;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}`;
-const st=document.createElement('style');st.textContent=css;document.head.appendChild(st);
-const btn=document.createElement('button');btn.className='hs-chat-btn';btn.type='button';btn.textContent='Ask Hectic';document.body.appendChild(btn);
-let box=null;const hist=[];
+const st=document.createElement('style');st.textContent=css+`body{padding-bottom:84px}@media(max-width:600px){.hs-chat-btn{width:52px;height:52px;padding:0!important;font-size:0!important;border-radius:50%!important;display:grid;place-items:center}.hs-chat-btn::before{content:'?';font:600 22px Archivo,system-ui;color:#f6f5f2}}.hs-chat-btn{transition:transform .25s,opacity .25s}.hs-chat-btn.hide{transform:translateY(120%);opacity:0;pointer-events:none}`;document.head.appendChild(st);
+const btn=document.createElement('button');btn.className='hs-chat-btn';btn.type='button';btn.textContent='Ask Hectic';btn.setAttribute('aria-label','Ask Hectic');document.body.appendChild(btn);
+let box=null;const hist=[];let lastY=scrollY;addEventListener('scroll',()=>{const y=scrollY,end=innerHeight+y>=document.documentElement.scrollHeight-40;btn.classList.toggle('hide',!box&&y>lastY+4&&!end);if(Math.abs(y-lastY)>4)lastY=y},{passive:true});
 function add(log,cls,t){const d=document.createElement('div');d.className='hs-m '+cls;d.textContent=t;log.appendChild(d);log.scrollTop=log.scrollHeight;return d}
 btn.onclick=()=>{if(box){box.remove();box=null;return}
 box=document.createElement('div');box.className='hs-chat';box.setAttribute('role','dialog');box.setAttribute('aria-label','Ask Hectic');
 box.innerHTML='<header><span>Ask Hectic</span><button type="button" aria-label="Close">×</button></header><div class="hs-log" aria-live="polite"></div><form><input aria-label="Your question" placeholder="Describe your app idea…" maxlength="1500"><button>Send</button></form>';
 document.body.appendChild(box);const log=box.querySelector('.hs-log'),f=box.querySelector('form'),i=box.querySelector('input');
 box.querySelector('header button').onclick=()=>{box.remove();box=null};
-add(log,'hs-a',"Hi, I'm the Hectic assistant. Tell me about the app you want to build and I'll help you shape it.");
+add(log,'hs-a',"Hi, I'm the Hectic assistant, an AI. Tell me about the app you want to build and I'll help you shape it. I can get things wrong, and prices and dates are only confirmed in Romeo's written quote.");
 hist.forEach(m=>add(log,m.role==='user'?'hs-u':'hs-a',m.content));i.focus();
 f.onsubmit=async e=>{e.preventDefault();const q=i.value.trim();if(!q)return;i.value='';add(log,'hs-u',q);hist.push({role:'user',content:q});const out=add(log,'hs-a','…');
 try{const r=await fetch(API+'/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist.slice(-10)})});const d=await r.json();
