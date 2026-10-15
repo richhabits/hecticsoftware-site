@@ -59,7 +59,7 @@ work.forEach((w, i) => {
   const title = `${w.name} · ${w.kind} ${isApp ? "app" : "website"} by Hectic Software`;
   const desc = `${w.blurb} ${w.stage === "Live" ? "Live now" : w.stage === "Concept" ? "A concept" : "In production"} for ${w.platforms.join(", ")}. Designed and built in London by Hectic Software.`;
   const shots = w.shots.length
-    ? `<div class="wrap shots">${w.shots.map((s, n) => `<img src="/img/${s}.webp" alt="${esc(w.name)} on ${esc(w.platforms[n] || w.platforms[0])}" loading="${n ? "lazy" : "eager"}" decoding="async">`).join("")}</div>`
+    ? `<div class="wrap shots">${w.shots.map((s, n) => `<img src="/img/${s}.webp" alt="${esc(w.name)} app screenshot ${n + 1} of ${w.shots.length}" loading="${n ? "lazy" : "eager"}" decoding="async">`).join("")}</div>`
     : `<div class="wrap" style="padding-block:32px"><div class="art" role="img" aria-label="${esc(w.name)}">${esc(w.name)}</div></div>`;
   const body = `<div class="wrap head"><span class="kicker">${esc(w.stage)} · ${esc(w.kind)}</span><span class="folio">No. ${String(i + 1).padStart(2, "0")}</span></div>
 <article><div class="wrap"><h1>${esc(w.name)}</h1><p class="stand">${esc(w.blurb)}</p></div>
