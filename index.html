@@ -306,6 +306,22 @@ html,body{overflow-x:clip}
 .copy,.copy>div,.eco article,.plat div,.bounds div,.shelf,.look{min-width:0}
 .copy h3,.eco h3,.plat h4,.story q,.contents h2,.commission h2{overflow-wrap:anywhere;hyphens:manual}
 @media(max-width:600px){.cover .meta{flex-wrap:wrap;gap:6px 16px}.copy h3{font-size:clamp(44px,13vw,64px)}.facts{grid-template-columns:1fr 1fr}.bar .btn{padding:11px 12px}}
+
+/* Showroom: real screenshots by platform */
+.show-tabs{display:flex;gap:0;flex-wrap:wrap;border-bottom:1px solid var(--ink)}
+.show-tabs button{flex:1 1 auto;background:none;border:0;border-right:1px solid var(--ink);padding:16px 18px;font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;cursor:pointer;color:var(--ink)}
+.show-tabs button:last-child{border-right:0}
+.show-tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper)}
+.show-panel{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:2px;background:var(--ink)}
+.show-panel figure{margin:0;background:#141414;display:grid;grid-template-rows:1fr auto;min-height:0}
+.show-panel .frame{display:grid;place-items:center;padding:clamp(18px,3vw,36px);min-height:340px}
+.show-panel img{max-height:560px;width:auto;max-width:100%;object-fit:contain;border-radius:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.show-panel.wide{grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr))}
+.show-panel figcaption{display:flex;justify-content:space-between;gap:10px;padding:12px 16px;border-top:1px solid #2a2a2a;color:#e9e6e0;font:600 10px var(--sans);letter-spacing:.2em;text-transform:uppercase}
+.show-panel figcaption i{font-style:normal;color:var(--orange)}
+.show-note{padding:22px clamp(20px,3vw,30px);display:grid;gap:8px;border-top:1px solid var(--ink)}
+.show-note b{font:italic 400 26px/1.1 var(--didone)}
+.show-note p{color:#3a3936;font-size:15px;max-width:70ch}
 </style>
 </head>
 <body>
@@ -350,6 +366,7 @@ html,body{overflow-x:clip}
   <ol class="toc">
     <li><span class="n">06</span><a href="#streamall">StreamAll</a><span class="t">Feature</span></li>
     <li><span class="n">08</span><a href="#platforms">Every device</a><span class="t">Platforms</span></li>
+    <li><span class="n">09</span><a href="#showroom">The Showroom</a><span class="t">Screenshots</span></li>
     <li><span class="n">10</span><a href="#ecosystems">The Ecosystems</a><span class="t">Special report</span></li>
     <li><span class="n">12</span><a href="#boundaries">Pushing boundaries</a><span class="t">Technology</span></li>
     <li><span class="n">14</span><a href="#volero">Volero</a><span class="t">Feature</span></li>
@@ -390,18 +407,30 @@ html,body{overflow-x:clip}
   </div>
   <div class="plat">
     <div class="rv"><small>iPhone · iPad · Watch · Mac · Apple TV · Vision Pro</small><h4>Apple</h4><p>Native Swift and SwiftUI. StreamAll, Volero, PIING, HecticTV, Fresh Face, Bite Club, DreamSpire.</p></div>
-    <div class="rv"><small>Phones · tablets · Android TV</small><h4>Android</h4><p>Native Kotlin. StreamAll for Android and Android TV; RadioBox on Google Play.</p></div>
-    <div class="rv"><small>Amazon</small><h4>Fire TV</h4><p>StreamAll on Fire TV sticks and Fire TV sets.</p></div>
-    <div class="rv"><small>Sticks · TVs</small><h4>Roku</h4><p>StreamAll built natively for Roku in BrightScript and SceneGraph.</p></div>
-    <div class="rv"><small>Samsung · LG · Hisense</small><h4>Smart TVs</h4><p>StreamAll for Samsung Tizen, LG webOS and Hisense VIDAA.</p></div>
-    <div class="rv"><small>Desktop</small><h4>Windows</h4><p>StreamAll for Windows; desktop apps and admin tools for clients.</p></div>
-    <div class="rv"><small>Desktop · servers</small><h4>Linux</h4><p>Desktop and web apps, plus self-hosted back ends and tools.</p></div>
+    <div class="rv"><small>Phones · tablets · Android TV</small><h4>Android</h4><p>RadioBox on Google Play. StreamAll for Android phones and Android TV in development, in native Kotlin.</p></div>
+    <div class="rv"><small>Amazon</small><h4>Fire TV</h4><p>StreamAll for Fire TV sticks and sets, in development.</p></div>
+    <div class="rv"><small>Sticks · TVs</small><h4>Roku</h4><p>StreamAll for Roku in BrightScript and SceneGraph, in development.</p></div>
+    <div class="rv"><small>Samsung · LG · Hisense</small><h4>Smart TVs</h4><p>StreamAll for Samsung Tizen, LG webOS and Hisense VIDAA, in development.</p></div>
+    <div class="rv"><small>Desktop</small><h4>Windows</h4><p>Every web app and portal runs on Windows today; native StreamAll for Windows is in development.</p></div>
+    <div class="rv"><small>Desktop · servers</small><h4>Linux</h4><p>Web apps run on any Linux desktop, and back ends and tools are self-hostable on Linux.</p></div>
     <div class="rv"><small>Any browser · installable</small><h4>Web</h4><p>Websites, portals, shops and installable web apps on laptops and phones.</p></div>
     <div class="rv"><small>Stations · DJ booths</small><h4>Radio</h4><p>Hectic Radio's stations, listener app and DJ booth, and RadioBox apps.</p></div>
     <div class="rv"><small>Streaming</small><h4>Video &amp; TV</h4><p>HecticTV and StreamAll: live channels, shows and playlists on every big screen.</p></div>
     <div class="rv"><small>Wrist · car · home</small><h4>Wearables</h4><p>Apple Watch companions, widgets, Siri and Live Activities.</p></div>
     <div class="rv"><small>Spatial</small><h4>Vision Pro</h4><p>Immersive versions of StreamAll, HecticTV and DreamSpire.</p></div>
   </div>
+</section>
+
+<section id="showroom">
+  <div class="wrap pagehead"><span class="kicker">The Showroom · Real screenshots</span><span class="folio">P. 09</span></div>
+  <div class="wrap" style="padding-block:50px 26px;display:grid;gap:14px">
+    <span class="kicker" style="color:var(--red)">Shot on device</span>
+    <h2 class="serif" style="font-weight:400;font-size:clamp(52px,8vw,130px);line-height:.85;letter-spacing:-.04em;margin:0">See it on <em>every</em> screen.</h2>
+    <p style="max-width:62ch;color:#3a3936">Real screenshots from the apps, platform by platform. Pick a device.</p>
+  </div>
+  <div class="show-tabs" role="tablist" id="showTabs"><button role="tab" aria-selected="true" data-p="iphone">iPhone</button><button role="tab" aria-selected="false" data-p="ipad">iPad</button><button role="tab" aria-selected="false" data-p="mac">Mac</button><button role="tab" aria-selected="false" data-p="tv">Apple TV</button><button role="tab" aria-selected="false" data-p="watch">Apple Watch</button><button role="tab" aria-selected="false" data-p="vision">Vision Pro</button><button role="tab" aria-selected="false" data-p="web">Web · Windows · Linux · Android</button></div>
+  <div class="show-panel" role="tabpanel" id="sp-iphone"><figure><div class="frame"><img src="/img/show/sa-iphone.webp" alt="StreamAll on iPhone" width="507" height="1100" loading="lazy"></div><figcaption><span>StreamAll</span><i>iPhone</i></figcaption></figure><figure><div class="frame"><img src="/img/show/vo-iphone.webp" alt="Volero on iPhone" width="507" height="1100" loading="lazy"></div><figcaption><span>Volero</span><i>iPhone</i></figcaption></figure><figure><div class="frame"><img src="/img/show/pi-iphone.webp" alt="PIING on iPhone" width="507" height="1100" loading="lazy"></div><figcaption><span>PIING</span><i>iPhone</i></figcaption></figure><figure><div class="frame"><img src="/img/show/sam-iphone.webp" alt="SAM on iPhone" width="506" height="1100" loading="lazy"></div><figcaption><span>SAM</span><i>iPhone</i></figcaption></figure></div><div class="show-panel" role="tabpanel" id="sp-ipad" hidden><figure><div class="frame"><img src="/img/show/sa-ipad.webp" alt="StreamAll on iPad" width="1500" height="1125" loading="lazy"></div><figcaption><span>StreamAll</span><i>iPad</i></figcaption></figure><figure><div class="frame"><img src="/img/show/vo-ipad.webp" alt="Volero on iPad" width="825" height="1100" loading="lazy"></div><figcaption><span>Volero</span><i>iPad</i></figcaption></figure><figure><div class="frame"><img src="/img/show/pi-ipad.webp" alt="PIING on iPad" width="825" height="1100" loading="lazy"></div><figcaption><span>PIING</span><i>iPad</i></figcaption></figure><figure><div class="frame"><img src="/img/show/sam-ipad.webp" alt="SAM on iPad" width="825" height="1100" loading="lazy"></div><figcaption><span>SAM</span><i>iPad</i></figcaption></figure></div><div class="show-panel wide" role="tabpanel" id="sp-mac" hidden><figure><div class="frame"><img src="/img/show/sa-mac.webp" alt="StreamAll on Mac" width="1500" height="938" loading="lazy"></div><figcaption><span>StreamAll</span><i>Mac</i></figcaption></figure><figure><div class="frame"><img src="/img/show/vo-mac.webp" alt="Volero on Mac" width="1500" height="938" loading="lazy"></div><figcaption><span>Volero</span><i>Mac</i></figcaption></figure></div><div class="show-panel wide" role="tabpanel" id="sp-tv" hidden><figure><div class="frame"><img src="/img/show/sa-tv.webp" alt="StreamAll on Apple TV" width="1500" height="844" loading="lazy"></div><figcaption><span>StreamAll</span><i>Apple TV</i></figcaption></figure></div><div class="show-panel" role="tabpanel" id="sp-watch" hidden><figure><div class="frame"><img src="/img/show/sa-watch.webp" alt="StreamAll on Apple Watch" width="904" height="1100" loading="lazy"></div><figcaption><span>StreamAll</span><i>Apple Watch</i></figcaption></figure><figure><div class="frame"><img src="/img/show/vo-watch.webp" alt="Volero on Apple Watch" width="904" height="1100" loading="lazy"></div><figcaption><span>Volero</span><i>Apple Watch</i></figcaption></figure><figure><div class="frame"><img src="/img/show/sam-watch.webp" alt="SAM on Apple Watch" width="904" height="1100" loading="lazy"></div><figcaption><span>SAM</span><i>Apple Watch</i></figcaption></figure></div><div class="show-panel wide" role="tabpanel" id="sp-vision" hidden><figure><div class="frame"><img src="/img/show/vo-vision.webp" alt="Volero on Vision Pro" width="1500" height="844" loading="lazy"></div><figcaption><span>Volero</span><i>Vision Pro</i></figcaption></figure></div><div class="show-panel wide" role="tabpanel" id="sp-web" hidden><figure><div class="frame"><img src="/img/site-mainline.webp" alt="Main Line Café website" width="1600" height="1000" loading="lazy"></div><figcaption><span>Main Line Café</span><i>Any browser</i></figcaption></figure><figure><div class="frame"><img src="/img/site-radio.webp" alt="Hectic Radio website" width="1600" height="1000" loading="lazy"></div><figcaption><span>Hectic Radio</span><i>Any browser</i></figcaption></figure><figure><div class="frame"><img src="/img/site-forged.webp" alt="Forged Landscapes website" width="1600" height="1000" loading="lazy"></div><figcaption><span>Forged Landscapes</span><i>Any browser</i></figcaption></figure><figure><div class="frame"><img src="/img/site-sourced.webp" alt="Sourced London website" width="1600" height="1000" loading="lazy"></div><figcaption><span>Sourced London</span><i>Any browser</i></figcaption></figure><figure><div class="frame"><img src="/img/site-piing.webp" alt="PIING web website" width="1600" height="1000" loading="lazy"></div><figcaption><span>PIING web</span><i>Any browser</i></figcaption></figure><figure><div class="frame"><img src="/img/site-streamall-site.webp" alt="StreamAll web website" width="1600" height="1000" loading="lazy"></div><figcaption><span>StreamAll web</span><i>Any browser</i></figcaption></figure></div>
+  <div class="show-note"><b>Native Android, Windows &amp; Linux: in development.</b><p>The web apps above already run in any browser on Windows, Linux and Android. Native StreamAll for Android TV, Fire TV, Roku and Samsung, LG and Hisense TVs is being built next. Screenshots go up here as each one ships.</p></div>
 </section>
 
 <section id="ecosystems">
@@ -797,6 +826,9 @@ html,body{overflow-x:clip}
 </div></section>
 </main>
 <footer><div class="wrap"><span>© 2026 Hectic Software Ltd · London</span><span>Issue 01 · Apps for every device</span></div></footer>
+<script>
+document.querySelectorAll("#showTabs button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("#showTabs button").forEach(x=>x.setAttribute("aria-selected",x===b));document.querySelectorAll("#showroom .show-panel").forEach(p=>p.hidden=p.id!=="sp-"+b.dataset.p);}));
+</script>
 <script src="/config.js"></script><script src="/chat.js"></script>
 </body>
 </html>
