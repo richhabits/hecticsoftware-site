@@ -6,16 +6,17 @@ const site = "https://hecticsoftware.com";
 const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const today = new Date().toISOString().slice(0, 10);
 
-const css = `:root{--paper:#f6f5f2;--ink:#0d0d0d;--grey:#6b6966;--rule:#d8d5cf;--red:#ff4d2e;--didone:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;--sans:"Archivo","Helvetica Neue",Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:light}
-@media(prefers-color-scheme:dark){:root{--paper:#0d0d0d;--ink:#f6f5f2;--grey:#9a978f;--rule:#2a2826;color-scheme:dark}}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+const css = `:root{--paper:#f6f5f2;--ink:#0d0d0d;--grey:#6b6966;--rule:#d8d5cf;--red:#ff4d2e;--accent:#cc3518;--on-accent:#fff;--card:#fff;--didone:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;--sans:"Archivo","Helvetica Neue",Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:light}
+@media(prefers-color-scheme:dark){:root{--paper:#0d0d0d;--ink:#f6f5f2;--grey:#9a978f;--rule:#2e2c29;--accent:#ff7a5c;--on-accent:#0d0d0d;--card:#181716;color-scheme:dark}}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+*{box-sizing:border-box}body{margin:0;overflow-x:hidden;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}a{color:inherit}
 .wrap{max-width:1320px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
-.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--ink)}
-.bar .wrap{display:flex;justify-content:space-between;align-items:center;height:54px}
-.mark{font:900 22px/1 var(--sans);letter-spacing:-.04em;text-decoration:none;color:var(--red)}.mark i{color:var(--ink);font-style:normal}
-.bar nav{display:flex;gap:20px}.bar nav a{text-decoration:none;font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase}
-.kicker{font:600 11px/1.3 var(--sans);letter-spacing:.24em;text-transform:uppercase;color:var(--red)}
+.bar{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 90%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+.bar .wrap{display:flex;justify-content:space-between;align-items:center;min-height:64px;gap:16px}
+.mark{display:inline-flex;align-items:center;min-height:44px;font:900 26px/1 var(--sans);letter-spacing:-.04em;text-decoration:none;color:var(--red)}.mark i{color:var(--ink);font-style:normal}
+.bar nav{display:flex;gap:4px;align-items:center}.bar nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;text-decoration:none;font:500 15px var(--sans);border-radius:999px}.bar nav a.cta{background:var(--accent);color:var(--on-accent);font-weight:600;padding:0 18px}
+.kicker{font:600 13px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
 .folio{font:500 11px var(--mono);letter-spacing:.08em;color:var(--grey)}
 .head{display:flex;justify-content:space-between;padding-block:14px;border-bottom:1px solid var(--ink)}
 h1{font:400 clamp(56px,11vw,170px)/.86 var(--didone);letter-spacing:-.045em;margin:28px 0 18px}
@@ -24,16 +25,17 @@ h1{font:400 clamp(56px,11vw,170px)/.86 var(--didone);letter-spacing:-.045em;marg
 .body{font-size:19px;max-width:62ch}
 .facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink)}
 .facts div{padding:14px 0;border-bottom:1px solid var(--rule)}.facts b{display:block;font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--grey)}
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.chips span{border:1px solid var(--ink);padding:6px 12px;font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase}
-.shots{display:flex;gap:16px;overflow-x:auto;padding-block:32px;scroll-snap-type:x mandatory}.shots img{height:min(70vh,620px);width:auto;scroll-snap-align:start;border:1px solid var(--rule)}
-.art{aspect-ratio:16/10;max-width:100%;background:linear-gradient(135deg,var(--red),#ff8a6e);display:grid;place-items:center;font:400 clamp(64px,10vw,140px)/1 var(--didone);color:#fff;font-style:italic}
-.btn{display:inline-flex;gap:10px;background:var(--ink);color:var(--paper);text-decoration:none;font:600 11px var(--sans);letter-spacing:.2em;text-transform:uppercase;padding:14px 20px;margin-top:24px}.btn:hover{background:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.chips span{border:1px solid var(--rule);border-radius:999px;padding:6px 14px;font:500 14px var(--sans)}
+.shots{display:flex;gap:16px;overflow-x:auto;padding-block:32px;scroll-snap-type:x mandatory}.shots img{height:min(70vh,620px);width:auto;max-width:none;flex:none;scroll-snap-align:start;border-radius:18px;border:1px solid var(--rule)}
+.art{aspect-ratio:16/10;max-width:100%;border-radius:18px;background:var(--red);display:grid;place-items:center;padding:16px;text-align:center;font:400 clamp(44px,10vw,140px)/1 var(--didone);color:#0d0d0d;font-style:italic}
+.btn{display:inline-flex;align-items:center;min-height:48px;gap:10px;background:transparent;color:var(--ink);border:2px solid var(--ink);border-radius:999px;text-decoration:none;font:600 16px var(--sans);padding:10px 22px;margin-top:24px}.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0;border-top:1px solid var(--ink)}
 .list a{display:block;padding:22px 20px 26px 0;border-bottom:1px solid var(--rule);text-decoration:none;min-width:0}
 .list h2{font:400 34px/1 var(--didone);margin:8px 0 6px}.list p{color:var(--grey);font-size:15px;margin:0}
-.next{display:flex;justify-content:space-between;gap:16px;padding-block:28px;flex-wrap:wrap}
-footer{border-top:1px solid var(--ink);padding-block:22px;font:500 12px var(--mono);color:var(--grey)}
-@media(max-width:860px){.grid{grid-template-columns:1fr}.bar nav{display:none}}`;
+.next{display:flex;justify-content:space-between;gap:16px;padding-block:28px;flex-wrap:wrap}.next a{display:inline-flex;align-items:center;min-height:44px}
+footer a{display:inline-flex;align-items:center;min-height:44px}footer{border-top:1px solid var(--rule);padding-block:22px calc(96px + env(safe-area-inset-bottom,0px));font:500 12px var(--mono);color:var(--grey)}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.bar nav a:not(.cta){display:none}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}`;
 
 const shell = (title, desc, path, body, ld) => `<!doctype html>
 <html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -45,7 +47,7 @@ const shell = (title, desc, path, body, ld) => `<!doctype html>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <style>${css}</style></head><body>
-<header class="bar"><div class="wrap"><a class="mark" href="/">HECTIC<i>.</i></a><nav><a href="/work/">Work</a><a href="/#ecosystems">Ecosystems</a><a href="/#platforms">Platforms</a><a href="/start/">Start a project</a></nav></div></header>
+<header class="bar"><div class="wrap"><a class="mark" href="/">HECTIC<i>.</i></a><nav><a href="/work/">Work</a><a href="/#how">How it works</a><a href="/#promise">Promise</a><a class="cta" href="/start/">Start a project</a></nav></div></header>
 <main>${body}</main>
 <footer><div class="wrap">© 2026 Hectic Software Ltd · <a href="/">hecticsoftware.com</a> · <a href="/privacy/">Privacy</a><br>Hectic Software Ltd · Registered in England &amp; Wales, company number 17514067 · Registered office: Unit 1c Sandown Road Industrial Estate, Watford WD24 7UB</div></footer></body></html>`;
 
@@ -64,7 +66,7 @@ work.forEach((w, i) => {
   const body = `<div class="wrap head"><span class="kicker">${esc(w.stage)} · ${esc(w.kind)}</span><span class="folio">No. ${String(i + 1).padStart(2, "0")}</span></div>
 <article><div class="wrap"><h1>${esc(w.name)}</h1><p class="stand">${esc(w.blurb)}</p></div>
 ${shots}
-<div class="wrap grid"><div><p class="body">${esc(w.body)}</p>${w.link ? `<a class="btn" href="${w.link}" rel="noopener">Visit ${esc(w.name)} →</a>` : ""}<a class="btn" href="/start/" style="margin-left:8px;background:var(--red)">Build something like this</a></div>
+<div class="wrap grid"><div><p class="body">${esc(w.body)}</p>${w.link ? `<a class="btn" href="${w.link}" rel="noopener">Visit ${esc(w.name)} →</a>` : ""}<a class="btn primary" href="/start/" style="margin-left:8px">Build something like this</a></div>
 <div><div class="facts"><div><b>Stage</b>${esc(w.stage)}</div><div><b>Status</b>${esc(w.status)}</div><div><b>Type</b>${esc(w.kind)}</div><div><b>Studio</b>Hectic Software</div></div>
 <div class="chips">${w.platforms.map(p => `<span>${esc(p)}</span>`).join("")}</div></div></div></article>
 <nav class="wrap next" aria-label="More work"><a href="/work/${prev.id}/">← ${esc(prev.name)}</a><a href="/work/">All work</a><a href="/work/${next.id}/">${esc(next.name)} →</a></nav>`;
