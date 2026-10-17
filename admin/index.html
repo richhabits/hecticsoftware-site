@@ -1,30 +1,123 @@
-<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; connect-src 'self' https://hectic-api.forged-landscapes.workers.dev; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"><meta name="referrer" content="strict-origin-when-cross-origin"><meta name="theme-color" content="#f6f5f2"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="/fonts/fonts.css"><link rel="stylesheet" href="/app.css"><script src="/config.js"></script><meta name="robots" content="noindex,nofollow"><title>Studio · Hectic Software</title></head><body><div class="wrap" style="max-width:1100px">
-<div class="top"><a href="/">HECTIC</a><span class="mono">Studio dashboard</span></div>
-<div id="login" class="card"><label>Admin key<input id="key" type="password" autocomplete="current-password"></label><button class="btn" id="go">Open dashboard</button><p class="note">The key is kept in this browser tab only and cleared when you close it.</p></div>
-<div id="dash" hidden><h1>Projects</h1><div class="card" style="overflow-x:auto"><table><thead><tr><th>Ref</th><th>Client</th><th>Type</th><th>Budget</th><th>Status</th><th>Updated</th></tr></thead><tbody id="rows"></tbody></table></div>
-<div id="detail" class="card" hidden><span class="mono" id="dref"></span><h2 id="dname" style="margin:0"></h2><p id="dbrief" style="white-space:pre-wrap;color:var(--fg)"></p><div id="dfiles" style="display:grid;gap:6px"></div>
-<label>Status<select id="dstatus"><option>new</option>
-<option>reviewing</option>
-<option>quoted</option>
-<option>accepted</option>
-<option>in_progress</option>
-<option>beta</option>
-<option>live</option>
-<option>closed</option></select></label>
-<label>Quote shown to client<textarea id="dquote"></textarea></label><label>Private notes<textarea id="dnotes"></textarea></label>
-<div id="dmsgs" style="display:grid;gap:10px"></div><label>Reply to client<textarea id="dreply" style="min-height:80px"></textarea></label><button class="btn" id="save">Save &amp; send</button><span class="note" id="saved"></span></div></div>
-</div><script>
-let key='';try{key=sessionStorage.getItem('hs-admin')||''}catch{}let cur=null;
-const api=(p,o={})=>fetch(HS_API+'/api/admin'+p,{...o,headers:{'Authorization':'Bearer '+key,'Content-Type':'application/json'}}).then(r=>r.ok?r.json():Promise.reject(r.status));
-const cell=t=>{const td=document.createElement('td');td.textContent=t??'';return td};
-async function list(){const rows=await api('/projects');document.getElementById('login').hidden=true;document.getElementById('dash').hidden=false;const tb=document.getElementById('rows');tb.innerHTML='';
-rows.forEach(r=>{const tr=document.createElement('tr');tr.style.cursor='pointer';[r.id,(r.name||'')+(r.company?' · '+r.company:''),r.project_type,r.budget,r.status,new Date(r.updated_at).toLocaleString('en-GB')].forEach(v=>tr.appendChild(cell(v)));tr.onclick=()=>open(r.id);tb.appendChild(tr)})}
-async function open(id){const d=await api('/project?id='+encodeURIComponent(id)),p=d.project;cur=id;document.getElementById('detail').hidden=false;document.getElementById('dref').textContent=p.id+' · '+p.email+(p.phone?' · '+p.phone:'');document.getElementById('dname').textContent=p.name+(p.company?' — '+p.company:'');
-document.getElementById('dbrief').textContent=[p.project_type,'Devices: '+(p.platforms||'-'),'Features: '+(p.features||'-'),'Launch: '+p.timeline,'Budget: '+p.budget,'Links: '+(p.links||'-'),'',p.description].join('\n');
-const fl=document.getElementById('dfiles');fl.innerHTML='';d.files.forEach(x=>{const a=document.createElement('a');a.href=HS_API+'/api/file?id='+x.id+'&token='+encodeURIComponent(key);a.textContent='⬇ '+x.name;fl.appendChild(a)});
-document.getElementById('dstatus').value=p.status;document.getElementById('dquote').value=p.quote||'';document.getElementById('dnotes').value=p.admin_notes||'';
-const m=document.getElementById('dmsgs');m.innerHTML='';d.messages.forEach(x=>{const e=document.createElement('div');e.className='msg '+x.author;e.textContent=x.body;m.appendChild(e)});document.getElementById('detail').scrollIntoView({behavior:'smooth'})}
-document.getElementById('save').onclick=async()=>{await api('/update',{method:'POST',body:JSON.stringify({id:cur,status:document.getElementById('dstatus').value,quote:document.getElementById('dquote').value,notes:document.getElementById('dnotes').value,reply:document.getElementById('dreply').value.trim()||null})});document.getElementById('dreply').value='';document.getElementById('saved').textContent='Saved.';open(cur);list()};
-document.getElementById('go').onclick=()=>{key=document.getElementById('key').value.trim();try{sessionStorage.setItem('hs-admin',key)}catch{}list().catch(()=>{document.querySelector('#login .note').textContent='That key didn’t work.'})};
-if(key)list().catch(()=>{});
-</script></body></html>
+<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; script-src 'self'; connect-src 'self' https://hectic-api.forged-landscapes.workers.dev; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="no-referrer"><meta name="robots" content="noindex,nofollow"><meta name="theme-color" content="#f6f5f2">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="stylesheet" href="/fonts/fonts.css"><link rel="stylesheet" href="/admin/admin.css">
+<script src="/config.js"></script><title>Studio · Hectic Software</title></head>
+<body>
+<div id="login" class="login" hidden>
+  <form class="login-box" id="loginForm">
+    <div class="wordmark">HECTIC</div>
+    <h1>Studio</h1>
+    <label>Studio key<input id="key" type="password" autocomplete="current-password" required></label>
+    <button class="btn" type="submit">Open</button>
+    <p class="muted small" id="loginNote">Kept in this tab only and cleared when you close it.</p>
+  </form>
+</div>
+
+<div id="app" class="app" hidden>
+  <header class="top">
+    <div class="wordmark">HECTIC</div><span class="muted small hide-s">Studio</span>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="overview" aria-selected="true"><svg><use href="#i-grid"/></svg>Overview</button>
+      <button role="tab" data-tab="clients"><svg><use href="#i-person"/></svg>Clients</button>
+      <button role="tab" data-tab="opps"><svg><use href="#i-target"/></svg>Opportunities</button>
+      <button role="tab" data-tab="estate"><svg><use href="#i-stack"/></svg>Estate</button>
+    </nav>
+    <span class="clock small muted" id="clock"></span>
+    <button class="icon-btn" id="themeBtn" title="Light or dark"><svg><use href="#i-moon"/></svg></button>
+    <button class="icon-btn" id="logout" title="Lock"><svg><use href="#i-lock"/></svg></button>
+  </header>
+
+  <div class="layout">
+    <aside class="jarvis" aria-label="HECTIC assistant">
+      <div class="j-head">
+        <div class="orb" id="orb" aria-hidden="true"></div>
+        <div><div class="j-name">HECTIC</div><div class="small muted" id="brain">Studio intelligence</div></div>
+        <button class="icon-btn" id="voiceBtn" title="Speak replies" aria-pressed="true"><svg><use href="#i-speaker"/></svg></button>
+      </div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+      <div class="quick" id="quick">
+        <button data-q="Brief me: what needs me today, in order?">Brief</button>
+        <button data-q="Which clients are waiting on me?">Waiting</button>
+        <button data-q="Best opportunities right now, and should I go for them?">Leads</button>
+        <button data-q="Summarise all my projects on GitHub and this Mac: what's healthy, what's stale, what's unpushed?">Projects</button>
+        <button data-q="What's the single best thing I can do this week to make money?">Money</button>
+      </div>
+      <form class="ask" id="askForm">
+        <button type="button" class="icon-btn" id="micBtn" title="Talk"><svg><use href="#i-mic"/></svg></button>
+        <input id="askInput" placeholder="Ask HECTIC" autocomplete="off">
+        <button class="icon-btn solid" title="Send"><svg><use href="#i-up"/></svg></button>
+      </form>
+    </aside>
+
+    <main class="main">
+      <section data-panel="overview">
+        <div class="kpis" id="kpis"></div>
+        <h2>Needs you</h2>
+        <div class="list" id="needs"></div>
+        <h2>Latest work</h2>
+        <div class="list" id="pushes"></div>
+      </section>
+
+      <section data-panel="clients" hidden>
+        <div class="bar">
+          <input type="search" id="cSearch" placeholder="Search name, company, email">
+          <div class="seg" id="cView"><button data-v="list" aria-pressed="true" title="List"><svg><use href="#i-list"/></svg></button><button data-v="board" title="Board"><svg><use href="#i-columns"/></svg></button></div>
+          <button class="btn ghost" id="cCsv">CSV</button>
+        </div>
+        <div class="chips" id="cChips"></div>
+        <div id="cList" class="list"></div>
+        <div id="cBoard" class="board" hidden></div>
+      </section>
+
+      <section data-panel="opps" hidden>
+        <div class="bar">
+          <div class="seg" id="oBiz"></div>
+          <select id="oMin" title="Minimum score"><option value="35">Score 35+</option><option value="50">50+</option><option value="65">65+</option></select>
+          <button class="btn ghost" id="oRun"><svg><use href="#i-refresh"/></svg>Search now</button>
+        </div>
+        <div class="chips" id="oChips"></div>
+        <p class="small muted" id="oInfo"></p>
+        <div id="oList" class="list"></div>
+      </section>
+
+      <section data-panel="estate" hidden>
+        <p class="small muted" id="eInfo"></p>
+        <div class="kpis" id="eKpis"></div>
+        <h2>Sites</h2><div class="list tiles" id="eSites"></div>
+        <h2>Repositories</h2><div class="list" id="eRepos"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden aria-modal="true" role="dialog"><button class="icon-btn close" id="drawerClose" title="Close"><svg><use href="#i-x"/></svg></button><div id="drawerBody"></div></aside>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".8"/></symbol>
+    <symbol id="i-stack" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5M3 17l9 5 9-5"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+    <symbol id="i-speaker" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4zM16.5 8.5a5 5 0 010 7M19 6a8.5 8.5 0 010 12"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></symbol>
+    <symbol id="i-columns" viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="10" y="4" width="5" height="11" rx="1"/><rect x="17" y="4" width="4" height="7" rx="1"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></symbol>
+  </defs>
+</svg>
+<script src="/admin/admin.js"></script>
+</body></html>

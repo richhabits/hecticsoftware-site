@@ -21,3 +21,7 @@ binding = "AI"
 
 [vars]
 ALLOWED_ORIGINS = "https://hecticsoftware.com,https://www.hecticsoftware.com,https://hecticsoftware.pages.dev"
+
+# Opportunity finder: hourly, bounded to fit the free plan.
+[triggers]
+crons = ["23 * * * *"]
