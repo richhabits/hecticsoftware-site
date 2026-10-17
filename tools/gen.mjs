@@ -1,5 +1,11 @@
 // Generates /work/ pages, sitemap.xml and llms.txt from tools/work.json. Run: node tools/gen.mjs
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+// Reads width/height from a WebP file (VP8, VP8L, VP8X) so images get intrinsic dimensions (no layout shift).
+const webpSize = f => { const b = readFileSync(root + "img/" + f + ".webp"); const t = b.toString("ascii", 12, 16);
+  if (t === "VP8 ") return [b.readUInt16LE(26) & 0x3fff, b.readUInt16LE(28) & 0x3fff];
+  if (t === "VP8L") { const v = b.readUInt32LE(21); return [(v & 0x3fff) + 1, ((v >> 14) & 0x3fff) + 1]; }
+  if (t === "VP8X") return [b.readUIntLE(24, 3) + 1, b.readUIntLE(27, 3) + 1];
+  throw new Error("unknown webp " + f); };
 const root = new URL("..", import.meta.url).pathname;
 const work = JSON.parse(readFileSync(root + "tools/work.json", "utf8"));
 const site = "https://hecticsoftware.com";
@@ -42,8 +48,11 @@ const shell = (title, desc, path, body, ld) => `<!doctype html>
 <title>${esc(title)}</title><meta name="description" content="${esc(desc)}">
 <link rel="canonical" href="${site}${path}"><meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(desc)}"><meta property="og:url" content="${site}${path}">
-<meta property="og:image" content="${site}/og.png"><meta property="og:type" content="article"><meta property="og:site_name" content="Hectic Software"><meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><meta name="theme-color" content="#f6f5f2">
+<meta property="og:image" content="${site}/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Hectic Software, apps for every device, from London"><meta property="og:type" content="${path === "/work/" ? "website" : "article"}"><meta property="og:site_name" content="Hectic Software"><meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(desc)}"><meta name="twitter:image" content="${site}/og.png">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#0d0d0d" media="(prefers-color-scheme: dark)"><meta name="apple-mobile-web-app-title" content="Hectic">
+<link rel="preload" href="/fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script type="application/ld+json">${JSON.stringify(ld)}</script>
 <style>${css}</style></head><body>
@@ -58,10 +67,15 @@ work.forEach((w, i) => {
   const path = `/work/${w.id}/`;
   const next = work[(i + 1) % work.length], prev = work[(i - 1 + work.length) % work.length];
   const isApp = w.platforms.some(p => !["Web"].includes(p));
-  const title = `${w.name} · ${w.kind} ${isApp ? "app" : "website"} by Hectic Software`;
-  const desc = `${w.blurb} ${w.stage === "Live" ? "Live now" : w.stage === "Concept" ? "A concept" : "In production"} for ${w.platforms.join(", ")}. Designed and built in London by Hectic Software.`;
+  // Title <= 60 chars and description <= 155 chars: try the fullest wording first, then shorter ones.
+  const fit = (max, opts) => opts.find(o => o.length <= max) || opts[opts.length - 1];
+  const title = fit(60, [`${w.name} · ${w.kind} ${isApp ? "app" : "website"} by Hectic Software`, `${w.name} · ${w.kind} by Hectic Software`, `${w.name} · Hectic Software`]);
+  const stageTxt = w.stage === "Live" ? "Live now" : w.stage === "Concept" ? "A concept" : "In production";
+  const desc = fit(155, [`${w.blurb} ${stageTxt} for ${w.platforms.join(", ")}. Designed and built in London by Hectic Software.`,
+    `${w.blurb} ${stageTxt} for ${w.platforms.join(", ")}. Built in London by Hectic Software.`,
+    `${w.blurb} ${stageTxt}. Built in London by Hectic Software.`, `${w.blurb} ${stageTxt}.`, w.blurb]);
   const shots = w.shots.length
-    ? `<div class="wrap shots">${w.shots.map((s, n) => `<img src="/img/${s}.webp" alt="${esc(w.name)} app screenshot ${n + 1} of ${w.shots.length}" loading="${n ? "lazy" : "eager"}" decoding="async">`).join("")}</div>`
+    ? `<div class="wrap shots">${w.shots.map((s, n) => `<img src="/img/${s}.webp" width="${webpSize(s)[0]}" height="${webpSize(s)[1]}" alt="${esc(w.name)} app screenshot ${n + 1} of ${w.shots.length}" loading="${n ? "lazy" : "eager"}" decoding="async">`).join("")}</div>`
     : `<div class="wrap" style="padding-block:32px"><div class="art" role="img" aria-label="${esc(w.name)}">${esc(w.name)}</div></div>`;
   const body = `<div class="wrap head"><span class="kicker">${esc(w.stage)} · ${esc(w.kind)}</span><span class="folio">No. ${String(i + 1).padStart(2, "0")}</span></div>
 <article><div class="wrap"><h1>${esc(w.name)}</h1><p class="stand">${esc(w.blurb)}</p></div>
@@ -71,9 +85,10 @@ ${shots}
 <div class="chips">${w.platforms.map(p => `<span>${esc(p)}</span>`).join("")}</div></div></div></article>
 <nav class="wrap next" aria-label="More work"><a href="/work/${prev.id}/">← ${esc(prev.name)}</a><a href="/work/">All work</a><a href="/work/${next.id}/">${esc(next.name)} →</a></nav>`;
   const ld = { "@context": "https://schema.org", "@graph": [
-    { "@type": isApp ? "SoftwareApplication" : "WebSite", name: w.name, description: w.body, url: w.link || site + path,
+    { "@type": isApp ? "SoftwareApplication" : "CreativeWork", name: w.name, description: w.body, url: w.link || site + path,
+      mainEntityOfPage: site + path, inLanguage: "en-GB",
       ...(isApp ? { applicationCategory: w.kind, operatingSystem: w.platforms.join(", ") } : {}),
-      creator: { "@type": "Organization", name: "Hectic Software Ltd", url: site },
+      creator: { "@type": "Organization", "@id": site + "/#org", name: "Hectic Software Ltd", url: site },
       ...(w.shots[0] ? { image: `${site}/img/${w.shots[0]}.webp` } : {}) },
     crumbs([["Hectic Software", "/"], ["Work", "/work/"], [w.name, path]]) ] };
   mkdirSync(root + "work/" + w.id, { recursive: true });
@@ -84,8 +99,8 @@ const groups = ["Live", "In production", "Concept"];
 const hub = `<div class="wrap head"><span class="kicker">The Archive · Everything we've made</span><span class="folio">${work.length} pieces</span></div>
 <div class="wrap"><h1>The work.</h1><p class="stand">Apps, platforms and websites designed and built in London, for Apple, Android, the web and the big screen.</p></div>
 ${groups.map(g => `<section class="wrap" style="padding-block:20px 40px"><p class="kicker">${g === "Concept" ? "Concepts" : g}</p><div class="list">${work.filter(w => w.stage === g).map(w => `<a href="/work/${w.id}/"><span class="folio">${esc(w.kind)} · ${esc(w.status)}</span><h2>${esc(w.name)}</h2><p>${esc(w.blurb)}</p></a>`).join("")}</div></section>`).join("")}`;
-writeFileSync(root + "work/index.html", shell("Work · Apps, platforms and websites by Hectic Software, London",
-  `The full archive of Hectic Software: ${work.filter(w => w.stage === "Live").length} live products, ${work.filter(w => w.stage === "In production").length} in production and concepts, across iPhone, iPad, Mac, Apple TV, Watch, Vision Pro, Android and the web.`,
+writeFileSync(root + "work/index.html", shell("Work · Apps and websites by Hectic Software, London",
+  `The full archive of Hectic Software: ${work.filter(w => w.stage === "Live").length} live products, plus work in production and concepts, across Apple devices, Android and the web.`,
   "/work/", hub, { "@context": "https://schema.org", "@graph": [
     { "@type": "CollectionPage", name: "Hectic Software work", url: site + "/work/", hasPart: work.map(w => ({ "@type": "CreativeWork", name: w.name, url: `${site}/work/${w.id}/` })) },
     crumbs([["Hectic Software", "/"], ["Work", "/work/"]]) ] }));
@@ -93,5 +108,5 @@ writeFileSync(root + "work/index.html", shell("Work · Apps, platforms and websi
 const urls = [["/", "1.0", "weekly"], ["/work/", "0.9", "weekly"], ["/start/", "0.8", "monthly"], ["/privacy/", "0.3", "yearly"], ...work.map(w => [`/work/${w.id}/`, w.stage === "Live" ? "0.8" : "0.6", "monthly"])];
 writeFileSync(root + "sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(([u, p, f]) => `<url><loc>${site}${u}</loc><lastmod>${today}</lastmod><changefreq>${f}</changefreq><priority>${p}</priority></url>`).join("\n")}\n</urlset>\n`);
 
-writeFileSync(root + "llms.txt", `# Hectic Software\n\n> London app studio founded by Romeo Valentine. Designs, builds and launches native apps for iPhone, iPad, Mac, Apple Watch, Apple TV and Vision Pro, and Android, with the websites and platforms behind them (accounts, payments, booking, chat, admin panels, client portals, on-device AI).\n\nContact: hello@hecticsoftware.com · Start a project: ${site}/start/\n\n## Work\n${work.map(w => `- [${w.name}](${site}/work/${w.id}/): ${w.blurb} (${w.stage}; ${w.platforms.join(", ")})`).join("\n")}\n`);
+writeFileSync(root + "llms.txt", `# Hectic Software\n\n> London app studio founded by Romeo Valentine. Designs, builds and launches native apps for iPhone, iPad, Mac, Apple Watch, Apple TV and Vision Pro, and Android, with the websites and platforms behind them (accounts, payments, booking, chat, admin panels, client portals, on-device AI).\n\nContact: hello@hecticsoftware.com · Start a project: ${site}/start/ · Full site knowledge as plain text: ${site}/kb.txt\n\n## Work\n${work.map(w => `- [${w.name}](${site}/work/${w.id}/): ${w.blurb} (${w.stage}; ${w.platforms.join(", ")})`).join("\n")}\n`);
 console.log("generated", work.length, "pages");
