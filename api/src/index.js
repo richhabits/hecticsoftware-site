@@ -36,6 +36,7 @@ export default {
       if (route === "GET /api/portal") return await portal(url, env, cors);
       if (route === "POST /api/portal/message") return await clientMessage(req, env, cors);
       if (route === "POST /api/portal/file") return await clientFile(req, env, cors);
+      if (route === "POST /api/portal/delete") return await deleteProjects(req, env, cors);
       if (route === "POST /api/ask") return await ask(req, env, cors);
       if (route === "GET /api/file") return await getFile(url, env, req);
       if (url.pathname.startsWith("/api/admin")) return await admin(req, url, env, cors);
@@ -130,6 +131,34 @@ async function clientFile(req, env, cors) {
   if (count >= 30) return json({ error: "too_many_files" }, 400, cors);
   try { await storeFile(env, p.id, form.get("file"), "client"); } catch (e) { return json({ error: e.message }, 400, cors); }
   return json({ ok: true }, 200, cors);
+}
+
+// App Store 5.1.1(v): deleting the account in the app deletes what the studio holds for those projects.
+// Briefs that never became work are erased; contracted work keeps an anonymised record and is flagged for Romeo.
+async function deleteProjects(req, env, cors) {
+  if (!(await limit(env, `del:${ip(req)}`, 10, 3600))) return json({ error: "rate_limited" }, 429, cors);
+  const b = await req.json();
+  const tokens = (Array.isArray(b.tokens) ? b.tokens : []).filter(t => typeof t === "string").slice(0, 50);
+  let erased = 0, anonymised = 0;
+  for (const t of tokens) {
+    const p = await projectFromToken(env, t);
+    if (!p) continue;
+    const files = (await env.DB.prepare("SELECT id FROM files WHERE project_id = ?").bind(p.id).all()).results;
+    for (const f of files) await env.FILES.delete(`f:${p.id}:${f.id}`);
+    const contracted = ["accepted", "in_progress", "beta", "live"].includes(p.status);
+    await env.DB.batch([
+      env.DB.prepare("DELETE FROM files WHERE project_id = ?").bind(p.id),
+      env.DB.prepare("DELETE FROM messages WHERE project_id = ?").bind(p.id),
+      contracted
+        ? env.DB.prepare("UPDATE projects SET name = 'Deleted client', email = '', phone = '', company = '', description = '', links = '', token_hash = ?, updated_at = ? WHERE id = ?").bind("deleted:" + rid(16), Date.now(), p.id)
+        : env.DB.prepare("DELETE FROM projects WHERE id = ?").bind(p.id),
+      contracted
+        ? env.DB.prepare("INSERT INTO activity (id, ref_type, ref_id, kind, body, created_at) VALUES (?,?,?,?,?,?)").bind(rid(10), "project", p.id, "note", "Client deleted their account in the app: contact details, messages and files erased.", Date.now())
+        : env.DB.prepare("DELETE FROM activity WHERE ref_type = 'project' AND ref_id = ?").bind(p.id),
+    ]);
+    contracted ? anonymised++ : erased++;
+  }
+  return json({ ok: true, erased, anonymised }, 200, cors);
 }
 
 async function getFile(url, env, req) {
