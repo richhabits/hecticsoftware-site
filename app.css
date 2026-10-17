@@ -1,7 +1,7 @@
 :root{--bg:#f6f5f2;--panel:#ffffff;--line:#d8d5cf;--fg:#0d0d0d;--muted:#6b6966;--accent:#ff4d2e;--display:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--display);-webkit-font-smoothing:antialiased}
 .wrap{max-width:860px;margin:0 auto;padding:40px max(20px,env(safe-area-inset-left,0px)) 80px max(20px,env(safe-area-inset-right,0px))}
-a{color:var(--fg)}h1{font:700 clamp(30px,4.4vw,52px)/1.05 var(--display);letter-spacing:-.025em;margin:8px 0 14px}
+a{color:var(--fg)}h1,.step h2{font:700 clamp(30px,4.4vw,52px)/1.05 var(--display);letter-spacing:-.025em;margin:8px 0 14px}
 .mono{font:600 13px/1.4 var(--display);color:var(--muted)}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid var(--fg);padding-bottom:12px}.top a{text-decoration:none;font:900 24px/1 Archivo,system-ui,sans-serif;font-stretch:112%;letter-spacing:-.05em;color:#ff4d2e}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;gap:14px;margin-top:16px}
