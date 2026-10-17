@@ -1,8 +1,8 @@
 :root{--bg:#f6f5f2;--panel:#ffffff;--line:#d8d5cf;--fg:#0d0d0d;--muted:#6b6966;--accent:#ff4d2e;--display:"Archivo",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--display);-webkit-font-smoothing:antialiased}
 .wrap{max-width:860px;margin:0 auto;padding:40px max(20px,env(safe-area-inset-left,0px)) 80px max(20px,env(safe-area-inset-right,0px))}
-a{color:var(--fg)}h1{font:400 clamp(40px,7vw,76px)/.92 "Bodoni Moda",Didot,Georgia,serif;letter-spacing:-.03em;margin:8px 0 14px}
-.mono{font:500 12px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+a{color:var(--fg)}h1{font:700 clamp(30px,4.4vw,52px)/1.05 var(--display);letter-spacing:-.025em;margin:8px 0 14px}
+.mono{font:600 13px/1.4 var(--display);color:var(--muted)}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;border-bottom:1px solid var(--fg);padding-bottom:12px}.top a{text-decoration:none;font:900 24px/1 Archivo,system-ui,sans-serif;font-stretch:112%;letter-spacing:-.05em;color:#ff4d2e}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;gap:14px;margin-top:16px}
 label{display:grid;gap:6px;font-size:14px;color:var(--muted)}
@@ -17,7 +17,7 @@ textarea{min-height:140px;resize:vertical}
 .progress{height:4px;background:var(--line);border-radius:4px}.progress i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .4s}
 .msg{padding:12px 14px;border-radius:14px;max-width:85%;white-space:pre-wrap}.msg.client{justify-self:end;background:#ecebe7}.msg.hectic{justify-self:start;background:rgba(255,77,46,.12)}
 .note{font-size:14px;color:var(--muted)}.err{color:#ff8a75;font-size:14px}.ok{color:#7ee2a8}
-table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font:500 11px var(--mono);text-transform:uppercase}
-.pill{font:500 11px var(--mono);text-transform:uppercase;padding:4px 8px;border-radius:6px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font:600 12px var(--display)}
+.pill{font:600 12px var(--display);padding:4px 8px;border-radius:6px;border:1px solid var(--line)}
 @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}.step{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
 @media (prefers-reduced-motion:reduce){.step{animation:none}}
