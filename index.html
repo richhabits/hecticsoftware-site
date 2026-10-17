@@ -24,7 +24,7 @@
 <meta name="apple-mobile-web-app-title" content="Hectic Software"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="format-detection" content="telephone=no">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:url" content="https://hecticsoftware.com/">
-<link rel="preload" href="/fonts/BodoniModa.ttf" as="font" type="font/ttf" crossorigin>
+<link rel="preload" href="/fonts/Archivo.ttf" as="font" type="font/ttf" crossorigin>
 <link rel="stylesheet" href="/fonts/fonts.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[
 {"@type":"Organization","@id":"https://hecticsoftware.com/#org","name":"Hectic Software Ltd","legalName":"Hectic Software Ltd","url":"https://hecticsoftware.com","logo":"https://hecticsoftware.com/icon-512.png","email":"hello@hecticsoftware.com","identifier":{"@type":"PropertyValue","propertyID":"Companies House number","value":"17514067"},"address":{"@type":"PostalAddress","streetAddress":"Unit 1c Sandown Road Industrial Estate","addressLocality":"Watford","postalCode":"WD24 7UB","addressCountry":"GB"},"founder":{"@type":"Person","name":"Romeo Valentine","jobTitle":"Founder & Lead Engineer"}},
@@ -50,14 +50,15 @@
   --brand:#ff4d2e;      /* wordmark + large shapes only */
   --accent:#cc3518;     /* text + buttons (AA on paper and with white text) */
   --on-accent:#fff;
-  --display:"Bodoni Moda","Didot","Bodoni 72",Georgia,serif;
+  --display:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
+  --teal:#0e7c7b;       /* complementary second colour: live, good news */
   --sans:"Archivo","Helvetica Neue",Arial,system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,monospace;
   --gut:max(16px,env(safe-area-inset-left,0px));
   --r:18px;
   color-scheme:light dark;
 }
-@media (prefers-color-scheme:dark){:root{--paper:#0d0d0d;--card:#181716;--ink:#f6f5f2;--muted:#b3afa7;--rule:#2e2c29;--accent:#ff7a5c;--on-accent:#0d0d0d}}
+@media (prefers-color-scheme:dark){:root{--teal:#5fd4cc;--paper:#0d0d0d;--card:#181716;--ink:#f6f5f2;--muted:#b3afa7;--rule:#2e2c29;--accent:#ff7a5c;--on-accent:#0d0d0d}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:72px}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
@@ -69,8 +70,8 @@ a{color:inherit}
 .skip{position:absolute;left:-9999px;top:8px;z-index:100;background:var(--ink);color:var(--paper);padding:12px 16px}
 .skip:focus{left:8px}
 h1,h2,h3{margin:0;font-weight:400}
-h2{font:400 clamp(34px,5.2vw,60px)/1.04 var(--display);letter-spacing:-.025em;max-width:20ch}
-h3{font:700 20px/1.25 var(--sans);letter-spacing:-.01em}
+h2{font:700 clamp(26px,3.2vw,40px)/1.1 var(--display);letter-spacing:-.025em;max-width:22ch}
+h3{font:600 18px/1.3 var(--sans);letter-spacing:-.005em}
 p{margin:0}
 .eyebrow{font:600 13px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
 .lead{font-size:clamp(18px,1.6vw,20px);color:var(--muted);max-width:58ch;margin-top:16px}
@@ -99,11 +100,11 @@ section+section{border-top:1px solid var(--rule)}
 /* Hero */
 .hero{overflow-x:clip;padding-block:clamp(40px,7vw,96px) clamp(56px,8vw,104px);border:0}
 .hero .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,5vw,72px);align-items:center}
-.hero h1{font:400 clamp(44px,7.4vw,100px)/.98 var(--display);letter-spacing:-.035em}
-.hero h1 em{font-style:italic;color:var(--accent)}
+.hero h1{font:700 clamp(34px,4.4vw,60px)/1.02 var(--display);letter-spacing:-.03em}
+.hero h1 em{font-style:normal;color:var(--accent)}
 .hero .lead{color:var(--ink);font-size:clamp(18px,1.9vw,22px);margin-top:22px}
 .ticks{list-style:none;padding:0;margin:28px 0 0;display:flex;flex-wrap:wrap;gap:8px 22px;color:var(--muted);font-size:15px}
-.ticks li::before{content:"✓";color:var(--accent);font-weight:700;margin-right:8px}
+.ticks li::before{content:"✓";color:var(--teal);font-weight:700;margin-right:8px}
 .phones{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.4vw,16px);align-items:end}
 .phones::before{content:"";position:absolute;inset:18% -4% -6% -4%;background:var(--brand);border-radius:28px;z-index:-1}
 .phones img{border-radius:clamp(14px,2vw,26px);box-shadow:0 18px 40px -18px rgba(0,0,0,.45);background:#000}
@@ -113,8 +114,8 @@ section+section{border-top:1px solid var(--rule)}
 /* What we build */
 .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:44px}
 .card{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:28px;min-width:0}
-.card .tag{font:500 13px var(--mono);color:var(--muted)}
-.card h3{font:400 32px/1.1 var(--display);margin:10px 0 12px}
+.card .tag{font:600 13px var(--sans);color:var(--muted)}
+.card h3{font:700 22px/1.2 var(--display);letter-spacing:-.015em;margin:10px 0 12px}
 .card ul{margin:16px 0 0;padding-left:20px;color:var(--muted)}
 .card li+li{margin-top:4px}
 @media (max-width:900px){.cards{grid-template-columns:1fr}}
@@ -122,16 +123,22 @@ section+section{border-top:1px solid var(--rule)}
 /* Work */
 .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px;margin-top:44px}
-.tile{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--rule);border-radius:var(--r);overflow:hidden;text-decoration:none;min-width:0;transition:transform .2s,box-shadow .2s}
+.tile{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--rule);border-radius:24px;overflow:hidden;text-decoration:none;min-width:0;transition:transform .2s,box-shadow .2s}
 .tile:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px rgba(0,0,0,.4)}
-.tile .pic{aspect-ratio:4/3;background:color-mix(in srgb,var(--ink) 6%,var(--card));display:grid;place-items:center;overflow:hidden}
+.tile .pic{aspect-ratio:4/3;background:radial-gradient(120% 90% at 20% 0%,color-mix(in srgb,var(--brand) 16%,transparent),transparent 60%),radial-gradient(120% 90% at 100% 100%,color-mix(in srgb,var(--teal) 16%,transparent),transparent 60%),color-mix(in srgb,var(--ink) 4%,var(--card));display:grid;place-items:center;overflow:hidden;position:relative}
 .tile .pic img{width:100%;height:100%;object-fit:cover}
-.tile .pic.phone img{width:auto;height:88%;object-fit:contain;border-radius:12px;margin-top:12%}
-.tile .pic.word{background:var(--brand);color:#0d0d0d;font:italic 400 clamp(32px,4vw,44px)/1 var(--display);padding:16px;text-align:center}
+@media (min-width:1100px){#work .grid:first-of-type .tile:first-child{grid-column:span 2}#work .grid:first-of-type .tile:first-child .pic{aspect-ratio:8/3}#work .grid.three{grid-template-columns:repeat(3,1fr)}}
+.tile .pic.phone img{width:auto;height:90%;object-fit:contain;border-radius:18px;margin-top:14%;box-shadow:0 24px 40px -20px rgba(0,0,0,.45)}
+.tile .pic.word{color:var(--ink);font:700 clamp(22px,2.6vw,30px)/1 var(--display);letter-spacing:-.02em;padding:16px;text-align:center}
+.tile .pic.word::after{content:"";position:absolute;inset:auto 20% 16% 20%;height:1px;background:var(--rule)}
 .tile .txt{padding:18px 20px 22px}
-.tile .meta{font:500 12px var(--mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.tile .meta{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;font:600 13px/1.3 var(--sans);color:var(--muted)}
+.tile .st{display:inline-flex;align-items:center;gap:6px;color:var(--ink)}.tile .st::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.tile .st.wip::before{background:var(--brand)}.tile .dev{display:inline-flex;gap:6px;color:var(--muted)}.tile .dev svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tile .meta .live{font-weight:500}
 .tile h3{margin:6px 0 6px}
 .tile p{color:var(--muted);font-size:15px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .sub{margin-top:56px;font:600 15px var(--sans)}
 .more{margin-top:20px;color:var(--muted)}
 .more a{color:var(--accent);font-weight:600}
@@ -139,7 +146,7 @@ section+section{border-top:1px solid var(--rule)}
 /* Steps */
 .steps{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;counter-reset:s}
 .steps li{counter-increment:s;border-top:3px solid var(--ink);padding-top:18px;min-width:0}
-.steps li::before{content:"0" counter(s);font:500 14px var(--mono);color:var(--accent)}
+.steps li::before{content:"0" counter(s);font:700 14px var(--sans);font-variant-numeric:tabular-nums;color:var(--accent)}
 .steps h3{margin:8px 0 6px}
 .steps p{color:var(--muted);font-size:15px}
 @media (max-width:1000px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -149,9 +156,10 @@ section+section{border-top:1px solid var(--rule)}
 .promise{background:#0d0d0d;color:#f6f5f2;border:0}
 .promise .eyebrow{color:#ff7a5c}
 .promise .lead{color:#c9c5bd}
+.plist li:last-child:nth-child(3n+1){grid-column:1/-1}
 .plist{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1px;background:#2e2c29;border:1px solid #2e2c29;border-radius:var(--r);overflow:hidden}
 .plist li{background:#0d0d0d;padding:26px}
-.plist b{display:block;font:400 24px/1.2 var(--display);margin-bottom:8px}
+.plist b{display:block;font:600 18px/1.3 var(--display);letter-spacing:-.01em;margin-bottom:8px}
 .plist span{color:#c9c5bd;font-size:15px}
 
 /* App */
@@ -164,7 +172,7 @@ section+section{border-top:1px solid var(--rule)}
 .mock{background:var(--card);border:1px solid var(--rule);border-radius:32px;padding:24px;max-width:380px;justify-self:center;width:100%;box-shadow:0 30px 60px -36px rgba(0,0,0,.5)}
 .mock .row{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font-size:15px}
 .mock .row:last-child{border:0}
-.mock .row i{font-style:normal;font:500 13px var(--mono);color:var(--accent);white-space:nowrap}
+.mock .row i{font-style:normal;font:600 13px var(--sans);color:var(--teal);white-space:nowrap}
 .mock .top{font:900 22px/1 var(--sans);letter-spacing:-.04em;color:var(--brand);margin-bottom:8px}
 .mock .top span{color:var(--ink)}
 @media (max-width:860px){.app .wrap{grid-template-columns:1fr}}
@@ -183,7 +191,7 @@ section+section{border-top:1px solid var(--rule)}
 .contact h2{margin:0 auto}
 .contact .lead{margin-left:auto;margin-right:auto}
 .contact .ctas{justify-content:center}
-.mail{display:inline-flex;align-items:center;min-height:44px;margin-top:24px;font:500 clamp(18px,2.4vw,26px) var(--mono);color:var(--accent);word-break:break-all}
+.mail{display:inline-flex;align-items:center;min-height:44px;margin-top:24px;font:700 clamp(18px,2.4vw,26px) var(--sans);letter-spacing:-.01em;color:var(--accent);word-break:break-all}
 
 footer{border-top:1px solid var(--rule);padding-block:28px calc(96px + env(safe-area-inset-bottom,0px));font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px}
@@ -195,6 +203,17 @@ button.hs-chat-btn{min-height:48px;border-radius:999px;padding:12px 20px;backgro
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+<symbol id="i-tab" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2.5"/><path d="M11 18h2"/></symbol>
+<symbol id="i-mac" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+<symbol id="i-watch" viewBox="0 0 24 24"><rect x="6.5" y="6" width="11" height="12" rx="3"/><path d="M9 6l.6-3h4.8L15 6M9 18l.6 3h4.8L15 18"/></symbol>
+<symbol id="i-tv" viewBox="0 0 24 24"><rect x="2.5" y="4.5" width="19" height="12.5" rx="2"/><path d="M8 20.5h8"/></symbol>
+<symbol id="i-vision" viewBox="0 0 24 24"><path d="M3 12c0-3 2.5-5 9-5s9 2 9 5-2 5-4.5 5c-2 0-3-2-4.5-2s-2.5 2-4.5 2C5 17 3 15 3 12z"/></symbol>
+<symbol id="i-droid" viewBox="0 0 24 24"><path d="M4 17a8 8 0 0116 0zM7.5 9.5L5.5 6.5M16.5 9.5l2-3"/><circle cx="9" cy="13.5" r=".9" fill="currentColor" stroke="none"/><circle cx="15" cy="13.5" r=".9" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.5 5.7 3.5 9s-1 6.3-3.5 9c-2.5-2.7-3.5-5.7-3.5-9s1-6.3 3.5-9z"/></symbol>
+</defs></svg>
+
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar"><div class="wrap">
   <a class="mark" href="/" aria-label="Hectic Software, home">HECTIC<span>.</span></a>
@@ -234,19 +253,19 @@ button.hs-chat-btn{min-height:48px;border-radius:999px;padding:12px 20px;backgro
 <section id="work" aria-labelledby="work-h"><div class="wrap">
   <div class="head"><div><p class="eyebrow">Selected work</p><h2 id="work-h">Live in people's hands.</h2></div><a class="btn ghost" href="/work/">See all work</a></div>
   <div class="grid">
-    <a class="tile" href="/work/streamall/"><div class="pic phone"><img src="/img/show/sa-iphone.webp" width="507" height="1100" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">Live · App Store</p><h3>StreamAll</h3><p>Your playlists turned into television, on six Apple screens.</p></div></a>
-    <a class="tile" href="/work/piing/"><div class="pic phone"><img src="/img/show/pi-iphone.webp" width="507" height="1100" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">Live · App Store</p><h3>PIING</h3><p>Private messenger with encrypted chats, groups, stories and calls.</p></div></a>
-    <a class="tile" href="/work/radiobox/"><div class="pic word" aria-hidden="true">RadioBox</div><div class="txt"><p class="meta">Live · App Store &amp; Google Play</p><h3>RadioBox</h3><p>Radio apps for iPhone and Android.</p></div></a>
-    <a class="tile" href="/work/hectic-radio/"><div class="pic"><img src="/img/site-radio.webp" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">Live · Web &amp; iPhone</p><h3>Hectic Radio</h3><p>Station site, listener app and a live DJ booth.</p></div></a>
-    <a class="tile" href="/work/main-line/"><div class="pic"><img src="/img/site-mainline.webp" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">Live · Web &amp; iPhone</p><h3>Main Line Café</h3><p>Website, ordering, a till, Apple Pay and a Wallet loyalty card for a café.</p></div></a>
-    <a class="tile" href="/work/bite-club-ldn/"><div class="pic"><img src="/img/biteclub.webp" width="1800" height="1013" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">Live · Web &amp; iPhone</p><h3>Bite Club LDN</h3><p>Custom grillz designed in 3D, booked and followed from wax to fit.</p></div></a>
-    <a class="tile" href="/work/sam/"><div class="pic phone"><img src="/img/show/sam-iphone.webp" width="506" height="1100" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">Live · Mac, iPhone, iPad, Watch</p><h3>SAM</h3><p>A free, private, local-first assistant that runs on your own devices.</p></div></a>
+    <a class="tile" href="/work/streamall/"><div class="pic phone"><img src="/img/show/sa-iphone.webp" width="507" height="1100" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st">Live</span><span class="dev" title="App Store"><svg aria-hidden="true"><use href="#i-phone"/></svg></span><span class="sr">App Store</span></p><h3>StreamAll</h3><p>Your playlists turned into television, on six Apple screens.</p></div></a>
+    <a class="tile" href="/work/piing/"><div class="pic phone"><img src="/img/show/pi-iphone.webp" width="507" height="1100" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st">Live</span><span class="dev" title="App Store"><svg aria-hidden="true"><use href="#i-phone"/></svg></span><span class="sr">App Store</span></p><h3>PIING</h3><p>Private messenger with encrypted chats, groups, stories and calls.</p></div></a>
+    <a class="tile" href="/work/radiobox/"><div class="pic word" aria-hidden="true">RadioBox</div><div class="txt"><p class="meta"><span class="st">Live</span><span class="dev" title="App Store &amp; Google Play"><svg aria-hidden="true"><use href="#i-droid"/></svg><svg aria-hidden="true"><use href="#i-phone"/></svg></span><span class="sr">App Store &amp; Google Play</span></p><h3>RadioBox</h3><p>Radio apps for iPhone and Android.</p></div></a>
+    <a class="tile" href="/work/hectic-radio/"><div class="pic"><img src="/img/site-radio.webp" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st">Live</span><span class="dev" title="Web &amp; iPhone"><svg aria-hidden="true"><use href="#i-phone"/></svg><svg aria-hidden="true"><use href="#i-web"/></svg></span><span class="sr">Web &amp; iPhone</span></p><h3>Hectic Radio</h3><p>Station site, listener app and a live DJ booth.</p></div></a>
+    <a class="tile" href="/work/main-line/"><div class="pic"><img src="/img/site-mainline.webp" width="1600" height="1000" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st">Live</span><span class="dev" title="Web &amp; iPhone"><svg aria-hidden="true"><use href="#i-phone"/></svg><svg aria-hidden="true"><use href="#i-web"/></svg></span><span class="sr">Web &amp; iPhone</span></p><h3>Main Line Café</h3><p>Website, ordering, a till, Apple Pay and a Wallet loyalty card for a café.</p></div></a>
+    <a class="tile" href="/work/bite-club-ldn/"><div class="pic"><img src="/img/biteclub.webp" width="1800" height="1013" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st">Live</span><span class="dev" title="Web &amp; iPhone"><svg aria-hidden="true"><use href="#i-phone"/></svg><svg aria-hidden="true"><use href="#i-web"/></svg></span><span class="sr">Web &amp; iPhone</span></p><h3>Bite Club LDN</h3><p>Custom grillz designed in 3D, booked and followed from wax to fit.</p></div></a>
+    <a class="tile" href="/work/sam/"><div class="pic phone"><img src="/img/show/sam-iphone.webp" width="506" height="1100" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st">Live</span><span class="dev" title="Mac, iPhone, iPad, Watch"><svg aria-hidden="true"><use href="#i-phone"/></svg><svg aria-hidden="true"><use href="#i-tab"/></svg><svg aria-hidden="true"><use href="#i-mac"/></svg><svg aria-hidden="true"><use href="#i-watch"/></svg></span><span class="sr">Mac, iPhone, iPad, Watch</span></p><h3>SAM</h3><p>A free, private, local-first assistant that runs on your own devices.</p></div></a>
   </div>
   <p class="sub">In production</p>
-  <div class="grid">
-    <a class="tile" href="/work/volero/"><div class="pic"><img src="/img/show/vo-mac.webp" width="1500" height="938" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">In review · Six Apple platforms</p><h3>Volero</h3><p>Your Mac in your pocket. Fast, private, paired through iCloud.</p></div></a>
-    <a class="tile" href="/work/hectictv/"><div class="pic phone"><img src="/img/hectictv-iphone.webp" width="828" height="1800" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta">In review · iPhone, Apple TV, Vision Pro</p><h3>HecticTV</h3><p>Shows and publishing on the big screen.</p></div></a>
-    <a class="tile" href="/work/fresh-face-london/"><div class="pic word" aria-hidden="true">Fresh Face</div><div class="txt"><p class="meta">Beta · iPhone, iPad, Watch</p><h3>Fresh Face London</h3><p>Clinic app with booking, rewards and on-device AI.</p></div></a>
+  <div class="grid three">
+    <a class="tile" href="/work/volero/"><div class="pic"><img src="/img/show/vo-mac.webp" width="1500" height="938" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st wip">In review</span><span class="dev" title="Six Apple platforms"><svg aria-hidden="true"><use href="#i-phone"/></svg><svg aria-hidden="true"><use href="#i-tab"/></svg><svg aria-hidden="true"><use href="#i-mac"/></svg><svg aria-hidden="true"><use href="#i-watch"/></svg><svg aria-hidden="true"><use href="#i-tv"/></svg><svg aria-hidden="true"><use href="#i-vision"/></svg></span><span class="sr">Six Apple platforms</span></p><h3>Volero</h3><p>Your Mac in your pocket. Fast, private, paired through iCloud.</p></div></a>
+    <a class="tile" href="/work/hectictv/"><div class="pic phone"><img src="/img/hectictv-iphone.webp" width="828" height="1800" alt="" loading="lazy" decoding="async"></div><div class="txt"><p class="meta"><span class="st wip">In review</span><span class="dev" title="iPhone, Apple TV, Vision Pro"><svg aria-hidden="true"><use href="#i-phone"/></svg><svg aria-hidden="true"><use href="#i-tv"/></svg><svg aria-hidden="true"><use href="#i-vision"/></svg></span><span class="sr">iPhone, Apple TV, Vision Pro</span></p><h3>HecticTV</h3><p>Shows and publishing on the big screen.</p></div></a>
+    <a class="tile" href="/work/fresh-face-london/"><div class="pic word" aria-hidden="true">Fresh Face</div><div class="txt"><p class="meta"><span class="st wip">Beta</span><span class="dev" title="iPhone, iPad, Watch"><svg aria-hidden="true"><use href="#i-phone"/></svg><svg aria-hidden="true"><use href="#i-tab"/></svg><svg aria-hidden="true"><use href="#i-watch"/></svg></span><span class="sr">iPhone, iPad, Watch</span></p><h3>Fresh Face London</h3><p>Clinic app with booking, rewards and on-device AI.</p></div></a>
   </div>
   <p class="more">Concepts in the sketchbook: <a href="/work/blam/">BLAM</a>, <a href="/work/hecticsuite/">HecticSuite</a> and <a href="/work/hecticmag/">HecticMag</a>.</p>
 </div></section>
