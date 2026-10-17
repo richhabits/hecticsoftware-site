@@ -41,7 +41,7 @@
 <div class="row" style="margin-top:20px;justify-content:space-between"><button type="button" class="btn ghost" id="back" hidden>Back</button><span class="err" id="err" role="alert"></span><button type="button" class="btn" id="next">Next</button></div>
 </form>
 <section id="done" class="step" hidden><h1>Brief received.</h1><div class="card"><p>Your reference is <b id="ref"></b>. Romeo will reply within one working day.</p><p class="note">Bookmark your private project page to track progress, read the quote, message us and add files:</p><a class="btn" id="portalLink" href="#">Open my project page</a><p class="note">Keep this link private: anyone with it can see your project.</p></div></section>
-</div><script src="/chat.js?v=3"></script><script>
+</div><script src="/chat.js?v=5"></script><script>
 const f=document.getElementById('f'),steps=[...f.querySelectorAll('.step')];let s=0;
 const err=document.getElementById('err');
 function show(){steps.forEach((el,i)=>el.hidden=i!==s);document.getElementById('back').hidden=s===0;document.getElementById('next').textContent=s===steps.length-1?'Send brief':'Next';

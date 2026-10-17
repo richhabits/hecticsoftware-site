@@ -1,0 +1,164 @@
+SITE: https://hecticsoftware.com (home, /work/ for every project, /start/ to brief a project, /privacy/).
+HOME PAGE:
+App studio · London
+We build Apple and Android apps.
+Hectic Software designs, builds and launches native apps for businesses and founders, plus the website, payments, booking and admin behind them. You work directly with Romeo, the founder who builds every app himself.
+Start a project Get the Hectic app
+Fixed written quote
+Reply within one working day
+You own the code
+What we build
+One studio for your whole app.
+Native means built with each platform's own tools, so your app is fast, feels right in the hand and is ready for every new version of iOS and Android.
+Swift · SwiftUI
+Apple
+Apps for iPhone and iPad, with versions for Mac, Apple Watch, Apple TV and Vision Pro when you want them.
+Widgets, Siri and Live Activities
+On-device AI that keeps data on the phone
+App Store launch
+Kotlin · Material 3
+Android
+Apps for Android phones and tablets that follow Google's own design system, so they feel at home.
+Built natively, not a web wrapper
+Matches your Apple app feature for feature
+Google Play launch
+Websites · back ends
+Behind the app
+Everything your app needs to run a business, built by the same person.
+Website, accounts and sign-in
+Payments, booking and chat
+Admin console for you and your team
+Selected work
+Live in people's hands.
+See all work
+Live App Store
+StreamAll
+Your playlists turned into television, on six Apple screens.
+Live App Store
+PIING
+Private messenger with encrypted chats, groups, stories and calls.
+RadioBox
+Live App Store & Google Play
+RadioBox
+Radio apps for iPhone and Android.
+Live Web & iPhone
+Hectic Radio
+Station site, listener app and a live DJ booth.
+Live Web & iPhone
+Main Line Café
+Website, ordering, a till, Apple Pay and a Wallet loyalty card for a café.
+Live Web & iPhone
+Bite Club LDN
+Custom grillz designed in 3D, booked and followed from wax to fit.
+Live Mac, iPhone, iPad, Watch
+SAM
+A free, private, local-first assistant that runs on your own devices.
+In production
+In review Six Apple platforms
+Volero
+Your Mac in your pocket. Fast, private, paired through iCloud.
+In review iPhone, Apple TV, Vision Pro
+HecticTV
+Shows and publishing on the big screen.
+Fresh Face
+Beta iPhone, iPad, Watch
+Fresh Face London
+Clinic app with booking, rewards and on-device AI.
+Concepts in the sketchbook: BLAM , HecticSuite and HecticMag .
+How it works
+From first call to launch, in five steps.
+Talk
+Tell us what you need. You get a reply within one working day.
+Quote
+A fixed written quote listing exactly what's included.
+Design
+Screens and flows designed for Apple and Android.
+Build & beta
+A working beta on your phone early, then new versions as we go.
+Launch & care
+App Store and Google Play release, then updates and new features.
+The Hectic promise
+Everything people hate about developers, fixed.
+No hidden costs A fixed written quote that lists exactly what's included.
+No hand-offs You work directly with Romeo, the engineer building your app, from first call to launch.
+No ghosting Replies within one working day, on PIING and in the Hectic app.
+No waiting months A working beta on your own phone early in the build.
+No lock-in On completion the app, its store listing and the source code belong to you.
+No abandonment Care plans cover updates for each new iOS and Android, fixes and new features.
+No tracking The Hectic app has no ads and no tracking, and never sells your data.
+The Hectic app
+Your project, in your pocket.
+Clients work with the studio through the Hectic app for iPhone, iPad and Android.
+Estimator Get a feel for scope before we talk.
+Briefs Send your idea, screens and files in one place.
+Project tracking See status, quote and every dated update.
+Chat on PIING Message the studio directly at @hectic.
+Start a project My project
+HECTIC .
+Brief sent DONE
+Fixed quote DONE
+Design DONE
+Beta on your phone NOW
+Launch NEXT
+FAQ
+Good questions.
+How much does an app cost? It depends on what the app needs to do. After a short call you get a fixed written quote that lists exactly what's included, so there are no surprises.
+Do you build for both iPhone and Android? Yes. Apple apps are built natively in Swift and SwiftUI, Android apps natively in Kotlin with Material 3. Each feels at home on its platform.
+Who will I work with? Romeo Valentine, the founder, who builds every app himself. There are no account managers in between.
+How soon can I see something? You get a working beta on your own phone early in the build, then new versions as the work progresses.
+Do I own the app and the code? Yes. On completion the app, its store listing and the source code belong to you.
+What happens after launch? Care plans cover updates for each new version of iOS and Android, fixes and new features.
+Contact
+Got an app in mind?
+Tell us about it. You'll hear back within one working day.
+Start a project
+hello@hecticsoftware.com
+© 2026 Hectic Software Ltd
+All work · Privacy · My project
+Hectic Software Ltd · Registered in England & Wales, company number 17514067 · Registered office: Unit 1c Sandown Road Industrial Estate, Watford WD24 7UB
+
+ALL WORK (from the portfolio):
+- StreamAll (Streaming; App Store; iPhone,iPad,Mac,Apple TV,Apple Watch,Vision Pro): Your playlists turned into television, on six Apple screens. StreamAll turns your own playlists into a TV guide with channels, favourites and what's on now. It syncs through iCloud so your channels follow you from iPhone to Apple TV, Mac, iPad, Watch and Vision Pro, and it ships in 36 languages. Link: https://streamall.app
+- PIING (Messaging; App Store; iPhone,iPad,Web): Private messenger: encrypted chats, groups, stories and calls, with no ads or trackers. PIING is a private messenger with end-to-end encrypted chats, groups, stories and native calling through CallKit. There are no ads and no trackers, and the back end, admin console and website were all built by the studio. Link: https://www.piingapp.co.uk
+- Hectic Radio (Broadcast; Live; Web,iPhone): Station site, listener app and a live DJ booth for London's broadcast network. A station website, a listener app and a DJ booth for going live, with chat for listeners. Built so the station owns its audience rather than renting it from a platform. Link: https://radiohectic.com
+- Main Line Café (Hospitality; Live; Web,iPhone): Website, ordering, a till, Apple Pay and a Wallet loyalty card for a Watford café. An independent café's whole system: a website, online ordering, a till, Apple Pay and a loyalty card that lives in Apple Wallet, with no marketplace fees. Link: https://mainlineprovisions.co.uk
+- Forged Landscapes (Trades; Live; Web): Landscaping website with a project planner and client portal. A landscaping company's website with a project planner that turns enquiries into briefs, and a client portal for quotes, files and messages. Link: https://forgedlandscapes.vercel.app
+- Sourced London (Automotive; Live; Web): Luxury vehicle sourcing and sales. A showroom website for a luxury vehicle sourcing business, built to be fast, quiet and premium. Link: https://sourcedlondon.vercel.app
+- SAM (AI assistant; Live; Mac,iPhone,iPad,Apple Watch): A free, private, local-first assistant that runs on your own devices. SAM is an AI assistant that runs on your own Mac and devices, keeps your data local, and actually does the work rather than just chatting about it.
+- Divine (Web app; Live; Web): A web app built and run by the studio. A web app designed, built and hosted by Hectic Software.
+- Bite Club LDN (Luxury retail; Live; Web,iPhone): Custom grillz designed in 3D, booked and followed from wax to snap-fit, in 36 languages. A luxury grillz brand's website and iPhone app: design in 3D, book an impression, and follow your piece from wax to snap-fit. Available in 36 languages, with the iPhone app in beta. Link: https://thebiteclubldn.com
+- DreamSpire Store (Fashion; Live; Web): Streetwear storefront and shop back end. A streetwear label's storefront and the shop system behind it.
+- RadioBox (Radio; App & Play Store; iPhone,Android): Radio apps for iPhone and Android. Radio apps published on both the App Store and Google Play.
+- Volero (Remote desktop; In review; iPhone,iPad,Mac,Apple Watch,Apple TV,Vision Pro): Your Mac in your pocket. Fast, private, paired through iCloud. Volero puts your Mac on your iPhone, iPad, Watch, Apple TV and Vision Pro. It pairs through iCloud with no account to make, and keeps the connection fast and private.
+- HecticTV (Video; In review; iPhone,Apple TV,Vision Pro): Shows and publishing for iPhone, Apple TV and Vision Pro. A video platform with shows, playlists and publishing tools, built natively for iPhone, Apple TV and Vision Pro.
+- Fresh Face London (Health & beauty; Beta; iPhone,iPad,Apple Watch): Clinic app with a booking engine, rewards and on-device AI. An aesthetics clinic's app with its own booking engine, a clinic dashboard on iPad, rewards and an on-device AI assistant. Now in beta.
+- DreamSpire Native (Fashion; Building; iPhone,iPad,Mac,Vision Pro): A native shopping app for iPhone, iPad, Mac and Vision Pro. The DreamSpire storefront rebuilt as a native shopping app across Apple's screens.
+- FlipIt (Finance; Building; iPhone,Web): A paper-trading discipline app and site. Practise trading discipline with paper money before risking real money.
+- StreamAll everywhere (Streaming; Building; Android TV,Fire TV,Roku,Samsung,LG,Web): StreamAll for Android TV, Fire TV, Roku, Samsung, LG and the web. Taking StreamAll beyond Apple: native apps for Android TV, Fire TV, Roku, Samsung and LG televisions, plus the web.
+- Ghost Detail (Automotive; Building; Web): A car detailing website. A website for a car detailing business.
+- DJ Danny Hectic B (Artist; Building; Web): An artist website. A home on the web for a DJ and artist.
+- HecticBullz (Bookings; Building; Web): A booking website. A booking website.
+- BLAM (Music; Concept; iPhone): Music recognition tuned to grime, drill, garage and drum & bass. A concept for music recognition tuned to the UK underground.
+- HecticSuite (Platform; Concept; Web,Mac): A self-hosted hub and admin for every Hectic brand. A concept for one self-hosted admin and publishing hub across the Hectic group.
+- HecticMag (Publishing; Concept; iPhone,iPad): A digital magazine for the Hectic world. The magazine you're reading, as an app.
+
+PRIVACY (summary of https://hecticsoftware.com/privacy/):
+Privacy policy Updated 15 October 2026
+Privacy.
+Short version: we collect only what we need to build your app with you, we never sell it, and there is no tracking.
+Who we are
+Hectic Software Ltd is the data controller for the information described here. Registered in England & Wales, company number 17514067. Registered office: Unit 1c Sandown Road Industrial Estate, Watford WD24 7UB. Contact: hello@hecticsoftware.com.
+Who the Hectic app and this site are for
+They are for businesses and adults aged 18 and over. They are not designed for children, and we do not knowingly collect information from anyone under 18. If you believe a child has sent us information, email us and we will delete it.
+What we collect, and why
+Your account. When you sign in to the Hectic app with Apple, Google or email, your name, email, and optionally your company and phone, are stored on your device and in your own iCloud (iPhone, iPad, Mac) or on your device (Android), so they can fill in briefs for you. We do not keep a copy on our servers. With Sign in with Apple you can choose to hide your email.
+Briefs and projects. When you send a brief, we receive the details you enter: name, email, optional company and phone, and your project description. Messages and files you add to a project are stored with it so we can work on it with you. Our legal basis is taking steps towards, and performing, a contract with you.
+Romeo (our AI assistant) and "Write it up for me". Questions you type, and ideas you ask us to write up, are sent to an AI model to produce an answer, unless your iPhone does it on the device with Apple Intelligence. Answers come from AI and can be wrong; prices and dates are only confirmed in a written quote.
+Notifications. Reply notifications are created on your device. We don't use an advertising or tracking service.
+Who processes data for us
+Cloudflare (hosting our API, project records, files and the AI assistant), Apple (Sign in with Apple, iCloud, notifications), Google (Sign in with Google, if you use it) and GitHub (hosting this website). Some of these providers may process data outside the UK under appropriate safeguards.
+What we don't do
+No advertising, no tracking across apps or websites, and no selling or sharing of your data with data brokers. This website sets no cookies and loads its fonts from our own server.
+How long we keep it
+Project records are kept while we work together and for as long as needed for accounts and legal obligations, then deleted.
+Your rights
