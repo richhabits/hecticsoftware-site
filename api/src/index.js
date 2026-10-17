@@ -269,7 +269,7 @@ async function studioContext(env) {
   return [
     `Now: ${new Date(now).toLocaleString("en-GB", { timeZone: "Europe/London", dateStyle: "full", timeStyle: "short" })} (London).`,
     `CLIENT PIPELINE (status counts): ${counts.map(c => `${c.status} ${c.n}`).join(", ") || "no projects yet"}.`,
-    ...projects.map(p => `- ${p.id} ${p.name}${p.company ? " (" + p.company + ")" : ""}: ${p.project_type || "project"}, ${p.status}, budget ${p.budget || "?"}, updated ${d(p.updated_at)}${p.last_author === "client" ? ", CLIENT IS WAITING FOR A REPLY" : ""}`),
+    ...projects.map(p => `- ${p.id} ${p.name}${p.company ? " (" + p.company + ")" : ""}: ${p.project_type || "project"}, ${p.status}, budget ${p.budget || "?"}, updated ${d(p.updated_at)}${p.last_author === "client" ? ", CLIENT REPLIED AND IS WAITING ON ROMEO" : !p.last_author && p.status === "new" ? ", NEW BRIEF: NOT ANSWERED YET (no reply sent)" : ""}`),
     `OPPORTUNITIES (finder last ran ${last ? d(last.at) : "never"}; top open by score):`,
     ...opps.map(o => `- [${PROFILES[o.business]?.name || o.business}] ${o.title} — ${o.buyer || o.source}, score ${o.score}, ${o.value_low ? "£" + o.value_low.toLocaleString("en-GB") + ", " : ""}closes ${d(o.deadline)}, ${o.status}`),
     `LATEST GITHUB PUSHES (live):`,
