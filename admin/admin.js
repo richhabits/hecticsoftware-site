@@ -103,21 +103,30 @@
   }
 
   // ---------- clients ----------
-  let cStage = "", cView = store.get("hs-cview") || "list";
+  let cStage = "", cType = "", cView = store.get("hs-cview") || "list";
   async function loadClients() { projects = await api("/projects"); renderClients() }
   function renderClients() {
     const q = $("#cSearch").value.trim().toLowerCase();
     const match = x => !q || [x.name, x.company, x.email, x.id, x.project_type].join(" ").toLowerCase().includes(q);
-    const base = projects.filter(match), shown = base.filter(x => !cStage || x.status === cStage);
-    fill($("#cChips"), el("button", { "aria-pressed": !cStage, onclick: () => { cStage = ""; renderClients() } }, `All ${base.length}`),
-      ...STAGES.map(([k, n]) => { const c = base.filter(x => x.status === k).length; return c ? el("button", { "aria-pressed": cStage === k, onclick: () => { cStage = k; renderClients() } }, `${n} ${c}`) : null }));
+    const base = projects.filter(match);
+    const types = [...new Set(base.map(x => x.project_type).filter(Boolean))].sort();
+    const shown = base.filter(x => (!cStage || x.status === cStage) && (!cType || x.project_type === cType));
+    fill($("#cChips"), el("button", { "aria-pressed": !cStage && !cType, onclick: () => { cStage = ""; cType = ""; renderClients() } }, `All ${base.length}`),
+      ...STAGES.map(([k, n]) => { const c = base.filter(x => x.status === k).length; return c ? el("button", { "aria-pressed": cStage === k, onclick: () => { cStage = k; renderClients() } }, `${n} ${c}`) : null }),
+      ...types.map(t => { const c = base.filter(x => x.project_type === t).length; return el("button", { "aria-pressed": cType === t, onclick: () => { cType = cType === t ? "" : t; renderClients() } }, `${t} ${c}`) }));
     $$("#cView button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === cView));
     $("#cList").hidden = cView !== "list"; $("#cBoard").hidden = cView !== "board";
-    fill($("#cList"), ...(shown.length ? shown.map(x => el("button", { class: "row", onclick: () => openProject(x.id) },
-      el("span", { class: "dot " + (x.last_author === "client" ? "hot" : ["accepted", "in_progress", "beta", "live"].includes(x.status) ? "good" : "") }),
-      el("div", {}, el("div", { class: "t", text: `${x.name}${x.company ? " · " + x.company : ""}` }), el("div", { class: "s", text: [x.project_type, x.platforms, x.budget].filter(Boolean).join(" · ") })),
-      el("div", { class: "meta" }, el("span", { class: "badge " + (x.last_author === "client" ? "hot" : ""), text: x.last_author === "client" ? "Waiting" : stageName(x.status) }), ago(x.updated_at))))
-      : [el("div", { class: "empty", text: projects.length ? "No clients match." : "No briefs yet. They arrive from hecticsoftware.com/start and the app." })]));
+    const typeGroups = [...new Set(shown.map(x => x.project_type || "Uncategorised"))].sort();
+    const clientChunks = [];
+    for (const t of typeGroups) {
+      const items = shown.filter(x => (x.project_type || "Uncategorised") === t);
+      if (typeGroups.length > 1) clientChunks.push(el("h2", { class: "group-h", text: `${t} · ${items.length}` }));
+      for (const x of items) clientChunks.push(el("button", { class: "row", onclick: () => openProject(x.id) },
+        el("span", { class: "dot " + (x.last_author === "client" ? "hot" : ["accepted", "in_progress", "beta", "live"].includes(x.status) ? "good" : "") }),
+        el("div", {}, el("div", { class: "t", text: `${x.name}${x.company ? " · " + x.company : ""}` }), el("div", { class: "s", text: [x.project_type, x.platforms, x.budget].filter(Boolean).join(" · ") })),
+        el("div", { class: "meta" }, el("span", { class: "badge " + (x.last_author === "client" ? "hot" : ""), text: x.last_author === "client" ? "Waiting" : stageName(x.status) }), ago(x.updated_at))));
+    }
+    fill($("#cList"), ...(clientChunks.length ? clientChunks : [el("div", { class: "empty", text: projects.length ? "No clients match." : "No briefs yet. They arrive from hecticsoftware.com/start and the app." })]));
     fill($("#cBoard"), ...STAGES.filter(([k]) => k !== "closed").map(([k, n]) => {
       const items = base.filter(x => x.status === k);
       return el("div", { class: "col" }, el("h3", {}, n, el("span", { text: items.length })), ...items.map(x => el("button", { class: "card", onclick: () => openProject(x.id) }, el("div", { class: "t", text: x.name }), el("div", { class: "s", text: [x.project_type, x.budget].filter(Boolean).join(" · ") }))));
@@ -139,11 +148,24 @@
     const quote = el("textarea", {}, p.quote || ""), notes = el("textarea", { placeholder: "Private notes" }, p.admin_notes || ""), reply = el("textarea", { placeholder: "Reply to the client (shows in their project page and app)" });
     const status = el("select", {}, ...STAGES.map(([k, n]) => el("option", { value: k, selected: k === p.status }, n)));
     const save = async (extra = {}) => { await post("/update", { id, status: status.value, quote: quote.value, notes: notes.value, reply: reply.value.trim() || null, ...extra }); toast("Saved"); openProject(id); if (tab === "clients") loadClients(); else loadOverview() };
-    const draftBtn = el("button", { class: "btn ghost", onclick: async () => {
-      draftBtn.disabled = true; draftBtn.lastChild.textContent = "Drafting…";
-      try { const r = await post("/draft-quote", { id }); quote.value = r.quote; toast("Draft ready: check every line before saving") } catch { toast("AI is busy, try again shortly") }
-      draftBtn.disabled = false; draftBtn.lastChild.textContent = "Draft quote with AI";
-    } }, icon("spark"), el("span", { text: "Draft quote with AI" }));
+    const research = el("div", { class: "brief", text: "Press Research brief for market fit, named shipped work, and gaps. Facts only." });
+    const spark = (label, run) => {
+      const b = el("button", { class: "btn ghost", onclick: async () => {
+        b.disabled = true; const s = b.querySelector("span"); const old = s.textContent; s.textContent = "Working…";
+        try { await run() } catch { toast("AI is busy, try again shortly") }
+        s.textContent = old; b.disabled = false;
+      } }, icon("spark"), el("span", { text: label }));
+      return b;
+    };
+    const draftBtn = spark("Draft quote", async () => { const r = await post("/draft-quote", { id }); quote.value = r.quote; toast("Draft ready: check every line before saving") });
+    const researchBtn = spark("Research brief", async () => { const r = await post("/brief-research", { id }); research.textContent = r.research; toast("Research ready — check every claim") });
+    const notesBtn = spark("Key points", async () => { const r = await post("/brief-notes", { id }); notes.value = (notes.value ? notes.value + "\n\n" : "") + r.notes; toast("Key points added to notes") });
+    const packBtn = spark("Research + notes", async () => {
+      const r = await post("/brief-pack", { id });
+      research.textContent = r.research;
+      notes.value = (notes.value ? notes.value + "\n\n" : "") + r.notes;
+      toast("Research and key points ready — check every claim");
+    });
     openDrawer(
       el("div", { class: "mono", text: `${p.id} · ${stageName(p.status)} · ${new Date(p.created_at).toLocaleDateString("en-GB")}` }),
       el("h1", { text: p.name }), p.company ? el("div", { class: "muted", text: p.company }) : null,
@@ -154,7 +176,8 @@
       el("div", { class: "d-sec" }, el("h2", { text: "Brief" }),
         el("dl", { class: "facts" }, ...[["Type", p.project_type], ["Devices", p.platforms], ["Features", p.features], ["Budget", p.budget], ["Launch", p.timeline], ["Guide", `${money(d.guide.low)}–${money(d.guide.high)}, ${d.guide.weeks}`], ["Links", p.links]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
         el("div", { class: "brief", text: p.description || "" }),
-        d.files.length ? el("div", { class: "d-actions" }, ...d.files.map(f => el("button", { class: "badge", onclick: () => download(f) }, icon("file"), f.name))) : null),
+        el("div", { class: "d-actions" }, researchBtn, notesBtn, packBtn, d.files.length ? d.files.map(f => el("button", { class: "badge", onclick: () => download(f) }, icon("file"), f.name)) : null)),
+      el("div", { class: "d-sec" }, el("h2", { text: "Research" }), research, el("p", { class: "small muted", text: "Typical UK practice is labelled typical. Shipped work is only what is on record." })),
       el("div", { class: "d-sec" }, el("h2", { text: "Quote" }), quote, el("div", { class: "d-actions" }, draftBtn)),
       el("div", { class: "d-sec" }, el("h2", { text: "Conversation" }),
         el("div", { class: "thread" }, ...(d.messages.length ? d.messages.map(m => el("div", { class: "msg " + m.author, text: m.body })) : [el("div", { class: "muted small", text: "No messages yet." })])),
@@ -165,7 +188,7 @@
   }
 
   // ---------- opportunities ----------
-  let oBiz = store.get("hs-obiz") || "", oStatus = "", profiles = {};
+  let oBiz = store.get("hs-obiz") || "", oStatus = "", oKind = "", profiles = {};
   async function loadOpps() {
     const r = await api(`/opps?min=${$("#oMin").value}${oBiz ? "&business=" + oBiz : ""}`);
     opps = r.rows; profiles = r.profiles;
@@ -176,15 +199,26 @@
     renderOpps();
   }
   function renderOpps() {
-    fill($("#oChips"), el("button", { "aria-pressed": !oStatus, onclick: () => { oStatus = ""; renderOpps() } }, `Open ${opps.filter(x => !["ignored", "lost"].includes(x.status)).length}`),
+    const open = opps.filter(x => !["ignored", "lost"].includes(x.status));
+    fill($("#oChips"), el("button", { "aria-pressed": !oStatus && !oKind, onclick: () => { oStatus = ""; oKind = ""; renderOpps() } }, `Open ${open.length}`),
+      el("button", { "aria-pressed": oKind === "tender", onclick: () => { oKind = oKind === "tender" ? "" : "tender"; renderOpps() } }, `Tenders ${opps.filter(x => x.kind === "tender").length}`),
+      el("button", { "aria-pressed": oKind === "post", onclick: () => { oKind = oKind === "post" ? "" : "post"; renderOpps() } }, `Hiring posts ${opps.filter(x => x.kind === "post").length}`),
+      el("button", { "aria-pressed": oKind === "win", onclick: () => { oKind = oKind === "win" ? "" : "win"; renderOpps() } }, `Major wins ${opps.filter(x => x.score >= 65 && ["new", "saved", "pitching"].includes(x.status)).length}`),
       ...OPP.map(([k, n]) => { const c = opps.filter(x => x.status === k).length; return c ? el("button", { "aria-pressed": oStatus === k, onclick: () => { oStatus = k; renderOpps() } }, `${n} ${c}`) : null }));
-    const shown = opps.filter(x => oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status));
-    fill($("#oList"), ...(shown.length ? shown.map(x => el("button", { class: "row", onclick: () => openOpp(x) },
-      el("div", { class: "score " + (x.score >= 65 ? "good" : x.score >= 50 ? "" : ""), text: x.score }),
-      el("div", {}, el("div", { class: "t", text: x.title }), el("div", { class: "s", text: [profiles[x.business], x.buyer || x.source, money(x.value_low)].filter(Boolean).join(" · ") })),
-      el("div", { class: "meta" }, x.deadline ? el("span", { class: "badge " + (x.deadline < Date.now() + 7 * 86400000 ? "hot" : "") }, icon("clock"), until(x.deadline)) : el("span", { class: "badge", text: x.kind === "post" ? "Post" : "Open" }),
-        x.status !== "new" ? el("span", { class: "badge " + (x.status === "won" ? "good" : ""), text: (OPP.find(o => o[0] === x.status) || [, x.status])[1] }) : null)))
-      : [el("div", { class: "empty", text: "No open leads at this score yet. The finder keeps looking every hour." })]));
+    const shown = opps.filter(x => (oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status)) && (oKind === "win" ? x.score >= 65 && ["new", "saved", "pitching"].includes(x.status) : !oKind || x.kind === oKind));
+    const groups = [["tender", "Tenders"], ["post", "Hiring posts"]];
+    const chunks = [];
+    for (const [k, n] of groups) {
+      const items = shown.filter(x => (x.kind || "tender") === k);
+      if (!items.length) continue;
+      chunks.push(el("h2", { class: "group-h", text: `${n} · ${items.length}` }));
+      for (const x of items) chunks.push(el("button", { class: "row", onclick: () => openOpp(x) },
+        el("div", { class: "score " + (x.score >= 65 ? "good" : x.score >= 50 ? "" : ""), text: x.score }),
+        el("div", {}, el("div", { class: "t", text: x.title }), el("div", { class: "s", text: [profiles[x.business], x.buyer || x.source, money(x.value_low)].filter(Boolean).join(" · ") })),
+        el("div", { class: "meta" }, x.deadline ? el("span", { class: "badge " + (x.deadline < Date.now() + 7 * 86400000 ? "hot" : "") }, icon("clock"), until(x.deadline)) : el("span", { class: "badge", text: x.kind === "post" ? "Post" : "Tender" }),
+          x.status !== "new" ? el("span", { class: "badge " + (x.status === "won" ? "good" : ""), text: (OPP.find(o => o[0] === x.status) || [, x.status])[1] }) : null)));
+    }
+    fill($("#oList"), ...(chunks.length ? chunks : [el("div", { class: "empty", text: "No open leads at this score yet. The finder keeps looking every hour." })]));
   }
   $("#oMin").onchange = loadOpps;
   $("#oRun").onclick = async () => { const b = $("#oRun"); b.disabled = true; try { const r = await post("/finder/run", {}); toast(`Checked ${r.checked}, kept ${r.kept}`) } catch { toast("Search limit reached, try later") } b.disabled = false; stats = null; loadOpps() };
@@ -192,17 +226,25 @@
   function openOpp(x) {
     const pitch = el("textarea", { placeholder: "Pitch or expression of interest" }, x.pitch || ""), notes = el("textarea", { placeholder: "Notes" }, x.notes || "");
     const set = async status => { await post("/opp", { id: x.id, status, notes: notes.value, pitch: pitch.value }); toast("Saved"); closeDrawer(); stats = null; tab === "opps" ? loadOpps() : loadOverview() };
-    const draft = el("button", { class: "btn ghost", onclick: async () => {
-      draft.disabled = true; draft.lastChild.textContent = "Drafting…";
-      try { const r = await post("/opp/pitch", { id: x.id }); pitch.value = r.pitch; x.pitch = r.pitch } catch { toast("AI is busy, try again shortly") }
-      draft.disabled = false; draft.lastChild.textContent = x.kind === "tender" ? "Bid check + draft" : "Draft reply";
-    } }, icon("spark"), el("span", { text: x.kind === "tender" ? "Bid check + draft" : "Draft reply" }));
+    const research = el("div", { class: "brief", text: "Press Research for a go / maybe / no from the facts on record." });
+    const spark = (label, run) => {
+      const b = el("button", { class: "btn ghost", onclick: async () => {
+        b.disabled = true; const s = b.querySelector("span"); const old = s.textContent; s.textContent = "Working…";
+        try { await run() } catch { toast("AI is busy, try again shortly") }
+        s.textContent = old; b.disabled = false;
+      } }, icon("spark"), el("span", { text: label }));
+      return b;
+    };
+    const draft = spark(x.kind === "tender" ? "Bid check + draft" : "Draft reply", async () => { const r = await post("/opp/pitch", { id: x.id }); pitch.value = r.pitch; x.pitch = r.pitch; toast("Draft ready — check every claim") });
+    const researchBtn = spark("Research", async () => { const r = await post("/opp/research", { id: x.id }); research.textContent = r.research; toast("Research ready") });
+    const notesBtn = spark("Key points", async () => { const r = await post("/opp/notes", { id: x.id }); notes.value = (notes.value ? notes.value + "\n\n" : "") + r.notes; toast("Key points added to notes") });
     openDrawer(
       el("div", { class: "mono", text: `${profiles[x.business] || x.business} · ${x.source}${x.stage === "pre-market" ? " · pre-market" : ""}` }),
       el("h1", { text: x.title }),
       el("dl", { class: "facts" }, ...[["Buyer", x.buyer], ["Value", money(x.value_low) || "Not stated"], ["Closes", x.deadline ? new Date(x.deadline).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" }) : "No deadline"], ["Where", x.region], ["Score", `${x.score}: ${x.why}`]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
-      el("div", { class: "d-actions", style: "margin-top:14px" }, safeUrl(x.url) ? el("a", { class: "btn", href: safeUrl(x.url), target: "_blank", rel: "noopener noreferrer" }, icon("link"), "Open the notice") : null, draft),
+      el("div", { class: "d-actions", style: "margin-top:14px" }, safeUrl(x.url) ? el("a", { class: "btn", href: safeUrl(x.url), target: "_blank", rel: "noopener noreferrer" }, icon("link"), "Open the notice") : null, researchBtn, notesBtn, draft),
       el("div", { class: "d-sec" }, el("h2", { text: "Summary" }), el("div", { class: "brief", text: x.summary || "" })),
+      el("div", { class: "d-sec" }, el("h2", { text: "Research" }), research, el("p", { class: "small muted", text: "Only facts on record. Anything else is marked not on record." })),
       el("div", { class: "d-sec" }, el("h2", { text: "Pitch" }), pitch, el("p", { class: "small muted", text: "Drafts use only facts on record. Check every claim before you send or submit anything." })),
       el("div", { class: "d-sec" }, el("h2", { text: "Notes" }), notes),
       el("div", { class: "d-sec" }, el("h2", { text: "Move to" }), el("div", { class: "d-actions" }, ...OPP.filter(([k]) => k !== "new").map(([k, n]) => el("button", { class: "btn " + (k === "won" ? "teal" : k === "ignored" || k === "lost" ? "ghost" : k === x.status ? "" : "ghost"), onclick: () => set(k) }, n)))));

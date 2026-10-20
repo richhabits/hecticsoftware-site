@@ -81,6 +81,7 @@ label{display:grid;gap:6px;font-size:13px;color:var(--muted)}
 .seg button{border:0;background:transparent;border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
 .seg button[aria-pressed=true]{background:var(--panel);color:var(--fg);box-shadow:var(--shadow)}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.group-h{font:600 11.5px/1 var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
 .chips button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 11px;font-size:13px;cursor:pointer;color:var(--muted)}
 .chips button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 
