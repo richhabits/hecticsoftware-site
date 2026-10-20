@@ -1,0 +1,6 @@
+api/.wrangler/
+api/.dev.vars
+.env
+*.p12
+*.cer
+*.keystore

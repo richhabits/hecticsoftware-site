@@ -257,18 +257,18 @@ const FREE_MODELS = {
   code: ["@cf/qwen/qwen2.5-coder-32b-instruct", "@cf/openai/gpt-oss-20b", "@cf/meta/llama-3.1-8b-instruct"],
 };
 const ALL_FREE_MODELS = [...new Set(Object.values(FREE_MODELS).flat())];
-const BRAINS_CATALOG = [
-  { group: "On now · no key · £0", name: "Cloudflare Workers AI", job: "Letters, research, Romeo, public Ask. 10,000 units/day.", catch: "Stops at the cap. Does not bill you on the free plan." },
-  { group: "On now · no key · £0", name: "Chrome on this computer", job: "Romeo pane when Chrome can run it. Uses none of the Cloudflare units.", catch: "Needs a recent Chrome on this Mac." },
-  { group: "Free if you add a key later · still £0 within their cap", name: "Google Gemini (AI Studio)", job: "Long briefs, reading a notice, pictures in a brief. Flash models.", catch: "Needs your Gemini key in Worker secrets. Google may train on free-tier prompts. We have not added a key." },
-  { group: "Free if you add a key later · still £0 within their cap", name: "Groq", job: "Fast short replies and overnight drafts.", catch: "Needs a Groq key. About 1,000 calls/day. No card. We have not added a key." },
-  { group: "Free if you add a key later · still £0 within their cap", name: "NVIDIA NIM (build.nvidia.com)", job: "Trying large open models for research.", catch: "Needs an NVIDIA developer account. Prototyping only. We have not added a key." },
-  { group: "Free if you add a key later · still £0 within their cap", name: "OpenRouter :free models", job: "Spare wheel when Cloudflare is at the cap.", catch: "About 50 calls/day unless you buy credit. We have not added a key." },
-  { group: "Free if you add a key later · still £0 within their cap", name: "Mistral / Cohere trial", job: "Spare letter drafts.", catch: "Trial keys, low limits. We have not added keys." },
-  { group: "Not free for this studio", name: "ChatGPT / OpenAI API", job: "Best at polished letters if you paid.", catch: "API is paid or a small geo free cap with a card. ChatGPT the website is not an API we can rotate. Not wired." },
-  { group: "Not free for this studio", name: "Seedance (ByteDance video)", job: "Video clips.", catch: "No free API. Dreamina app has trial credits. We will not call it." },
-  { group: "Not free for this studio", name: "Claude, Veo, Grok API, Flux at volume", job: "Long thinking or video/image at scale.", catch: "Paid. Not wired." },
-];
+function brainsCatalog(env) {
+  const gem = !!env.GEMINI_API_KEY, groq = !!env.GROQ_API_KEY, nv = !!env.NVIDIA_API_KEY, or = !!env.OPENROUTER_API_KEY;
+  return [
+    { group: "On now · £0", name: "Cloudflare Workers AI", job: "Always on. Letters, research, Romeo.", catch: "10,000 units/day then it stops. No bill on the free plan." },
+    { group: "On now · £0", name: "Chrome on this computer", job: "Romeo pane. Uses none of the Cloudflare units.", catch: "Needs a recent Chrome." },
+    { group: groq ? "On now · £0" : "Wired · waiting for a free key", name: "Groq", job: "Fast letters, overnight drafts, Romeo.", catch: groq ? "Free key is in Worker secrets. About 1,000 calls/day." : "Create a free key at console.groq.com and we will store it as GROQ_API_KEY." },
+    { group: gem ? "On now · £0" : "Wired · waiting for a free key", name: "Google Gemini", job: "Long research, reading notices, briefs.", catch: gem ? "Free AI Studio key is in Worker secrets. Google may train on free-tier prompts." : "Create a free key at aistudio.google.com and we will store it as GEMINI_API_KEY." },
+    { group: nv ? "On now · £0" : "Wired · waiting for a free key", name: "NVIDIA NIM", job: "Large open models for research.", catch: nv ? "Key is in secrets." : "Optional. build.nvidia.com — NVIDIA_API_KEY." },
+    { group: or ? "On now · £0" : "Wired · waiting for a free key", name: "OpenRouter :free", job: "Spare wheel when others are empty.", catch: or ? "Key is in secrets. About 50 free calls/day." : "Optional. openrouter.ai — OPENROUTER_API_KEY." },
+    { group: "Not free", name: "ChatGPT API, Seedance, Claude", job: "Paid video and chat APIs.", catch: "Not wired. Will not bill you." },
+  ];
+}
 function utcDay() { return new Date().toISOString().slice(0, 10); }
 function utcReset() {
   const n = new Date();
@@ -281,10 +281,74 @@ async function aiUse(env) {
 async function aiSave(env, u) {
   await env.RATE.put("ai:" + utcDay(), JSON.stringify(u), { expirationTtl: 172800 });
 }
+async function openaiChat(url, key, model, messages, max, headers = {}) {
+  const r = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + key, ...headers },
+    body: JSON.stringify({ model, messages, max_tokens: max, temperature: 0.3 }),
+  });
+  const t = await r.text();
+  if (!r.ok) throw new Error(t.slice(0, 180));
+  const d = JSON.parse(t);
+  const text = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content || "").trim();
+  if (!text) throw new Error("empty");
+  return text;
+}
+async function geminiChat(key, messages, max) {
+  const sys = messages.filter(m => m.role === "system").map(m => m.content).join("\n");
+  const rest = messages.filter(m => m.role !== "system").map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] }));
+  let last = "gemini";
+  for (const model of ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"]) {
+    const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + encodeURIComponent(key), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ system_instruction: sys ? { parts: [{ text: sys }] } : undefined, contents: rest, generationConfig: { maxOutputTokens: max, temperature: 0.3 } }),
+    });
+    const t = await r.text();
+    if (!r.ok) { last = t.slice(0, 180); continue; }
+    const d = JSON.parse(t);
+    const parts = (((d.candidates || [])[0] || {}).content || {}).parts || [];
+    const out = parts.map(p => p.text || "").join("").trim();
+    if (out) return out;
+    last = "empty";
+  }
+  throw new Error(last);
+}
+async function hitProvider(env, name, messages, max, kind) {
+  if (name === "groq" && env.GROQ_API_KEY) {
+    const model = kind === "research" ? "openai/gpt-oss-20b" : "llama-3.3-70b-versatile";
+    return openaiChat("https://api.groq.com/openai/v1/chat/completions", env.GROQ_API_KEY, model, messages, max);
+  }
+  if (name === "gemini" && env.GEMINI_API_KEY) return geminiChat(env.GEMINI_API_KEY, messages, max);
+  if (name === "nvidia" && env.NVIDIA_API_KEY) {
+    return openaiChat("https://integrate.api.nvidia.com/v1/chat/completions", env.NVIDIA_API_KEY, "meta/llama-3.1-8b-instruct", messages, max);
+  }
+  if (name === "openrouter" && env.OPENROUTER_API_KEY) {
+    return openaiChat("https://openrouter.ai/api/v1/chat/completions", env.OPENROUTER_API_KEY, "openai/gpt-oss-20b:free", messages, max, { "HTTP-Referer": "https://hecticsoftware.com", "X-Title": "Hectic Software" });
+  }
+  throw new Error("skip");
+}
 async function aiMessages(env, messages, max = 600, kind = "chat") {
   const approx = Math.ceil(messages.reduce((n, m) => n + String(m.content || "").length, 0) / 4) + max;
   const u = await aiUse(env);
   let lastErr = "no_model";
+  const order = [];
+  if (kind === "research") { if (env.GEMINI_API_KEY) order.push("gemini"); if (env.GROQ_API_KEY) order.push("groq"); }
+  else { if (env.GROQ_API_KEY) order.push("groq"); if (env.GEMINI_API_KEY) order.push("gemini"); }
+  if (env.NVIDIA_API_KEY) order.push("nvidia");
+  if (env.OPENROUTER_API_KEY) order.push("openrouter");
+  for (const name of order) {
+    try {
+      const text = await hitProvider(env, name, messages, max, kind);
+      u.calls++; u.ok++; u.tokens += approx; u.last = name;
+      u.models[name] = (u.models[name] || 0) + 1;
+      await aiSave(env, u);
+      return text;
+    } catch (e) {
+      lastErr = (e && e.message) || "fail";
+      if (lastErr !== "skip") { u.fail++; u.models[name] = (u.models[name] || 0); }
+    }
+  }
   const list = [...(FREE_MODELS[kind] || FREE_MODELS.chat), ...ALL_FREE_MODELS.filter(m => !(FREE_MODELS[kind] || []).includes(m))];
   for (const model of list) {
     try {
@@ -509,8 +573,7 @@ async function admin(req, url, env, cors) {
     const used = Math.min(cap, u.tokens);
     return json({
       cost: 0,
-      keys: "none",
-      note: "Only free Cloudflare models and, in Chrome, the computer itself. No OpenAI, Google or Anthropic keys. The free plan stops at the daily cap; it does not bill you.",
+      note: "Groq and Gemini run when their free keys are in Worker secrets. Cloudflare always runs. Nothing bills you: a missing key or a daily cap just skips that brain.",
       cloudflare: {
         name: "Cloudflare Workers AI (free)",
         used, cap, left: Math.max(0, cap - used),
@@ -522,7 +585,8 @@ async function admin(req, url, env, cors) {
         jobs: { chat: "Romeo and notes", letter: "Letters and quotes", research: "Brief and notice research", code: "Code notes" },
       },
       onDevice: { name: "Chrome on this computer", note: "Uses no Cloudflare units. The browser reports this itself." },
-      catalog: BRAINS_CATALOG,
+      keys: { groq: !!env.GROQ_API_KEY, gemini: !!env.GEMINI_API_KEY, nvidia: !!env.NVIDIA_API_KEY, openrouter: !!env.OPENROUTER_API_KEY },
+      catalog: brainsCatalog(env),
       background: { finder: await env.RATE.get("finder:last").then(s => s ? JSON.parse(s) : null) },
     }, 200, cors);
   }
