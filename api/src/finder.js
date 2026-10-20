@@ -141,13 +141,32 @@ export function score(profile, o) {
 
 // ---------- sources ----------
 
+export function placeOf(buyer = "", region = "") {
+  const t = `${buyer} ${region}`;
+  let kind = "other";
+  if (/\bcounty council\b/i.test(t) || /\bgreater london authority\b|\btransport for london\b/i.test(t)) kind = "county or city-wide";
+  else if (/\blondon borough\b|\bborough council\b/i.test(t)) kind = "borough";
+  else if (/\bcity council\b|\bcity and district\b/i.test(t)) kind = "city";
+  else if (/\bdistrict council\b/i.test(t)) kind = "district";
+  else if (/\bNHS\b|\bhealth\b/i.test(t)) kind = "health";
+  else if (/\bpolice\b|\bfire\b/i.test(t)) kind = "emergency";
+  else if (/\bschool\b|\bacademy\b|\buniversity\b/i.test(t)) kind = "school or college";
+  const county = (/\b(Hertfordshire|Bedfordshire|Buckinghamshire|Cambridgeshire|Essex|Greater London)\b/i.exec(t) || [])[1] || "";
+  const town = (/\b(Watford|St Albans|Hemel Hempstead|Stevenage|Welwyn|Hatfield|Hertford|Luton|Bedford|Dunstable|Cheshunt|Borehamwood|Barnet|Enfield|Harrow|Hillingdon|Ealing|Westminster|Camden|Islington|Hackney|Tower Hamlets|Southwark|Lambeth|Croydon|Brent)\b/i.exec(t) || [])[1] || "";
+  const bits = [town, kind !== "other" ? kind : "", county || region].filter(Boolean);
+  return { kind, county, town, label: bits.filter((v, i, a) => a.indexOf(v) === i).join(" · ") };
+}
+
 function noticeRow(n, source = "Contracts Finder") {
   const [lat, lon] = (n.coordinates || "").split(",").map(Number);
+  const buyer = strip(n.organisationName);
+  const rawRegion = n.regionText || n.postcode || "";
+  const place = placeOf(buyer, rawRegion);
   return {
-    id: `cf:${n.id}`, source, kind: "tender", title: strip(n.title), buyer: strip(n.organisationName),
+    id: `cf:${n.id}`, source, kind: "tender", title: strip(n.title), buyer,
     url: `https://www.contractsfinder.service.gov.uk/Notice/${n.id}`, summary: strip(n.description).slice(0, 1500),
     value_low: n.valueLow || 0, value_high: n.valueHigh || 0, deadline: Date.parse(n.deadlineDate) || null,
-    published: Date.parse(n.publishedDate) || Date.now(), region: n.regionText || n.postcode || "",
+    published: Date.parse(n.publishedDate) || Date.now(), region: place.label || rawRegion,
     cpv: (n.cpvCodes || "").split(/\s+/).filter(Boolean), sme: !!n.isSuitableForSme,
     lat: Number.isFinite(lat) ? lat : null, lon: Number.isFinite(lon) ? lon : null,
   };

@@ -264,7 +264,7 @@
         if (bySrc.length > 1) chunks.push(el("h2", { class: "group-h", text: `From ${src} · ${pack.length}` }));
         for (const x of pack) chunks.push(el("button", { class: "row", onclick: () => openOpp(x) },
         el("div", { class: "score " + (x.score >= 65 ? "good" : x.score >= 50 ? "" : ""), text: x.score }),
-        el("div", {}, el("div", { class: "t", text: x.title }), el("div", { class: "s", text: [profiles[x.business], x.source, x.buyer, money(x.value_low)].filter(Boolean).join(" · ") })),
+        el("div", {}, el("div", { class: "t", text: x.title }), el("div", { class: "s", text: [profiles[x.business], x.source, x.buyer, x.region, money(x.value_low)].filter(Boolean).join(" · ") })),
         el("div", { class: "meta" }, x.deadline ? el("span", { class: "badge " + (x.deadline < Date.now() + 7 * 86400000 ? "hot" : "") }, icon("clock"), until(x.deadline)) : el("span", { class: "badge", text: x.kind === "post" ? "Post" : "Tender" }),
           x.status !== "new" ? el("span", { class: "badge " + (x.status === "won" ? "good" : ""), text: (OPP.find(o => o[0] === x.status) || [, x.status])[1] }) : null)));
       }
@@ -314,7 +314,7 @@
       el("div", { class: "mono", text: `${profiles[x.business] || x.business} · ${x.source}${x.stage === "pre-market" ? " · pre-market" : ""}` }),
       el("h1", { text: x.title }),
       el("div", { class: "next" }, el("b", { text: "Do this next" }), nextOpp),
-      el("dl", { class: "facts" }, ...[["Found on", x.source], ["Who is buying", x.buyer], ["For", profiles[x.business]], ["Value", money(x.value_low) || "Not stated"], ["Closes", x.deadline ? new Date(x.deadline).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" }) : "No deadline"], ["Where", x.region], ["Why it scored", `${x.score}: ${x.why}`]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
+      el("dl", { class: "facts" }, ...[["Found on", x.source], ["Who is buying", x.buyer], ["Place", x.region], ["For", profiles[x.business]], ["Value", money(x.value_low) || "Not stated"], ["Closes", x.deadline ? new Date(x.deadline).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" }) : "No deadline"], ["Why it scored", `${x.score}: ${x.why}`]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
       el("div", { class: "d-actions", style: "margin-top:14px" }, safeUrl(x.url) ? el("a", { class: "btn", href: safeUrl(x.url), target: "_blank", rel: "noopener noreferrer" }, icon("link"), "Open the notice") : null, researchBtn, notesBtn, draft),
       el("div", { class: "d-sec" }, el("h2", { text: "What they published" }), el("div", { class: "brief", text: x.summary || "" })),
       el("div", { class: "d-sec" }, el("h2", { text: "Research" }), research, el("p", { class: "small muted", text: "Only facts on record. Anything else is marked not on record." })),
