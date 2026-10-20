@@ -31,6 +31,14 @@ export const PROFILES = {
     cpv: { "50112300": 25, "98351": 5 },
     near: { lat: 51.656, lon: -0.396, miles: 30 },
   },
+  radio: {
+    name: "Hectic Radio",
+    search: ["community radio", "youth radio", "music workshops", "music education", "youth arts", "radio production"],
+    strong: ["community radio", "hospital radio", "youth radio", "radio production", "radio workshop", "dj workshop", "music workshop", "music education", "broadcasting"],
+    medium: ["radio", "broadcast", "music", "dj", "podcast", "young people", "youth", "teenagers", "children", "schools", "workshops", "holiday activities", "arts", "media", "studio"],
+    cpv: { "922": 25, "923": 15, "800": 10, "805": 10, "92": 8 },
+    near: null,
+  },
 };
 
 // Work none of the businesses should chase: products, staffing, hardware, heavy IT, huge frameworks.
@@ -51,6 +59,19 @@ const LOCAL_BUYER_SEARCH = [
 function isLocalCouncil(o) {
   const blob = `${o.buyer || ""} ${o.region || ""} ${o.title || ""}`;
   return LOCAL_BUYER.test(blob) || LOCAL_PLACE.test(blob);
+}
+
+const YOUTH_SEARCH = [
+  "youth radio", "community radio", "music workshops", "music education",
+  "youth arts", "radio production", "DJ workshops", "holiday activities music",
+  "young people media", "positive activities music",
+];
+
+function isKidsMusicRadio(o) {
+  const t = `${o.title || ""} ${o.summary || ""}`;
+  const kids = /\b(young people|youth|children|child|teen|teenager|school|pupil|holiday activit|\bHAF\b|after.?school|SEND|NEET)\b/i.test(t);
+  const arts = /\b(radio|broadcast|music|DJ|djing|podcast|media production|workshop|arts education|community radio|hospital radio|creative|performing arts)\b/i.test(t);
+  return kids && arts;
 }
 
 const NEGATIVE = ["licence", "licences", "license", "licenses", "subscription renewal", "hardware", "laptops", "printers", "telephony", "telecoms", "network infrastructure", "cctv", "telematics",
@@ -95,6 +116,9 @@ export function score(profile, o) {
   if (o.kind === "tender" && isLocalCouncil(o)) {
     s += 18; why.push("Herts / neighbouring / London council");
   }
+  if (o.kind === "tender" && isKidsMusicRadio(o)) {
+    s += 22; why.push("kids / music / radio");
+  }
   return { score: Math.max(0, Math.min(100, s)), why };
 }
 
@@ -134,7 +158,9 @@ async function contractsFinder(profile) {
 async function localCouncilTenders({ buyers = true } = {}) {
   const from = new Date(Date.now() - 28 * DAY).toISOString().slice(0, 19);
   const out = [];
-  for (const keyword of ["software development", "website", "mobile app", "digital platform", "grounds maintenance", "landscaping"]) {
+  const localKw = ["software development", "website", "mobile app", "digital platform", "grounds maintenance", "landscaping"];
+  if (buyers) localKw.push(...YOUTH_SEARCH);
+  for (const keyword of localKw) {
     out.push(...(await cfSearch({ keyword, statuses: ["Open"], publishedFrom: from, regions: LOCAL_REGIONS, suitableForSme: true }, 80))
       .map(n => noticeRow(n, "Contracts Finder · local")));
   }
