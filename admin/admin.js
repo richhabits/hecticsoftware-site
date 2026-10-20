@@ -218,6 +218,7 @@
   }
   const isLocalOpp = x => /hertford|watford|st albans|dacorum|hertsmere|broxbourne|stevenage|welwyn|three rivers|bedford|luton|buckingham|essex|cambridge|london|barnet|enfield|harrow|hillingdon/i.test([x.buyer, x.region, x.why, x.title].join(" "));
   const isKidsRadio = x => /kids \/ music \/ radio|youth radio|community radio|music workshop|music education|young people|youth arts|dj workshop|holiday activit/i.test([x.title, x.summary, x.why, x.buyer].join(" "));
+  const isCarOpp = x => /cars \/ vans \/ fleet care|valet|valeting|detailing|ceramic coating|vehicle clean|fleet clean|car wash|ghost/i.test([x.title, x.summary, x.why, x.business].join(" "));
   function renderOpps() {
     const open = opps.filter(x => !["ignored", "lost"].includes(x.status));
     fill($("#oChips"), el("button", { "aria-pressed": !oStatus && !oKind, onclick: () => { oStatus = ""; oKind = ""; renderOpps() } }, `Open ${open.length}`),
@@ -226,9 +227,10 @@
       el("button", { "aria-pressed": oKind === "win", onclick: () => { oKind = oKind === "win" ? "" : "win"; renderOpps() } }, `Best fits ${opps.filter(x => x.score >= 65 && ["new", "saved", "pitching"].includes(x.status)).length}`),
       el("button", { "aria-pressed": oKind === "local", onclick: () => { oKind = oKind === "local" ? "" : "local"; renderOpps() } }, `Local councils ${opps.filter(isLocalOpp).length}`),
       el("button", { "aria-pressed": oKind === "kids", onclick: () => { oKind = oKind === "kids" ? "" : "kids"; renderOpps() } }, `Kids, music & radio ${opps.filter(isKidsRadio).length}`),
+      el("button", { "aria-pressed": oKind === "cars", onclick: () => { oKind = oKind === "cars" ? "" : "cars"; renderOpps() } }, `Cars & vans ${opps.filter(isCarOpp).length}`),
       ...OPP.map(([k, n]) => { const c = opps.filter(x => x.status === k).length; return c ? el("button", { "aria-pressed": oStatus === k, onclick: () => { oStatus = k; renderOpps() } }, `${n} ${c}`) : null }));
     const q = ($("#oSearch")?.value || "").trim().toLowerCase();
-    const shown = opps.filter(x => (oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status)) && (oKind === "win" ? x.score >= 65 && ["new", "saved", "pitching"].includes(x.status) : oKind === "local" ? isLocalOpp(x) : oKind === "kids" ? isKidsRadio(x) : !oKind || x.kind === oKind) && (!q || [x.title, x.buyer, x.region, x.summary, x.source].join(" ").toLowerCase().includes(q)));
+    const shown = opps.filter(x => (oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status)) && (oKind === "win" ? x.score >= 65 && ["new", "saved", "pitching"].includes(x.status) : oKind === "local" ? isLocalOpp(x) : oKind === "kids" ? isKidsRadio(x) : oKind === "cars" ? isCarOpp(x) : !oKind || x.kind === oKind) && (!q || [x.title, x.buyer, x.region, x.summary, x.source].join(" ").toLowerCase().includes(q)));
     const groups = [["tender", "Public jobs"], ["post", "People hiring"]];
     const chunks = [];
     for (const [k, n] of groups) {

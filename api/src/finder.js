@@ -17,19 +17,20 @@ export const PROFILES = {
   },
   forged: {
     name: "Forged Landscapes",
-    search: ["grounds maintenance", "landscaping", "hard landscaping", "paving", "tree works"],
+    search: ["grounds maintenance", "landscaping", "hard landscaping", "paving", "tree works", "school grounds", "driveway"],
     strong: ["landscaping", "hard landscaping", "soft landscaping", "grounds maintenance", "paving", "patio", "driveway", "driveways", "resin", "block paving", "fencing", "turfing", "artificial grass"],
     medium: ["grounds", "garden", "gardens", "planting", "hedge", "tree works", "playground", "open spaces", "public realm", "groundworks", "kerbing", "drainage"],
     cpv: { "77": 15, "45112": 15, "45236": 10, "45233": 5 },
-    near: { lat: 51.656, lon: -0.396, miles: 30 }, // Watford WD17; Forged covers ~20 miles
+    near: { lat: 51.656, lon: -0.396, miles: 30 },
   },
   ghost: {
     name: "Ghost Detail",
-    search: ["vehicle valeting", "car valeting"],
-    strong: ["valeting", "vehicle valeting", "car valeting", "fleet cleaning", "vehicle cleaning", "detailing", "ceramic coating"],
-    medium: ["fleet", "vehicle", "vehicles", "car wash"],
-    cpv: { "50112300": 25, "98351": 5 },
-    near: { lat: 51.656, lon: -0.396, miles: 30 },
+    search: ["vehicle valeting", "car valeting", "fleet valeting", "vehicle cleaning", "car detailing", "ceramic coating", "interior valet"],
+    strong: ["valeting", "vehicle valeting", "car valeting", "fleet valeting", "fleet cleaning", "vehicle cleaning", "car detailing", "detailing", "ceramic coating", "paint correction", "interior valet"],
+    medium: ["fleet", "vehicle", "vehicles", "car wash", "valet", "showroom", "dealership", "pool cars", "executive cars", "paintwork"],
+    cpv: { "50112300": 25, "5011": 15, "98351": 10, "501": 8 },
+    near: { lat: 51.656, lon: -0.396, miles: 45 },
+    keepNeg: false, // "cleaning services" would otherwise kill valeting jobs
   },
   radio: {
     name: "Hectic Radio",
@@ -74,8 +75,19 @@ function isKidsMusicRadio(o) {
   return kids && arts;
 }
 
+function isCarCare(o) {
+  const t = `${o.title || ""} ${o.summary || ""}`;
+  return /\b(valet|valeting|detailing|ceramic coating|paint correction|car wash|vehicle clean|fleet clean|interior valet|showroom clean)\b/i.test(t);
+}
+
+const GHOST_SEARCH = [
+  "vehicle valeting", "car valeting", "fleet valeting", "vehicle cleaning",
+  "car detailing", "ceramic coating", "fleet cars cleaning",
+];
+
 const NEGATIVE = ["licence", "licences", "license", "licenses", "subscription renewal", "hardware", "laptops", "printers", "telephony", "telecoms", "network infrastructure", "cctv", "telematics",
-  "erp", "sap", "oracle", "microsoft 365", "managed service", "cyber security", "penetration testing", "recruitment", "staffing", "agency workers", "temporary staff", "insurance", "catering", "cleaning services", "for hire]"];
+  "erp", "sap", "oracle", "microsoft 365", "managed service", "cyber security", "penetration testing", "recruitment", "staffing", "agency workers", "temporary staff", "insurance", "catering", "for hire]"];
+const NEGATIVE_CLEANING = ["cleaning services"];
 
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const hit = (text, term) => new RegExp(`(^|[^a-z0-9])${esc(term)}([^a-z0-9]|$)`, "i").test(text);
@@ -98,7 +110,8 @@ export function score(profile, o) {
     const best = Object.entries(profile.cpv).filter(([p]) => code.startsWith(p)).sort((a, b) => b[0].length - a[0].length)[0];
     if (best) { s += best[1]; why.push(`CPV ${code}`); break; }
   }
-  const neg = NEGATIVE.filter(t => hit(text, t));
+  const negList = profile.keepNeg === false ? NEGATIVE : NEGATIVE.concat(NEGATIVE_CLEANING);
+  const neg = negList.filter(t => hit(text, t));
   if (neg.length) { s -= 30; why.push(`not for us: ${neg[0]}`); }
   if (o.kind === "tender") {
     if (o.sme) { s += 5; why.push("SME-suitable"); }
@@ -107,8 +120,9 @@ export function score(profile, o) {
     if (o.deadline && o.deadline < Date.now() + 3 * DAY) { s -= 10; why.push("closes within 3 days"); }
   }
   if (profile.near) {
-    if (o.lat == null) { if (o.kind === "tender") s -= 10; }
-    else {
+    if (o.lat == null) {
+      if (o.kind === "tender" && !isLocalCouncil(o) && !LOCAL_PLACE.test(o.region || "")) s -= 8;
+    } else {
       const m = miles(profile.near, { lat: o.lat, lon: o.lon });
       if (m <= profile.near.miles) { s += 10; why.push(`${Math.round(m)} miles away`); } else { s -= 40; why.push(`${Math.round(m)} miles away`); }
     }
@@ -118,6 +132,9 @@ export function score(profile, o) {
   }
   if (o.kind === "tender" && isKidsMusicRadio(o)) {
     s += 22; why.push("kids / music / radio");
+  }
+  if (o.kind === "tender" && isCarCare(o)) {
+    s += 20; why.push("cars / vans / fleet care");
   }
   return { score: Math.max(0, Math.min(100, s)), why };
 }
@@ -158,8 +175,8 @@ async function contractsFinder(profile) {
 async function localCouncilTenders({ buyers = true } = {}) {
   const from = new Date(Date.now() - 28 * DAY).toISOString().slice(0, 19);
   const out = [];
-  const localKw = ["software development", "website", "mobile app", "digital platform", "grounds maintenance", "landscaping"];
-  if (buyers) localKw.push(...YOUTH_SEARCH);
+  const localKw = ["software development", "website", "mobile app", "digital platform", "grounds maintenance", "landscaping", "paving", "tree works"];
+  if (buyers) localKw.push(...YOUTH_SEARCH, ...GHOST_SEARCH);
   for (const keyword of localKw) {
     out.push(...(await cfSearch({ keyword, statuses: ["Open"], publishedFrom: from, regions: LOCAL_REGIONS, suitableForSme: true }, 80))
       .map(n => noticeRow(n, "Contracts Finder · local")));
