@@ -34,6 +34,25 @@ export const PROFILES = {
 };
 
 // Work none of the businesses should chase: products, staffing, hardware, heavy IT, huge frameworks.
+// Hertfordshire, neighbouring counties, and London — local council and public-body buyers.
+const LOCAL_REGIONS = "London,East of England,South East";
+const LOCAL_BUYER = /\b(hertfordshire|watford|st albans|dacorum|hertsmere|broxbourne|stevenage|welwyn hatfield|three rivers|east hertfordshire|north hertfordshire|bedford(?:shire)?|central bedfordshire|luton|buckinghamshire|essex county|southend|thurrock|cambridgeshire|peterborough|greater london|transport for london|london borough|city of london|westminster|barnet|enfield|harrow|hillingdon|ealing|haringey|hertsmere|welwyn)\b/i;
+const LOCAL_PLACE = /\b(hertfordshire|bedfordshire|buckinghamshire|cambridgeshire|essex|greater london|london|watford|luton|st albans)\b/i;
+const LOCAL_BUYER_SEARCH = [
+  "Hertfordshire County Council", "Watford Borough Council", "St Albans City and District",
+  "Dacorum Borough Council", "Hertsmere Borough Council", "Stevenage Borough Council",
+  "Welwyn Hatfield Borough Council", "Three Rivers District Council", "Broxbourne Borough Council",
+  "East Hertfordshire District Council", "North Hertfordshire District Council",
+  "Bedford Borough Council", "Central Bedfordshire Council", "Luton Borough Council",
+  "Buckinghamshire Council", "Essex County Council", "Cambridgeshire County Council",
+  "Greater London Authority", "Transport for London", "London Borough", "City of London Corporation",
+];
+
+function isLocalCouncil(o) {
+  const blob = `${o.buyer || ""} ${o.region || ""} ${o.title || ""}`;
+  return LOCAL_BUYER.test(blob) || LOCAL_PLACE.test(blob);
+}
+
 const NEGATIVE = ["licence", "licences", "license", "licenses", "subscription renewal", "hardware", "laptops", "printers", "telephony", "telecoms", "network infrastructure", "cctv", "telematics",
   "erp", "sap", "oracle", "microsoft 365", "managed service", "cyber security", "penetration testing", "recruitment", "staffing", "agency workers", "temporary staff", "insurance", "catering", "cleaning services", "for hire]"];
 
@@ -73,30 +92,56 @@ export function score(profile, o) {
       if (m <= profile.near.miles) { s += 10; why.push(`${Math.round(m)} miles away`); } else { s -= 40; why.push(`${Math.round(m)} miles away`); }
     }
   }
+  if (o.kind === "tender" && isLocalCouncil(o)) {
+    s += 18; why.push("Herts / neighbouring / London council");
+  }
   return { score: Math.max(0, Math.min(100, s)), why };
 }
 
 // ---------- sources ----------
 
+function noticeRow(n, source = "Contracts Finder") {
+  const [lat, lon] = (n.coordinates || "").split(",").map(Number);
+  return {
+    id: `cf:${n.id}`, source, kind: "tender", title: strip(n.title), buyer: strip(n.organisationName),
+    url: `https://www.contractsfinder.service.gov.uk/Notice/${n.id}`, summary: strip(n.description).slice(0, 1500),
+    value_low: n.valueLow || 0, value_high: n.valueHigh || 0, deadline: Date.parse(n.deadlineDate) || null,
+    published: Date.parse(n.publishedDate) || Date.now(), region: n.regionText || n.postcode || "",
+    cpv: (n.cpvCodes || "").split(/\s+/).filter(Boolean), sme: !!n.isSuitableForSme,
+    lat: Number.isFinite(lat) ? lat : null, lon: Number.isFinite(lon) ? lon : null,
+  };
+}
+
+async function cfSearch(criteria, size = 50) {
+  const r = await fetch("https://www.contractsfinder.service.gov.uk/api/rest/2/search_notices/json", {
+    method: "POST", headers: { "Content-Type": "application/json", "User-Agent": UA },
+    body: JSON.stringify({ searchCriteria: criteria, size }),
+  });
+  if (!r.ok) throw new Error(`contracts_finder ${r.status}`);
+  return ((await r.json()).noticeList || []).map(x => x.item).filter(Boolean);
+}
+
 async function contractsFinder(profile) {
   const from = new Date(Date.now() - 21 * DAY).toISOString().slice(0, 19);
   const out = [];
   for (const keyword of profile.search) {
-    const r = await fetch("https://www.contractsfinder.service.gov.uk/api/rest/2/search_notices/json", {
-      method: "POST", headers: { "Content-Type": "application/json", "User-Agent": UA },
-      body: JSON.stringify({ searchCriteria: { keyword, statuses: ["Open"], publishedFrom: from }, size: 50 }),
-    });
-    if (!r.ok) throw new Error(`contracts_finder ${r.status}`);
-    for (const { item: n } of (await r.json()).noticeList || []) {
-      const [lat, lon] = (n.coordinates || "").split(",").map(Number);
-      out.push({
-        id: `cf:${n.id}`, source: "Contracts Finder", kind: "tender", title: strip(n.title), buyer: strip(n.organisationName),
-        url: `https://www.contractsfinder.service.gov.uk/Notice/${n.id}`, summary: strip(n.description).slice(0, 1500),
-        value_low: n.valueLow || 0, value_high: n.valueHigh || 0, deadline: Date.parse(n.deadlineDate) || null,
-        published: Date.parse(n.publishedDate) || Date.now(), region: n.regionText || n.postcode || "",
-        cpv: (n.cpvCodes || "").split(/\s+/).filter(Boolean), sme: !!n.isSuitableForSme,
-        lat: Number.isFinite(lat) ? lat : null, lon: Number.isFinite(lon) ? lon : null,
-      });
+    out.push(...(await cfSearch({ keyword, statuses: ["Open"], publishedFrom: from })).map(n => noticeRow(n)));
+  }
+  return out;
+}
+
+/** Open notices for Herts, Beds, Bucks, Essex, Cambs, and London councils. */
+async function localCouncilTenders({ buyers = true } = {}) {
+  const from = new Date(Date.now() - 28 * DAY).toISOString().slice(0, 19);
+  const out = [];
+  for (const keyword of ["software development", "website", "mobile app", "digital platform", "grounds maintenance", "landscaping"]) {
+    out.push(...(await cfSearch({ keyword, statuses: ["Open"], publishedFrom: from, regions: LOCAL_REGIONS, suitableForSme: true }, 80))
+      .map(n => noticeRow(n, "Contracts Finder · local")));
+  }
+  if (buyers) {
+    for (const keyword of LOCAL_BUYER_SEARCH) {
+      out.push(...(await cfSearch({ keyword, statuses: ["Open"], publishedFrom: from }, 40))
+        .map(n => noticeRow(n, "Contracts Finder · council")));
     }
   }
   return out;
@@ -177,7 +222,10 @@ export async function runFinder(env, { force = false } = {}) {
   const hour = new Date().getUTCHours();
   const jobs = [["Find a Tender", () => findATender(env, force ? 8 : 3)]];
   if (force || hour % 3 === 0) jobs.push(["Hacker News", hackerNews], ["Reddit", reddit]);
-  if (force || hour % 6 === 0) for (const p of Object.values(PROFILES)) jobs.push([`Contracts Finder (${p.name})`, () => contractsFinder(p)]);
+  if (force || hour % 6 === 0) {
+    for (const p of Object.values(PROFILES)) jobs.push([`Contracts Finder (${p.name})`, () => contractsFinder(p)]);
+    jobs.push(["Local councils (Herts, neighbours, London)", () => localCouncilTenders({ buyers: force || hour % 12 === 0 })]);
+  }
 
   const found = [], errors = [];
   for (const [name, job] of jobs) {

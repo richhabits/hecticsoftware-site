@@ -198,14 +198,16 @@
     const f = s.finder; $("#oInfo").textContent = f ? `Last search ${ago(f.at)} ago: checked ${f.checked}, kept ${f.kept}.${f.errors.length ? " Unavailable: " + f.errors.join("; ") : ""} Runs every hour.` : "The finder runs every hour.";
     renderOpps();
   }
+  const isLocalOpp = x => /hertford|watford|st albans|dacorum|hertsmere|broxbourne|stevenage|welwyn|three rivers|bedford|luton|buckingham|essex|cambridge|london|barnet|enfield|harrow|hillingdon/i.test([x.buyer, x.region, x.why, x.title].join(" "));
   function renderOpps() {
     const open = opps.filter(x => !["ignored", "lost"].includes(x.status));
     fill($("#oChips"), el("button", { "aria-pressed": !oStatus && !oKind, onclick: () => { oStatus = ""; oKind = ""; renderOpps() } }, `Open ${open.length}`),
       el("button", { "aria-pressed": oKind === "tender", onclick: () => { oKind = oKind === "tender" ? "" : "tender"; renderOpps() } }, `Tenders ${opps.filter(x => x.kind === "tender").length}`),
       el("button", { "aria-pressed": oKind === "post", onclick: () => { oKind = oKind === "post" ? "" : "post"; renderOpps() } }, `Hiring posts ${opps.filter(x => x.kind === "post").length}`),
       el("button", { "aria-pressed": oKind === "win", onclick: () => { oKind = oKind === "win" ? "" : "win"; renderOpps() } }, `Major wins ${opps.filter(x => x.score >= 65 && ["new", "saved", "pitching"].includes(x.status)).length}`),
+      el("button", { "aria-pressed": oKind === "local", onclick: () => { oKind = oKind === "local" ? "" : "local"; renderOpps() } }, `Local councils ${opps.filter(isLocalOpp).length}`),
       ...OPP.map(([k, n]) => { const c = opps.filter(x => x.status === k).length; return c ? el("button", { "aria-pressed": oStatus === k, onclick: () => { oStatus = k; renderOpps() } }, `${n} ${c}`) : null }));
-    const shown = opps.filter(x => (oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status)) && (oKind === "win" ? x.score >= 65 && ["new", "saved", "pitching"].includes(x.status) : !oKind || x.kind === oKind));
+    const shown = opps.filter(x => (oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status)) && (oKind === "win" ? x.score >= 65 && ["new", "saved", "pitching"].includes(x.status) : oKind === "local" ? isLocalOpp(x) : !oKind || x.kind === oKind));
     const groups = [["tender", "Tenders"], ["post", "Hiring posts"]];
     const chunks = [];
     for (const [k, n] of groups) {
