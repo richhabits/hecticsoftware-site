@@ -12,7 +12,7 @@ const token=(location.hash.slice(1)||(()=>{try{return localStorage.getItem('hs-p
 const order=['new','reviewing','quoted','accepted','in_progress','beta','live'],names={new:'Received',reviewing:'Reviewing',quoted:'Quote sent',accepted:'Accepted',in_progress:'Building',beta:'Beta',live:'Live',closed:'Closed'};
 const esc=t=>{const d=document.createElement('span');d.textContent=t;return d};
 async function load(){if(token.length!==64){document.getElementById('none').hidden=false;return}
-const r=await fetch(HS_API+'/api/portal?token='+encodeURIComponent(token));if(!r.ok){document.getElementById('none').hidden=false;return}
+const r=await fetch(HS_API+'/api/portal',{headers:{Authorization:'Bearer '+token}});if(!r.ok){document.getElementById('none').hidden=false;return}
 const d=await r.json(),p=d.project;try{localStorage.setItem('hs-portal',token)}catch{}
 document.getElementById('view').hidden=false;document.getElementById('ref').textContent=p.id;document.getElementById('title').textContent=(p.company||p.name)+"'s project";
 document.getElementById('status').textContent=names[p.status]||p.status;
@@ -20,7 +20,7 @@ const st=document.getElementById('steps');st.innerHTML='';order.forEach((o,i)=>{
 if(p.quote){document.getElementById('quoteCard').hidden=false;document.getElementById('quote').textContent=p.quote}
 const m=document.getElementById('msgs');m.innerHTML='';if(!d.messages.length)m.appendChild(Object.assign(esc('No messages yet. Romeo will reply here.'),{className:'note'}));
 d.messages.forEach(x=>{const e=esc(x.body);e.className='msg '+x.author;m.appendChild(e)});
-const fl=document.getElementById('files');fl.innerHTML='';d.files.forEach(x=>{const a=document.createElement('a');a.href=HS_API+'/api/file?id='+x.id+'&token='+token;a.textContent=x.name+' ('+Math.ceil(x.size/1024)+' KB)';fl.appendChild(a)});
+const fl=document.getElementById('files');fl.innerHTML='';d.files.forEach(x=>{const b=document.createElement('button');b.type='button';b.className='btn ghost';b.textContent=x.name+' ('+Math.ceil(x.size/1024)+' KB)';b.onclick=async()=>{const fr=await fetch(HS_API+'/api/file?id='+encodeURIComponent(x.id),{headers:{Authorization:'Bearer '+token}});if(!fr.ok)return;const blob=await fr.blob();const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=x.name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};fl.appendChild(b)});
 document.getElementById('brief').textContent=[p.project_type,p.platforms&&('Devices: '+p.platforms),p.features&&('Features: '+p.features),p.timeline&&('Launch: '+p.timeline),p.budget&&('Budget: '+p.budget),'',p.description].filter(x=>x!=null).join('\n')}
 document.getElementById('mf').onsubmit=async e=>{e.preventDefault();const v=document.getElementById('mi').value.trim();if(!v)return;await fetch(HS_API+'/api/portal/message',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,body:v})});document.getElementById('mi').value='';load()};
 document.getElementById('ff').onsubmit=async e=>{e.preventDefault();const file=document.getElementById('fi').files[0];if(!file)return;if(file.size>10*1024*1024){document.getElementById('fnote').textContent='Files must be under 10 MB.';return}
