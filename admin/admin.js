@@ -79,8 +79,20 @@
   let stats = null, projects = [], opps = [];
   const kpi = (v, l, ic, cls) => el("div", { class: "kpi " + (cls || "") }, el("div", { class: "v", text: v ?? "–" }), el("div", { class: "l" }, icon(ic), l));
   async function loadOverview() {
-    const [s, p, o] = await Promise.all([api("/stats"), api("/projects"), api("/opps?min=35")]);
+    const [s, p, o, br] = await Promise.all([api("/stats"), api("/projects"), api("/opps?min=35"), api("/brains").catch(() => null)]);
     stats = s; projects = p; opps = o.rows;
+    if (br && br.cloudflare) {
+      const c = br.cloudflare;
+      const chromeOn = !!(window.LanguageModel);
+      $("#brainsNote").textContent = br.note;
+      fill($("#brains"),
+        kpi(`£${br.cost}`, "Cost today", "check", "good"),
+        kpi(c.left, "Cloudflare units left today", "spark", c.left < 1500 ? "hot" : "good"),
+        kpi(`${c.ok}/${c.calls || 0}`, "Studio calls that worked", "chat"),
+        kpi(chromeOn ? "On" : "Off", "On this computer (Chrome)", "stack", chromeOn ? "good" : ""),
+        kpi(c.last ? c.last.split("/").pop() : "—", "Last free model", "spark"),
+        kpi(c.resetAt ? new Date(c.resetAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) + " UTC" : "—", "Allowance tops up", "clock"));
+    }
     fill($("#kpis"), 
       kpi(s.awaitingReply, "People waiting", "chat", s.awaitingReply ? "hot" : ""),
       kpi(s.newUnanswered, "New briefs, no reply", "person", s.newUnanswered ? "hot" : ""),
