@@ -1,0 +1,12 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["CC9Q9BH5NT.com.hecticsoftware.app"],
+        "components": [
+          { "/": "/portal/*", "comment": "Private project pages open in the Hectic Software app" }
+        ]
+      }
+    ]
+  }
+}
