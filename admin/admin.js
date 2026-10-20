@@ -92,6 +92,14 @@
         kpi(chromeOn ? "On" : "Off", "On this computer (Chrome)", "stack", chromeOn ? "good" : ""),
         kpi(c.last ? c.last.split("/").pop() : "—", "Last free model", "spark"),
         kpi(c.resetAt ? new Date(c.resetAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) + " UTC" : "—", "Allowance tops up", "clock"));
+      if (br.catalog && $("#brainsList")) {
+        const bits = [];
+        for (const g of [...new Set(br.catalog.map(x => x.group))]) {
+          bits.push(el("h2", { class: "group-h", text: g }));
+          for (const x of br.catalog.filter(y => y.group === g)) bits.push(el("div", { class: "row", style: "cursor:default" }, el("div", {}, el("div", { class: "t", text: x.name }), el("div", { class: "s", text: x.job + " — " + x.catch }))));
+        }
+        fill($("#brainsList"), ...bits);
+      }
     }
     fill($("#kpis"), 
       kpi(s.awaitingReply, "People waiting", "chat", s.awaitingReply ? "hot" : ""),
