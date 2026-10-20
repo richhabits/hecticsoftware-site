@@ -6,13 +6,15 @@
   const store = { get: k => { try { return localStorage.getItem(k) } catch { return null } }, set: (k, v) => { try { localStorage.setItem(k, v) } catch {} } };
   let key = ""; try { key = sessionStorage.getItem("hs-admin") || "" } catch {}
 
-  const STAGES = [["new", "New"], ["reviewing", "Reviewing"], ["quoted", "Quoted"], ["accepted", "Accepted"], ["in_progress", "Building"], ["beta", "Beta"], ["live", "Live"], ["closed", "Closed"]];
+  const STAGES = [["new", "New brief"], ["reviewing", "Looking at it"], ["quoted", "Quote sent"], ["accepted", "They said yes"], ["in_progress", "Building"], ["beta", "On their phone"], ["live", "Live"], ["closed", "Closed"]];
   const stageName = s => (STAGES.find(x => x[0] === s) || [s, s])[1];
-  const OPP = [["new", "New"], ["saved", "Saved"], ["pitching", "Pitching"], ["submitted", "Submitted"], ["won", "Won"], ["lost", "Lost"], ["ignored", "Ignored"]];
+  const OPP = [["new", "New"], ["saved", "Keep"], ["pitching", "Writing"], ["submitted", "Sent"], ["won", "Won"], ["lost", "Lost"], ["ignored", "Skip"]];
   const REPLIES = [
     ["Book a call", "Thanks for the brief. The quickest next step is a 15-minute call so I can ask a few questions and get you a fixed written quote. What times suit you this week?\n\nRomeo, Hectic Software"],
-    ["Quote ready", "Your fixed written quote is now in your project page. It lists exactly what's included, the timeline and the payment stages. Any questions, just reply here.\n\nRomeo, Hectic Software"],
-    ["Beta ready", "A working beta is ready to install on your phone. I've added the install link to your project page. Have a play and send me anything that feels off.\n\nRomeo, Hectic Software"],
+    ["Ask what they need", "Thanks — I have the brief. To write you a fixed quote I still need: who it is for, which devices (iPhone, Android, web), the must-have features, when you want it live, and a budget range. Reply here or we can jump on a call.\n\nRomeo, Hectic Software"],
+    ["Quote ready", "Your fixed written quote is now in your project page. It lists exactly what is included, the timeline and the payment stages. Any questions, just reply here.\n\nRomeo, Hectic Software"],
+    ["Nudge quote", "Just checking you saw the written quote. Happy to walk through it on a short call if that helps you decide.\n\nRomeo, Hectic Software"],
+    ["Beta ready", "A working beta is ready to install on your phone. I have added the install link to your project page. Have a play and send me anything that feels off.\n\nRomeo, Hectic Software"],
   ];
 
   // ---------- API ----------
@@ -80,20 +82,21 @@
     const [s, p, o] = await Promise.all([api("/stats"), api("/projects"), api("/opps?min=35")]);
     stats = s; projects = p; opps = o.rows;
     fill($("#kpis"), 
-      kpi(s.awaitingReply, "Waiting on you", "chat", s.awaitingReply ? "hot" : ""),
-      kpi(s.enquiriesThisWeek, `New this week · ${s.enquiriesLastWeek} last`, "person"),
-      kpi(s.quoted, "Quotes out", "file"),
-      kpi(s.active, "In build", "stack", s.active ? "good" : ""),
-      kpi(s.medianFirstReplyHours == null ? "–" : s.medianFirstReplyHours + "h", "Median first reply", "clock"),
-      kpi(s.oppsNewThisWeek, "Leads found this week", "target", s.oppsNewThisWeek ? "good" : ""),
-      kpi(s.oppsClosingSoon, "Closing this week", "clock", s.oppsClosingSoon ? "hot" : ""),
-      kpi(s.oppsWon, "Won from leads", "check", s.oppsWon ? "good" : ""));
+      kpi(s.awaitingReply, "People waiting", "chat", s.awaitingReply ? "hot" : ""),
+      kpi(s.newUnanswered, "New briefs, no reply", "person", s.newUnanswered ? "hot" : ""),
+      kpi(s.quoted, "Quotes sitting out", "file", s.quoted ? "hot" : ""),
+      kpi(s.active, "Building now", "stack", s.active ? "good" : ""),
+      kpi(s.medianFirstReplyHours == null ? "–" : s.medianFirstReplyHours + "h", "Time to first reply", "clock"),
+      kpi(s.oppsNewThisWeek, "Jobs found this week", "target", s.oppsNewThisWeek ? "good" : ""),
+      kpi(s.oppsClosingSoon, "Public jobs close this week", "clock", s.oppsClosingSoon ? "hot" : ""),
+      kpi(s.oppsWon, "Won", "check", s.oppsWon ? "good" : ""));
     const needs = [];
-    for (const x of p.filter(x => x.last_author === "client" && x.status !== "closed")) needs.push(row("chat", x.name + (x.company ? " · " + x.company : ""), "Client replied, waiting on you", ago(x.updated_at), "hot", () => openProject(x.id)));
-    for (const x of p.filter(x => x.status === "new" && !x.last_author)) needs.push(row("person", x.name + (x.company ? " · " + x.company : ""), `New brief: ${x.project_type || "project"}${x.budget ? ", " + x.budget : ""}`, ago(x.created_at), "hot", () => openProject(x.id)));
-    for (const x of opps.filter(x => ["new", "saved", "pitching"].includes(x.status) && x.deadline && x.deadline < Date.now() + 7 * 86400000).slice(0, 5))
-      needs.push(row("target", x.title, `${x.buyer || x.source} · closes in ${until(x.deadline)}`, x.score, "", () => openOpp(x)));
-    if (!needs.length) needs.push(el("div", { class: "empty", text: "Nothing needs you right now." }));
+    for (const x of p.filter(x => x.last_author === "client" && x.status !== "closed")) needs.push(row("chat", x.name + (x.company ? " · " + x.company : ""), "They replied — answer to keep the deal moving", ago(x.updated_at), "hot", () => openProject(x.id)));
+    for (const x of p.filter(x => x.status === "new" && !x.last_author)) needs.push(row("person", x.name + (x.company ? " · " + x.company : ""), `New brief${x.budget ? " · " + x.budget : ""} — book a call or send a quote`, ago(x.created_at), "hot", () => openProject(x.id)));
+    for (const x of p.filter(x => x.status === "quoted" && x.last_author !== "client")) needs.push(row("file", x.name + (x.company ? " · " + x.company : ""), "Quote sent — nudge if they have gone quiet", ago(x.updated_at), "", () => openProject(x.id)));
+    for (const x of opps.filter(x => ["new", "saved", "pitching"].includes(x.status) && x.deadline && x.deadline < Date.now() + 7 * 86400000).slice(0, 8))
+      needs.push(row("target", x.title, `${x.buyer || x.source} · closes in ${until(x.deadline)}`, x.score, x.score >= 65 ? "good" : "", () => openOpp(x)));
+    if (!needs.length) needs.push(el("div", { class: "empty", text: "Nothing waiting. Hunt for work on Find work, or follow up a quiet quote." }));
     fill($("#needs"), ...needs);
     fill($("#pushes"), ...(s.pushes.length ? s.pushes.slice(0, 8).map(x => row("up", x.repo.split("/")[1] + " · " + x.branch, x.message.split("\n")[0], ago(x.at), "good", () => window.open("https://github.com/" + x.repo, "_blank", "noopener,noreferrer")))
       : [el("div", { class: "empty", text: "Pushes appear here the moment they reach GitHub." })]));
@@ -126,7 +129,7 @@
         el("div", {}, el("div", { class: "t", text: `${x.name}${x.company ? " · " + x.company : ""}` }), el("div", { class: "s", text: [x.project_type, x.platforms, x.budget].filter(Boolean).join(" · ") })),
         el("div", { class: "meta" }, el("span", { class: "badge " + (x.last_author === "client" ? "hot" : ""), text: x.last_author === "client" ? "Waiting" : stageName(x.status) }), ago(x.updated_at))));
     }
-    fill($("#cList"), ...(clientChunks.length ? clientChunks : [el("div", { class: "empty", text: projects.length ? "No clients match." : "No briefs yet. They arrive from hecticsoftware.com/start and the app." })]));
+    fill($("#cList"), ...(clientChunks.length ? clientChunks : [el("div", { class: "empty", text: projects.length ? "Nothing matches that search." : "No briefs yet. They arrive from hecticsoftware.com/start and the app." })]));
     fill($("#cBoard"), ...STAGES.filter(([k]) => k !== "closed").map(([k, n]) => {
       const items = base.filter(x => x.status === k);
       return el("div", { class: "col" }, el("h3", {}, n, el("span", { text: items.length })), ...items.map(x => el("button", { class: "card", onclick: () => openProject(x.id) }, el("div", { class: "t", text: x.name }), el("div", { class: "s", text: [x.project_type, x.budget].filter(Boolean).join(" · ") }))));
@@ -148,7 +151,14 @@
     const quote = el("textarea", {}, p.quote || ""), notes = el("textarea", { placeholder: "Private notes" }, p.admin_notes || ""), reply = el("textarea", { placeholder: "Reply to the client (shows in their project page and app)" });
     const status = el("select", {}, ...STAGES.map(([k, n]) => el("option", { value: k, selected: k === p.status }, n)));
     const save = async (extra = {}) => { await post("/update", { id, status: status.value, quote: quote.value, notes: notes.value, reply: reply.value.trim() || null, ...extra }); toast("Saved"); openProject(id); if (tab === "clients") loadClients(); else loadOverview() };
-    const research = el("div", { class: "brief", text: "Press Research brief for market fit, named shipped work, and gaps. Facts only." });
+    const nextLine = p.status === "new" && !d.messages.some(m => m.author === "hectic") ? "Reply today: book a call or ask the gaps, then write a fixed quote."
+      : p.last_author === "client" ? "They are waiting. Reply in this conversation before you do anything else."
+      : p.status === "quoted" ? "Quote is out. If they have gone quiet, send the nudge."
+      : p.status === "accepted" || p.status === "in_progress" ? "Keep the build moving. Next milestone on the written quote."
+      : p.status === "beta" ? "Get the beta on their phone and collect notes."
+      : "Keep the file tidy. Move the stage when the work has actually moved.";
+    const research = el("div", { class: "brief", text: "Research the brief for the market, named work we have shipped, and gaps. Facts only." });
+    const closeBox = el("div", { class: "brief", text: "Press Close the deal for a pack: what they want, what is missing, what to send, what we can prove." });
     const spark = (label, run) => {
       const b = el("button", { class: "btn ghost", onclick: async () => {
         b.disabled = true; const s = b.querySelector("span"); const old = s.textContent; s.textContent = "Working…";
@@ -166,23 +176,31 @@
       notes.value = (notes.value ? notes.value + "\n\n" : "") + r.notes;
       toast("Research and key points ready — check every claim");
     });
+    const closeBtn = spark("Close the deal", async () => {
+      const r = await post("/close-pack", { id });
+      closeBox.textContent = r.pack;
+      if (r.reply) reply.value = r.reply;
+      toast("Close pack ready — check every claim before you send");
+    });
     openDrawer(
       el("div", { class: "mono", text: `${p.id} · ${stageName(p.status)} · ${new Date(p.created_at).toLocaleDateString("en-GB")}` }),
       el("h1", { text: p.name }), p.company ? el("div", { class: "muted", text: p.company }) : null,
+      el("div", { class: "next" }, el("b", { text: "Do this next" }), nextLine),
       el("div", { class: "d-actions", style: "margin-top:14px" },
         el("a", { class: "btn ghost", href: "mailto:" + p.email + "?subject=" + encodeURIComponent("Your Hectic project " + p.id) }, icon("mail"), "Email"),
         p.phone ? el("a", { class: "btn ghost", href: "tel:" + p.phone.replace(/[^+\d]/g, "") }, icon("phone"), "Call") : null,
         next ? el("button", { class: "btn accent", onclick: () => { status.value = next[0]; save() } }, "Move to " + next[1]) : null),
-      el("div", { class: "d-sec" }, el("h2", { text: "Brief" }),
-        el("dl", { class: "facts" }, ...[["Type", p.project_type], ["Devices", p.platforms], ["Features", p.features], ["Budget", p.budget], ["Launch", p.timeline], ["Guide", `${money(d.guide.low)}–${money(d.guide.high)}, ${d.guide.weeks}`], ["Links", p.links]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
+      el("div", { class: "d-sec" }, el("h2", { text: "What they asked for" }),
+        el("dl", { class: "facts" }, ...[["Email", p.email], ["Phone", p.phone], ["Type", p.project_type], ["Devices", p.platforms], ["Features", p.features], ["Budget", p.budget], ["Launch", p.timeline], ["Guide price", `${money(d.guide.low)}–${money(d.guide.high)}, ${d.guide.weeks}`], ["Links", p.links]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
         el("div", { class: "brief", text: p.description || "" }),
-        el("div", { class: "d-actions" }, researchBtn, notesBtn, packBtn, d.files.length ? d.files.map(f => el("button", { class: "badge", onclick: () => download(f) }, icon("file"), f.name)) : null)),
+        el("div", { class: "d-actions" }, researchBtn, notesBtn, packBtn, closeBtn, d.files.length ? d.files.map(f => el("button", { class: "badge", onclick: () => download(f) }, icon("file"), f.name)) : null)),
       el("div", { class: "d-sec" }, el("h2", { text: "Research" }), research, el("p", { class: "small muted", text: "Typical UK practice is labelled typical. Shipped work is only what is on record." })),
-      el("div", { class: "d-sec" }, el("h2", { text: "Quote" }), quote, el("div", { class: "d-actions" }, draftBtn)),
-      el("div", { class: "d-sec" }, el("h2", { text: "Conversation" }),
+      el("div", { class: "d-sec" }, el("h2", { text: "How to close" }), closeBox),
+      el("div", { class: "d-sec" }, el("h2", { text: "Written quote" }), quote, el("div", { class: "d-actions" }, draftBtn)),
+      el("div", { class: "d-sec" }, el("h2", { text: "Messages" }),
         el("div", { class: "thread" }, ...(d.messages.length ? d.messages.map(m => el("div", { class: "msg " + m.author, text: m.body })) : [el("div", { class: "muted small", text: "No messages yet." })])),
         el("div", { class: "d-actions" }, ...REPLIES.map(([n, t]) => el("button", { class: "badge", onclick: () => { reply.value = t; reply.focus() } }, n))), reply),
-      el("div", { class: "d-sec" }, el("h2", { text: "Stage and notes" }), status, notes),
+      el("div", { class: "d-sec" }, el("h2", { text: "Stage and private notes" }), status, notes),
       el("div", { class: "d-actions", style: "margin-top:16px" }, el("button", { class: "btn", onclick: () => save() }, "Save and send")),
       d.history.length ? el("div", { class: "d-sec" }, el("h2", { text: "History" }), el("div", { class: "timeline" }, ...d.history.map(h => el("div", {}, el("span", { text: new Date(h.created_at).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" }) + "  " }), h.body)))) : null);
   }
@@ -195,20 +213,21 @@
     fill($("#oBiz"), el("button", { "aria-pressed": !oBiz, onclick: () => { oBiz = ""; store.set("hs-obiz", ""); loadOpps() } }, "All"),
       ...Object.entries(profiles).map(([k, n]) => el("button", { "aria-pressed": oBiz === k, onclick: () => { oBiz = k; store.set("hs-obiz", k); loadOpps() } }, n)));
     const s = stats || await api("/stats"); stats = s;
-    const f = s.finder; $("#oInfo").textContent = f ? `Last search ${ago(f.at)} ago: checked ${f.checked}, kept ${f.kept}.${f.errors.length ? " Unavailable: " + f.errors.join("; ") : ""} Runs every hour.` : "The finder runs every hour.";
+    const f = s.finder; $("#oInfo").textContent = f ? `Last hunt ${ago(f.at)} ago: looked at ${f.checked}, kept ${f.kept}.${f.errors.length ? " Could not reach: " + f.errors.join("; ") : ""} Searches every hour, including Hertfordshire, neighbouring counties and London councils.` : "The hunt runs every hour.";
     renderOpps();
   }
   const isLocalOpp = x => /hertford|watford|st albans|dacorum|hertsmere|broxbourne|stevenage|welwyn|three rivers|bedford|luton|buckingham|essex|cambridge|london|barnet|enfield|harrow|hillingdon/i.test([x.buyer, x.region, x.why, x.title].join(" "));
   function renderOpps() {
     const open = opps.filter(x => !["ignored", "lost"].includes(x.status));
     fill($("#oChips"), el("button", { "aria-pressed": !oStatus && !oKind, onclick: () => { oStatus = ""; oKind = ""; renderOpps() } }, `Open ${open.length}`),
-      el("button", { "aria-pressed": oKind === "tender", onclick: () => { oKind = oKind === "tender" ? "" : "tender"; renderOpps() } }, `Tenders ${opps.filter(x => x.kind === "tender").length}`),
-      el("button", { "aria-pressed": oKind === "post", onclick: () => { oKind = oKind === "post" ? "" : "post"; renderOpps() } }, `Hiring posts ${opps.filter(x => x.kind === "post").length}`),
-      el("button", { "aria-pressed": oKind === "win", onclick: () => { oKind = oKind === "win" ? "" : "win"; renderOpps() } }, `Major wins ${opps.filter(x => x.score >= 65 && ["new", "saved", "pitching"].includes(x.status)).length}`),
+      el("button", { "aria-pressed": oKind === "tender", onclick: () => { oKind = oKind === "tender" ? "" : "tender"; renderOpps() } }, `Public jobs ${opps.filter(x => x.kind === "tender").length}`),
+      el("button", { "aria-pressed": oKind === "post", onclick: () => { oKind = oKind === "post" ? "" : "post"; renderOpps() } }, `People hiring ${opps.filter(x => x.kind === "post").length}`),
+      el("button", { "aria-pressed": oKind === "win", onclick: () => { oKind = oKind === "win" ? "" : "win"; renderOpps() } }, `Best fits ${opps.filter(x => x.score >= 65 && ["new", "saved", "pitching"].includes(x.status)).length}`),
       el("button", { "aria-pressed": oKind === "local", onclick: () => { oKind = oKind === "local" ? "" : "local"; renderOpps() } }, `Local councils ${opps.filter(isLocalOpp).length}`),
       ...OPP.map(([k, n]) => { const c = opps.filter(x => x.status === k).length; return c ? el("button", { "aria-pressed": oStatus === k, onclick: () => { oStatus = k; renderOpps() } }, `${n} ${c}`) : null }));
-    const shown = opps.filter(x => (oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status)) && (oKind === "win" ? x.score >= 65 && ["new", "saved", "pitching"].includes(x.status) : oKind === "local" ? isLocalOpp(x) : !oKind || x.kind === oKind));
-    const groups = [["tender", "Tenders"], ["post", "Hiring posts"]];
+    const q = ($("#oSearch")?.value || "").trim().toLowerCase();
+    const shown = opps.filter(x => (oStatus ? x.status === oStatus : !["ignored", "lost"].includes(x.status)) && (oKind === "win" ? x.score >= 65 && ["new", "saved", "pitching"].includes(x.status) : oKind === "local" ? isLocalOpp(x) : !oKind || x.kind === oKind) && (!q || [x.title, x.buyer, x.region, x.summary, x.source].join(" ").toLowerCase().includes(q)));
+    const groups = [["tender", "Public jobs"], ["post", "People hiring"]];
     const chunks = [];
     for (const [k, n] of groups) {
       const items = shown.filter(x => (x.kind || "tender") === k);
@@ -220,15 +239,19 @@
         el("div", { class: "meta" }, x.deadline ? el("span", { class: "badge " + (x.deadline < Date.now() + 7 * 86400000 ? "hot" : "") }, icon("clock"), until(x.deadline)) : el("span", { class: "badge", text: x.kind === "post" ? "Post" : "Tender" }),
           x.status !== "new" ? el("span", { class: "badge " + (x.status === "won" ? "good" : ""), text: (OPP.find(o => o[0] === x.status) || [, x.status])[1] }) : null)));
     }
-    fill($("#oList"), ...(chunks.length ? chunks : [el("div", { class: "empty", text: "No open leads at this score yet. The finder keeps looking every hour." })]));
+    fill($("#oList"), ...(chunks.length ? chunks : [el("div", { class: "empty", text: "Nothing open at this fit yet. Hunt now, or wait for the hourly search." })]));
   }
   $("#oMin").onchange = loadOpps;
-  $("#oRun").onclick = async () => { const b = $("#oRun"); b.disabled = true; try { const r = await post("/finder/run", {}); toast(`Checked ${r.checked}, kept ${r.kept}`) } catch { toast("Search limit reached, try later") } b.disabled = false; stats = null; loadOpps() };
+  $("#oSearch") && ($("#oSearch").oninput = renderOpps);
+  $("#oRun").onclick = async () => { const b = $("#oRun"); b.disabled = true; try { const r = await post("/finder/run", {}); toast(`Looked at ${r.checked}, kept ${r.kept}`) } catch { toast("Search limit reached, try later") } b.disabled = false; stats = null; loadOpps() };
 
   function openOpp(x) {
     const pitch = el("textarea", { placeholder: "Pitch or expression of interest" }, x.pitch || ""), notes = el("textarea", { placeholder: "Notes" }, x.notes || "");
     const set = async status => { await post("/opp", { id: x.id, status, notes: notes.value, pitch: pitch.value }); toast("Saved"); closeDrawer(); stats = null; tab === "opps" ? loadOpps() : loadOverview() };
-    const research = el("div", { class: "brief", text: "Press Research for a go / maybe / no from the facts on record." });
+    const nextOpp = x.deadline && x.deadline < Date.now() + 3 * 86400000 ? "Closes very soon. Open the notice, check we can evidence it, then write or skip today."
+      : x.kind === "tender" ? "Open the notice. If we can name shipped work that matches, write an interest note. If we cannot evidence insurance or staff they ask for, skip."
+      : "Read the post. Reply with what we would build, named work we have shipped, and a fixed written quote.";
+    const research = el("div", { class: "brief", text: "Research for a go, maybe or no from facts on record." });
     const spark = (label, run) => {
       const b = el("button", { class: "btn ghost", onclick: async () => {
         b.disabled = true; const s = b.querySelector("span"); const old = s.textContent; s.textContent = "Working…";
@@ -237,18 +260,19 @@
       } }, icon("spark"), el("span", { text: label }));
       return b;
     };
-    const draft = spark(x.kind === "tender" ? "Bid check + draft" : "Draft reply", async () => { const r = await post("/opp/pitch", { id: x.id }); pitch.value = r.pitch; x.pitch = r.pitch; toast("Draft ready — check every claim") });
+    const draft = spark(x.kind === "tender" ? "Check and draft" : "Draft reply", async () => { const r = await post("/opp/pitch", { id: x.id }); pitch.value = r.pitch; x.pitch = r.pitch; toast("Draft ready — check every claim") });
     const researchBtn = spark("Research", async () => { const r = await post("/opp/research", { id: x.id }); research.textContent = r.research; toast("Research ready") });
     const notesBtn = spark("Key points", async () => { const r = await post("/opp/notes", { id: x.id }); notes.value = (notes.value ? notes.value + "\n\n" : "") + r.notes; toast("Key points added to notes") });
     openDrawer(
       el("div", { class: "mono", text: `${profiles[x.business] || x.business} · ${x.source}${x.stage === "pre-market" ? " · pre-market" : ""}` }),
       el("h1", { text: x.title }),
-      el("dl", { class: "facts" }, ...[["Buyer", x.buyer], ["Value", money(x.value_low) || "Not stated"], ["Closes", x.deadline ? new Date(x.deadline).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" }) : "No deadline"], ["Where", x.region], ["Score", `${x.score}: ${x.why}`]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
+      el("div", { class: "next" }, el("b", { text: "Do this next" }), nextOpp),
+      el("dl", { class: "facts" }, ...[["Who is buying", x.buyer], ["Value", money(x.value_low) || "Not stated"], ["Closes", x.deadline ? new Date(x.deadline).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" }) : "No deadline"], ["Where", x.region], ["Why it scored", `${x.score}: ${x.why}`]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
       el("div", { class: "d-actions", style: "margin-top:14px" }, safeUrl(x.url) ? el("a", { class: "btn", href: safeUrl(x.url), target: "_blank", rel: "noopener noreferrer" }, icon("link"), "Open the notice") : null, researchBtn, notesBtn, draft),
-      el("div", { class: "d-sec" }, el("h2", { text: "Summary" }), el("div", { class: "brief", text: x.summary || "" })),
+      el("div", { class: "d-sec" }, el("h2", { text: "What they published" }), el("div", { class: "brief", text: x.summary || "" })),
       el("div", { class: "d-sec" }, el("h2", { text: "Research" }), research, el("p", { class: "small muted", text: "Only facts on record. Anything else is marked not on record." })),
-      el("div", { class: "d-sec" }, el("h2", { text: "Pitch" }), pitch, el("p", { class: "small muted", text: "Drafts use only facts on record. Check every claim before you send or submit anything." })),
-      el("div", { class: "d-sec" }, el("h2", { text: "Notes" }), notes),
+      el("div", { class: "d-sec" }, el("h2", { text: "What you would send" }), pitch, el("p", { class: "small muted", text: "Drafts use only facts on record. Check every claim before you send or submit anything." })),
+      el("div", { class: "d-sec" }, el("h2", { text: "Private notes" }), notes),
       el("div", { class: "d-sec" }, el("h2", { text: "Move to" }), el("div", { class: "d-actions" }, ...OPP.filter(([k]) => k !== "new").map(([k, n]) => el("button", { class: "btn " + (k === "won" ? "teal" : k === "ignored" || k === "lost" ? "ghost" : k === x.status ? "" : "ghost"), onclick: () => set(k) }, n)))));
   }
 
@@ -343,7 +367,7 @@
   function start() {
     $("#login").hidden = true; $("#app").hidden = false;
     const h = new Date().getHours();
-    bubble("ai", `Good ${h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"}, Romeo. Ask me anything, tap Brief for today's priorities, or press the mic and talk.`);
+    bubble("ai", `Good ${h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"}, Romeo. Tap Today for money and people waiting, Hunt to chase public work, Close for the next hour. I only use facts on record.`);
     showTab(tab); pulse();
   }
   if (key) api("/stats").then(start).catch(() => lock()); else lock();

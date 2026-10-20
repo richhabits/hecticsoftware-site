@@ -8,9 +8,9 @@
   <form class="login-box" id="loginForm">
     <div class="wordmark">HECTIC</div>
     <h1>Studio</h1>
-    <label>Studio key<input id="key" type="password" autocomplete="current-password" required></label>
+    <label>Your studio key<input id="key" type="password" autocomplete="current-password" required></label>
     <button class="btn" type="submit">Open</button>
-    <p class="muted small" id="loginNote">Kept in this tab only and cleared when you close it.</p>
+    <p class="muted small" id="loginNote">Kept in this tab only. Find it in Keychain as Hectic Software admin token.</p>
   </form>
 </div>
 
@@ -18,10 +18,10 @@
   <header class="top">
     <div class="wordmark">HECTIC</div><span class="muted small hide-s">Studio</span>
     <nav class="tabs" role="tablist">
-      <button role="tab" data-tab="overview" aria-selected="true"><svg><use href="#i-grid"/></svg>Overview</button>
-      <button role="tab" data-tab="clients"><svg><use href="#i-person"/></svg>Clients</button>
-      <button role="tab" data-tab="opps"><svg><use href="#i-target"/></svg>Opportunities</button>
-      <button role="tab" data-tab="estate"><svg><use href="#i-stack"/></svg>Estate</button>
+      <button role="tab" data-tab="overview" aria-selected="true"><svg><use href="#i-grid"/></svg>Today</button>
+      <button role="tab" data-tab="clients"><svg><use href="#i-person"/></svg>Work</button>
+      <button role="tab" data-tab="opps"><svg><use href="#i-target"/></svg>Find work</button>
+      <button role="tab" data-tab="estate"><svg><use href="#i-stack"/></svg>Sites</button>
     </nav>
     <span class="clock small muted" id="clock"></span>
     <button class="icon-btn" id="themeBtn" title="Light or dark"><svg><use href="#i-moon"/></svg></button>
@@ -37,11 +37,10 @@
       </div>
       <div class="chat" id="chat" aria-live="polite"></div>
       <div class="quick" id="quick">
-        <button data-q="Brief me for today. Order: unanswered new briefs, clients waiting on a reply, tenders closing this week that we can evidence with shipped work, then hiring posts. For each, say go, maybe or pass from facts on record only, and the one next action.">Brief</button>
-        <button data-q="Which clients are waiting on me?">Waiting</button>
-        <button data-q="Best opportunities right now, and should I go for them?">Leads</button>
-        <button data-q="Summarise all my projects on GitHub and this Mac: what's healthy, what's stale, what's unpushed?">Projects</button>
-        <button data-q="What's the single best thing I can do this week to make money?">Money</button>
+        <button data-q="Today's money list, in order. New briefs with no reply, people waiting on me, quotes sitting unanswered, public jobs closing this week that we can evidence with shipped work, then people hiring. For each: go, maybe or pass from facts on record, one next action, and what to ask so we can close.">Today</button>
+        <button data-q="Who is waiting on me, and what should I send them right now to move the deal forward?">Waiting</button>
+        <button data-q="Which public jobs and hiring posts should I chase this week to make money? Name the shipped work we can cite. Skip anything we cannot evidence.">Hunt</button>
+        <button data-q="What is the single best thing I can do in the next hour to get money in: a reply, a quote, a call, or a bid?">Close</button>
       </div>
       <form class="ask" id="askForm">
         <button type="button" class="icon-btn" id="micBtn" title="Talk"><svg><use href="#i-mic"/></svg></button>
@@ -53,15 +52,15 @@
     <main class="main">
       <section data-panel="overview">
         <div class="kpis" id="kpis"></div>
-        <h2>Needs you</h2>
+        <h2>Close this first</h2>
         <div class="list" id="needs"></div>
-        <h2>Latest work</h2>
+        <h2>Just pushed</h2>
         <div class="list" id="pushes"></div>
       </section>
 
       <section data-panel="clients" hidden>
         <div class="bar">
-          <input type="search" id="cSearch" placeholder="Search name, company, email">
+          <input type="search" id="cSearch" placeholder="Search name, company, email, type">
           <div class="seg" id="cView"><button data-v="list" aria-pressed="true" title="List"><svg><use href="#i-list"/></svg></button><button data-v="board" title="Board"><svg><use href="#i-columns"/></svg></button></div>
           <button class="btn ghost" id="cCsv">CSV</button>
         </div>
@@ -72,9 +71,10 @@
 
       <section data-panel="opps" hidden>
         <div class="bar">
+          <input type="search" id="oSearch" placeholder="Search title, buyer, place">
           <div class="seg" id="oBiz"></div>
-          <select id="oMin" title="Minimum score"><option value="35">Score 35+</option><option value="50">50+</option><option value="65">65+</option></select>
-          <button class="btn ghost" id="oRun"><svg><use href="#i-refresh"/></svg>Search now</button>
+          <select id="oMin" title="How well it fits"><option value="35">Fair fit</option><option value="50">Strong fit</option><option value="65">Best fit</option></select>
+          <button class="btn ghost" id="oRun"><svg><use href="#i-refresh"/></svg>Hunt now</button>
         </div>
         <div class="chips" id="oChips"></div>
         <p class="small muted" id="oInfo"></p>
@@ -85,7 +85,7 @@
         <p class="small muted" id="eInfo"></p>
         <div class="kpis" id="eKpis"></div>
         <h2>Sites</h2><div class="list tiles" id="eSites"></div>
-        <h2>Repositories</h2><div class="list" id="eRepos"></div>
+        <h2>Code on this Mac</h2><div class="list" id="eRepos"></div>
       </section>
     </main>
   </div>
@@ -119,5 +119,5 @@
     <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></symbol>
   </defs>
 </svg>
-<script src="/admin/admin.js?v=20261020c"></script>
+<script src="/admin/admin.js?v=20261020d"></script>
 </body></html>

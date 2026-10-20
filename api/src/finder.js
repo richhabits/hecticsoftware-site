@@ -9,9 +9,9 @@ const DAY = 86400000;
 export const PROFILES = {
   hectic: {
     name: "Hectic Software",
-    search: ["mobile app", "app development", "application development", "website", "web application", "digital platform", "booking system", "software development"],
-    strong: ["ios", "iphone", "ipad", "swift", "swiftui", "android", "kotlin", "mobile app", "mobile apps", "mobile application", "app development", "app developer", "native app", "apple watch", "app store", "google play"],
-    medium: ["website", "web app", "web application", "web portal", "client portal", "booking system", "digital platform", "software development", "ux", "user experience", "prototype", "mvp", "startup", "react", "progressive web app", "chatbot", "ai assistant"],
+    search: ["mobile app", "app development", "application development", "website", "web application", "digital platform", "booking system", "software development", "client portal", "loyalty app", "ordering app"],
+    strong: ["ios", "iphone", "ipad", "swift", "swiftui", "android", "kotlin", "mobile app", "mobile apps", "mobile application", "app development", "app developer", "native app", "apple watch", "app store", "google play", "apple pay"],
+    medium: ["website", "web app", "web application", "web portal", "client portal", "booking system", "digital platform", "software development", "ux", "user experience", "prototype", "mvp", "startup", "react", "progressive web app", "chatbot", "ai assistant", "loyalty", "ordering", "payments", "booking"],
     cpv: { "72": 15, "7221": 20, "7222": 10, "72413": 20, "48": 5 },
     near: null,
   },
