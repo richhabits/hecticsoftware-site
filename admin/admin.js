@@ -137,6 +137,22 @@
   }
   $("#cSearch").oninput = renderClients;
   $$("#cView button").forEach(b => b.onclick = () => { cView = b.dataset.v; store.set("hs-cview", cView); renderClients() });
+  const labelled = (name, node) => { const l = el("label"); l.append(el("span", { text: name }), node); return l };
+  $("#cAdd").onclick = () => {
+    const name = el("input", { required: true }), email = el("input", { type: "email", required: true }), phone = el("input", { type: "tel" }), company = el("input");
+    const type = el("input", { placeholder: "App, website, radio, landscape, cars…" }), platforms = el("input"), budget = el("input"), desc = el("textarea", { placeholder: "What they asked for, in their words" });
+    const save = el("button", { class: "btn", onclick: async () => {
+      save.disabled = true;
+      try {
+        const r = await post("/job", { name: name.value, email: email.value, phone: phone.value, company: company.value, project_type: type.value, platforms: platforms.value, budget: budget.value, description: desc.value });
+        toast("Job added"); closeDrawer(); await loadClients(); openProject(r.id);
+      } catch { toast("Need a name, a real email and a short description"); save.disabled = false }
+    } }, "Save job");
+    openDrawer(el("h1", { text: "Add a job" }), el("p", { class: "muted", text: "Call, PIING, email or walk-in. This creates a client page they can open." }),
+      labelled("Name", name), labelled("Email", email), labelled("Phone", phone), labelled("Company", company),
+      labelled("What it is", type), labelled("Devices", platforms), labelled("Budget they said", budget), labelled("What they asked for", desc),
+      el("div", { class: "d-actions" }, save));
+  };
   $("#cCsv").onclick = () => {
     const cols = ["id", "name", "company", "email", "project_type", "platforms", "budget", "timeline", "status", "created_at", "updated_at"];
     const cell = v => `"${String(v ?? "").replace(/"/g, '""')}"`;
@@ -189,6 +205,11 @@
       el("div", { class: "d-actions", style: "margin-top:14px" },
         el("a", { class: "btn ghost", href: "mailto:" + p.email + "?subject=" + encodeURIComponent("Your Hectic project " + p.id) }, icon("mail"), "Email"),
         p.phone ? el("a", { class: "btn ghost", href: "tel:" + p.phone.replace(/[^+\d]/g, "") }, icon("phone"), "Call") : null,
+        el("button", { class: "btn ghost", onclick: async () => {
+          const r = await post("/portal-link", { id });
+          try { await navigator.clipboard.writeText(r.url) } catch {}
+          toast(r.fresh ? "New client link copied. Any old link no longer works." : "Client link copied");
+        } }, icon("link"), "Copy client link"),
         next ? el("button", { class: "btn accent", onclick: () => { status.value = next[0]; save() } }, "Move to " + next[1]) : null),
       el("div", { class: "d-sec" }, el("h2", { text: "What they asked for" }),
         el("dl", { class: "facts" }, ...[["Email", p.email], ["Phone", p.phone], ["Type", p.project_type], ["Devices", p.platforms], ["Features", p.features], ["Budget", p.budget], ["Launch", p.timeline], ["Guide price", `${money(d.guide.low)}–${money(d.guide.high)}, ${d.guide.weeks}`], ["Links", p.links]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
@@ -213,7 +234,7 @@
     fill($("#oBiz"), el("button", { "aria-pressed": !oBiz, onclick: () => { oBiz = ""; store.set("hs-obiz", ""); loadOpps() } }, "All"),
       ...Object.entries(profiles).map(([k, n]) => el("button", { "aria-pressed": oBiz === k, onclick: () => { oBiz = k; store.set("hs-obiz", k); loadOpps() } }, n)));
     const s = stats || await api("/stats"); stats = s;
-    const f = s.finder; $("#oInfo").textContent = f ? `Last hunt ${ago(f.at)} ago: looked at ${f.checked}, kept ${f.kept}.${f.errors.length ? " Could not reach: " + f.errors.join("; ") : ""} Searches every hour, including Hertfordshire, neighbouring counties and London councils.` : "The hunt runs every hour.";
+    const f = s.finder; $("#oInfo").textContent = f ? `Last hunt ${ago(f.at)} ago: looked at ${f.checked}, kept ${f.kept}.${f.errors.length ? " Could not reach: " + f.errors.join("; ") : ""} Sources: Contracts Finder, Find a Tender, Hacker News, Reddit. Nothing is emailed. You send letters from hello@hecticsoftware.com (iCloud).` : "The hunt runs every hour. Nothing is emailed until you copy a letter.";
     renderOpps();
   }
   const isLocalOpp = x => /hertford|watford|st albans|dacorum|hertsmere|broxbourne|stevenage|welwyn|three rivers|bedford|luton|buckingham|essex|cambridge|london|barnet|enfield|harrow|hillingdon/i.test([x.buyer, x.region, x.why, x.title].join(" "));
@@ -237,20 +258,42 @@
       const items = shown.filter(x => (x.kind || "tender") === k);
       if (!items.length) continue;
       chunks.push(el("h2", { class: "group-h", text: `${n} · ${items.length}` }));
-      for (const x of items) chunks.push(el("button", { class: "row", onclick: () => openOpp(x) },
+      const bySrc = [...new Set(items.map(x => x.source || "Other"))];
+      for (const src of bySrc) {
+        const pack = items.filter(x => (x.source || "Other") === src);
+        if (bySrc.length > 1) chunks.push(el("h2", { class: "group-h", text: `From ${src} · ${pack.length}` }));
+        for (const x of pack) chunks.push(el("button", { class: "row", onclick: () => openOpp(x) },
         el("div", { class: "score " + (x.score >= 65 ? "good" : x.score >= 50 ? "" : ""), text: x.score }),
-        el("div", {}, el("div", { class: "t", text: x.title }), el("div", { class: "s", text: [profiles[x.business], x.buyer || x.source, money(x.value_low)].filter(Boolean).join(" · ") })),
+        el("div", {}, el("div", { class: "t", text: x.title }), el("div", { class: "s", text: [profiles[x.business], x.source, x.buyer, money(x.value_low)].filter(Boolean).join(" · ") })),
         el("div", { class: "meta" }, x.deadline ? el("span", { class: "badge " + (x.deadline < Date.now() + 7 * 86400000 ? "hot" : "") }, icon("clock"), until(x.deadline)) : el("span", { class: "badge", text: x.kind === "post" ? "Post" : "Tender" }),
           x.status !== "new" ? el("span", { class: "badge " + (x.status === "won" ? "good" : ""), text: (OPP.find(o => o[0] === x.status) || [, x.status])[1] }) : null)));
+      }
     }
     fill($("#oList"), ...(chunks.length ? chunks : [el("div", { class: "empty", text: "Nothing open at this fit yet. Hunt now, or wait for the hourly search." })]));
   }
   $("#oMin").onchange = loadOpps;
   $("#oSearch") && ($("#oSearch").oninput = renderOpps);
   $("#oRun").onclick = async () => { const b = $("#oRun"); b.disabled = true; try { const r = await post("/finder/run", {}); toast(`Looked at ${r.checked}, kept ${r.kept}`) } catch { toast("Search limit reached, try later") } b.disabled = false; stats = null; loadOpps() };
+  $("#oPaste").onclick = () => {
+    const url = el("input", { placeholder: "https://www.contractsfinder.service.gov.uk/Notice/…" });
+    const biz = el("select", {}, el("option", { value: "" }, "Best match"), ...Object.entries(profiles).map(([k, n]) => el("option", { value: k }, n)));
+    const title = el("input", { placeholder: "If the page will not load, type the title" }), buyer = el("input"), summary = el("textarea", { placeholder: "Paste the notice text if you have it" });
+    const go = el("button", { class: "btn", onclick: async () => {
+      go.disabled = true;
+      try {
+        const r = await post("/opp/paste", { url: url.value, business: biz.value, title: title.value, buyer: buyer.value, summary: summary.value });
+        toast("Notice saved under " + (profiles[r.business] || r.business)); closeDrawer(); stats = null; await loadOpps();
+      } catch { toast("Need a notice link, or a title and some text"); go.disabled = false }
+    } }, "Save notice");
+    openDrawer(el("h1", { text: "Paste a notice" }),
+      el("p", { class: "muted", text: "Contracts Finder and Find a Tender links are read in. Other pages need a title. Nothing is emailed — this only files the job." }),
+      labelled("Link", url), labelled("Business", biz), labelled("Title", title), labelled("Who is buying", buyer), labelled("Text", summary),
+      el("div", { class: "d-actions" }, go));
+  };
 
   function openOpp(x) {
-    const pitch = el("textarea", { placeholder: "Pitch or expression of interest" }, x.pitch || ""), notes = el("textarea", { placeholder: "Notes" }, x.notes || "");
+    const pitch = el("textarea", { class: "pitch", placeholder: "Letter to copy. Nothing is sent until you paste it into email yourself." }, x.pitch || ""), notes = el("textarea", { placeholder: "Private notes" }, x.notes || "");
+    const fromMail = { hectic: "hello@hecticsoftware.com", radio: "hello@hecticsoftware.com", forged: "hello@forgedlandscapes.co.uk" }[x.business] || "";
     const set = async status => { await post("/opp", { id: x.id, status, notes: notes.value, pitch: pitch.value }); toast("Saved"); closeDrawer(); stats = null; tab === "opps" ? loadOpps() : loadOverview() };
     const nextOpp = x.deadline && x.deadline < Date.now() + 3 * 86400000 ? "Closes very soon. Open the notice, check we can evidence it, then write or skip today."
       : x.kind === "tender" ? "Open the notice. If we can name shipped work that matches, write an interest note. If we cannot evidence insurance or staff they ask for, skip."
@@ -271,11 +314,15 @@
       el("div", { class: "mono", text: `${profiles[x.business] || x.business} · ${x.source}${x.stage === "pre-market" ? " · pre-market" : ""}` }),
       el("h1", { text: x.title }),
       el("div", { class: "next" }, el("b", { text: "Do this next" }), nextOpp),
-      el("dl", { class: "facts" }, ...[["Who is buying", x.buyer], ["Value", money(x.value_low) || "Not stated"], ["Closes", x.deadline ? new Date(x.deadline).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" }) : "No deadline"], ["Where", x.region], ["Why it scored", `${x.score}: ${x.why}`]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
+      el("dl", { class: "facts" }, ...[["Found on", x.source], ["Who is buying", x.buyer], ["For", profiles[x.business]], ["Value", money(x.value_low) || "Not stated"], ["Closes", x.deadline ? new Date(x.deadline).toLocaleString("en-GB", { dateStyle: "full", timeStyle: "short" }) : "No deadline"], ["Where", x.region], ["Why it scored", `${x.score}: ${x.why}`]].filter(r => r[1]).flatMap(([k, v]) => [el("dt", { text: k }), el("dd", { text: v })])),
       el("div", { class: "d-actions", style: "margin-top:14px" }, safeUrl(x.url) ? el("a", { class: "btn", href: safeUrl(x.url), target: "_blank", rel: "noopener noreferrer" }, icon("link"), "Open the notice") : null, researchBtn, notesBtn, draft),
       el("div", { class: "d-sec" }, el("h2", { text: "What they published" }), el("div", { class: "brief", text: x.summary || "" })),
       el("div", { class: "d-sec" }, el("h2", { text: "Research" }), research, el("p", { class: "small muted", text: "Only facts on record. Anything else is marked not on record." })),
-      el("div", { class: "d-sec" }, el("h2", { text: "What you would send" }), pitch, el("p", { class: "small muted", text: "Drafts use only facts on record. Check every claim before you send or submit anything." })),
+      el("div", { class: "d-sec" }, el("h2", { text: "Letter" }), pitch,
+        el("p", { class: "small muted", text: fromMail ? `Nothing is sent automatically. Copy the LETTER, check every line, then send from ${fromMail} (iCloud hello@). Studio note stays private.` : "Nothing is sent automatically. Ghost Detail has no email on record — copy the letter and send from the address you actually use." }),
+        el("div", { class: "d-actions" },
+          el("button", { class: "btn ghost", onclick: async () => { try { await navigator.clipboard.writeText(pitch.value); toast("Letter copied") } catch { toast("Copy failed") } } }, "Copy letter"),
+          fromMail ? el("a", { class: "btn ghost", href: "mailto:?subject=" + encodeURIComponent(x.title) + "&body=" + encodeURIComponent(pitch.value) }, icon("mail"), "Open Mail") : null)),
       el("div", { class: "d-sec" }, el("h2", { text: "Private notes" }), notes),
       el("div", { class: "d-sec" }, el("h2", { text: "Move to" }), el("div", { class: "d-actions" }, ...OPP.filter(([k]) => k !== "new").map(([k, n]) => el("button", { class: "btn " + (k === "won" ? "teal" : k === "ignored" || k === "lost" ? "ghost" : k === x.status ? "" : "ghost"), onclick: () => set(k) }, n)))));
   }
