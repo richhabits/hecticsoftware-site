@@ -258,15 +258,17 @@ const FREE_MODELS = {
 };
 const ALL_FREE_MODELS = [...new Set(Object.values(FREE_MODELS).flat())];
 function brainsCatalog(env) {
-  const gem = !!env.GEMINI_API_KEY, groq = !!env.GROQ_API_KEY, nv = !!env.NVIDIA_API_KEY, or = !!env.OPENROUTER_API_KEY;
+  const on = (k, yes, no) => k ? yes : no;
   return [
     { group: "On now · £0", name: "Cloudflare Workers AI", job: "Always on. Letters, research, Romeo.", catch: "10,000 units/day then it stops. No bill on the free plan." },
     { group: "On now · £0", name: "Chrome on this computer", job: "Romeo pane. Uses none of the Cloudflare units.", catch: "Needs a recent Chrome." },
-    { group: groq ? "On now · £0" : "Wired · waiting for a free key", name: "Groq", job: "Fast letters, overnight drafts, Romeo.", catch: groq ? "Free key is in Worker secrets. About 1,000 calls/day." : "Create a free key at console.groq.com and we will store it as GROQ_API_KEY." },
-    { group: gem ? "On now · £0" : "Wired · waiting for a free key", name: "Google Gemini", job: "Long research, reading notices, briefs.", catch: gem ? "Free AI Studio key is in Worker secrets. Google may train on free-tier prompts." : "Create a free key at aistudio.google.com and we will store it as GEMINI_API_KEY." },
-    { group: nv ? "On now · £0" : "Wired · waiting for a free key", name: "NVIDIA NIM", job: "Large open models for research.", catch: nv ? "Key is in secrets." : "Optional. build.nvidia.com — NVIDIA_API_KEY." },
-    { group: or ? "On now · £0" : "Wired · waiting for a free key", name: "OpenRouter :free", job: "Spare wheel when others are empty.", catch: or ? "Key is in secrets. About 50 free calls/day." : "Optional. openrouter.ai — OPENROUTER_API_KEY." },
-    { group: "Not free", name: "ChatGPT API, Seedance, Claude", job: "Paid video and chat APIs.", catch: "Not wired. Will not bill you." },
+    { group: on(env.GROQ_API_KEY, "On now · £0", "Waiting"), name: "Groq", job: "Fast letters and Romeo.", catch: on(env.GROQ_API_KEY, "Hard cap 50 calls/day then stop.", "No key.") },
+    { group: on(env.GEMINI_API_KEY, "On now · £0", "Waiting"), name: "Google Gemini", job: "Long research and briefs.", catch: on(env.GEMINI_API_KEY, "Flash only. Hard cap 40/day.", "No key.") },
+    { group: on(env.NVIDIA_API_KEY, "On now · £0", "Waiting"), name: "NVIDIA NIM", job: "Small open model.", catch: on(env.NVIDIA_API_KEY, "8B only. Hard cap 10/day.", "No key.") },
+    { group: on(env.MISTRAL_API_KEY, "On now · £0", "Waiting"), name: "Mistral", job: "Spare letters.", catch: on(env.MISTRAL_API_KEY, "Nemo free model. Cap 8/day.", "No key.") },
+    { group: on(env.CEREBRAS_API_KEY, "On now · £0", "Waiting"), name: "Cerebras", job: "Fast open models.", catch: on(env.CEREBRAS_API_KEY, "8B only. Cap 15/day.", "No key.") },
+    { group: on(env.OPENROUTER_API_KEY, "On now · £0", "Waiting"), name: "OpenRouter :free", job: "Spare wheel.", catch: on(env.OPENROUTER_API_KEY, "Only :free models. Cap 10/day.", "No key.") },
+    { group: "Not stored", name: "ChatGPT, Seedance, ElevenLabs, Jina, Cloudflare access keys", job: "Not used by this desk.", catch: "Left out on purpose." },
   ];
 }
 function utcDay() { return new Date().toISOString().slice(0, 10); }
@@ -274,9 +276,21 @@ function utcReset() {
   const n = new Date();
   return Date.UTC(n.getUTCFullYear(), n.getUTCMonth(), n.getUTCDate() + 1);
 }
+// Hard daily caps, well under each free plan, so we stop instead of spending.
+const FREE_CAPS = { groq: 50, gemini: 40, nvidia: 10, mistral: 8, cerebras: 15, openrouter: 10, cloudflare: 40 };
+const BILLING_RE = /402|payment|billing|insufficient.?credit|exceeded your current quota|credit.?balance|pay.?as.?you.?go|add a (card|payment)|upgrade to/i;
 async function aiUse(env) {
   const raw = await env.RATE.get("ai:" + utcDay());
-  return raw ? JSON.parse(raw) : { day: utcDay(), calls: 0, ok: 0, fail: 0, tokens: 0, last: "", models: {} };
+  const base = { day: utcDay(), calls: 0, ok: 0, fail: 0, tokens: 0, last: "", models: {}, by: {}, ban: {} };
+  if (!raw) return base;
+  try { return { ...base, ...JSON.parse(raw), by: { ...base.by, ...(JSON.parse(raw).by || {}) }, ban: { ...base.ban, ...(JSON.parse(raw).ban || {}) } }; }
+  catch { return base; }
+}
+function providerLeft(u, name) {
+  const cap = FREE_CAPS[name] || 10;
+  const row = u.by[name] || {};
+  const used = (row.ok || 0) + (row.fail || 0);
+  return Math.max(0, cap - used);
 }
 async function aiSave(env, u) {
   await env.RATE.put("ai:" + utcDay(), JSON.stringify(u), { expirationTtl: 172800 });
@@ -288,7 +302,7 @@ async function openaiChat(url, key, model, messages, max, headers = {}) {
     body: JSON.stringify({ model, messages, max_tokens: max, temperature: 0.3 }),
   });
   const t = await r.text();
-  if (!r.ok) throw new Error(t.slice(0, 180));
+  if (!r.ok) throw new Error((BILLING_RE.test(t) ? "BILLING " : "") + t.slice(0, 180));
   const d = JSON.parse(t);
   const text = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content || "").trim();
   if (!text) throw new Error("empty");
@@ -298,14 +312,14 @@ async function geminiChat(key, messages, max) {
   const sys = messages.filter(m => m.role === "system").map(m => m.content).join("\n");
   const rest = messages.filter(m => m.role !== "system").map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] }));
   let last = "gemini";
-  for (const model of ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"]) {
+  for (const model of ["gemini-2.0-flash"]) {
     const r = await fetch("https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + encodeURIComponent(key), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ system_instruction: sys ? { parts: [{ text: sys }] } : undefined, contents: rest, generationConfig: { maxOutputTokens: max, temperature: 0.3 } }),
     });
     const t = await r.text();
-    if (!r.ok) { last = t.slice(0, 180); continue; }
+    if (!r.ok) { last = (BILLING_RE.test(t) ? "BILLING " : "") + t.slice(0, 180); if (last.startsWith("BILLING")) break; continue; }
     const d = JSON.parse(t);
     const parts = (((d.candidates || [])[0] || {}).content || {}).parts || [];
     const out = parts.map(p => p.text || "").join("").trim();
@@ -326,54 +340,81 @@ async function hitProvider(env, name, messages, max, kind) {
   if (name === "openrouter" && env.OPENROUTER_API_KEY) {
     return openaiChat("https://openrouter.ai/api/v1/chat/completions", env.OPENROUTER_API_KEY, "openai/gpt-oss-20b:free", messages, max, { "HTTP-Referer": "https://hecticsoftware.com", "X-Title": "Hectic Software" });
   }
+  if (name === "mistral" && env.MISTRAL_API_KEY) {
+    return openaiChat("https://api.mistral.ai/v1/chat/completions", env.MISTRAL_API_KEY, "open-mistral-nemo", messages, max);
+  }
+  if (name === "cerebras" && env.CEREBRAS_API_KEY) {
+    return openaiChat("https://api.cerebras.ai/v1/chat/completions", env.CEREBRAS_API_KEY, "llama3.1-8b", messages, max);
+  }
   throw new Error("skip");
 }
+function markOk(u, name, approx) {
+  u.calls++; u.ok++; u.tokens += approx; u.last = name;
+  u.models[name] = (u.models[name] || 0) + 1;
+  u.by[name] = u.by[name] || { ok: 0, fail: 0 };
+  u.by[name].ok++;
+}
+function markFail(u, name, err) {
+  u.fail++;
+  u.by[name] = u.by[name] || { ok: 0, fail: 0 };
+  u.by[name].fail++;
+  if (BILLING_RE.test(err) || /^BILLING/.test(err)) u.ban[name] = true;
+}
 async function aiMessages(env, messages, max = 600, kind = "chat") {
+  max = Math.min(max, kind === "research" ? 700 : 500);
   const approx = Math.ceil(messages.reduce((n, m) => n + String(m.content || "").length, 0) / 4) + max;
   const u = await aiUse(env);
+  if (u.tokens > 7500) throw new Error("daily_limit");
   let lastErr = "no_model";
   const order = [];
   if (kind === "research") { if (env.GEMINI_API_KEY) order.push("gemini"); if (env.GROQ_API_KEY) order.push("groq"); }
   else { if (env.GROQ_API_KEY) order.push("groq"); if (env.GEMINI_API_KEY) order.push("gemini"); }
   if (env.NVIDIA_API_KEY) order.push("nvidia");
+  if (env.MISTRAL_API_KEY) order.push("mistral");
+  if (env.CEREBRAS_API_KEY) order.push("cerebras");
   if (env.OPENROUTER_API_KEY) order.push("openrouter");
   for (const name of order) {
+    if (u.ban[name] || providerLeft(u, name) <= 0) continue;
     try {
       const text = await hitProvider(env, name, messages, max, kind);
-      u.calls++; u.ok++; u.tokens += approx; u.last = name;
-      u.models[name] = (u.models[name] || 0) + 1;
+      markOk(u, name, approx);
       await aiSave(env, u);
       return text;
     } catch (e) {
       lastErr = (e && e.message) || "fail";
-      if (lastErr !== "skip") { u.fail++; u.models[name] = (u.models[name] || 0); }
+      if (lastErr !== "skip") { markFail(u, name, lastErr); await aiSave(env, u); if (/^BILLING/.test(lastErr)) continue; }
     }
   }
-  const list = [...(FREE_MODELS[kind] || FREE_MODELS.chat), ...ALL_FREE_MODELS.filter(m => !(FREE_MODELS[kind] || []).includes(m))];
+  if (u.ban.cloudflare || providerLeft(u, "cloudflare") <= 0 || u.tokens > 7500) {
+    await aiSave(env, u);
+    throw new Error("daily_limit");
+  }
+  const list = (FREE_MODELS[kind] || FREE_MODELS.chat).slice(0, 2);
   for (const model of list) {
     try {
       const out = await env.AI.run(model, { messages, max_tokens: max });
       const text = (out && (out.response || out.result || "")).toString().trim();
       if (!text) { lastErr = "empty"; continue; }
-      u.calls++; u.ok++; u.tokens += approx; u.last = model;
+      markOk(u, "cloudflare", approx);
+      u.last = model;
       u.models[model] = (u.models[model] || 0) + 1;
       await aiSave(env, u);
       return text;
     } catch (e) {
       lastErr = (e && e.message) || "fail";
-      u.fail++;
-      u.models[model] = u.models[model] || 0;
+      markFail(u, "cloudflare", lastErr);
+      if (/10000|neuron|4006|429/.test(lastErr)) { u.ban.cloudflare = true; await aiSave(env, u); break; }
     }
   }
-  u.calls++; await aiSave(env, u);
-  throw new Error(/10000|daily|neuron|4006|429/i.test(lastErr) ? "daily_limit" : "ai_busy");
+  await aiSave(env, u);
+  throw new Error(u.ban.cloudflare || /10000|daily|neuron|4006|429/i.test(lastErr) ? "daily_limit" : "ai_busy");
 }
 async function ai(env, system, user, max = 600, kind = "chat") {
   return aiMessages(env, [{ role: "system", content: system }, { role: "user", content: user }], max, kind);
 }
 async function quietDesk(env) {
   const u = await aiUse(env);
-  if (u.tokens > 6500) return;
+  if (u.tokens > 4000 || (providerLeft(u, "groq") + providerLeft(u, "cloudflare")) < 5) return;
   const o = await env.DB.prepare("SELECT * FROM opportunities WHERE status = 'new' AND score >= 65 AND (pitch IS NULL OR pitch = '') ORDER BY score DESC LIMIT 1").first();
   if (!o) return;
   const facts = BUSINESS_FACTS[o.business] || BUSINESS_FACTS.hectic;
@@ -573,7 +614,7 @@ async function admin(req, url, env, cors) {
     const used = Math.min(cap, u.tokens);
     return json({
       cost: 0,
-      note: "Groq and Gemini run when their free keys are in Worker secrets. Cloudflare always runs. Nothing bills you: a missing key or a daily cap just skips that brain.",
+      note: "Every brain has a hard daily cap. Hits that look like a bill stop that provider until midnight UTC. ChatGPT, Seedance and paid keys are not wired.",
       cloudflare: {
         name: "Cloudflare Workers AI (free)",
         used, cap, left: Math.max(0, cap - used),
@@ -585,7 +626,13 @@ async function admin(req, url, env, cors) {
         jobs: { chat: "Romeo and notes", letter: "Letters and quotes", research: "Brief and notice research", code: "Code notes" },
       },
       onDevice: { name: "Chrome on this computer", note: "Uses no Cloudflare units. The browser reports this itself." },
-      keys: { groq: !!env.GROQ_API_KEY, gemini: !!env.GEMINI_API_KEY, nvidia: !!env.NVIDIA_API_KEY, openrouter: !!env.OPENROUTER_API_KEY },
+      keys: { groq: !!env.GROQ_API_KEY, gemini: !!env.GEMINI_API_KEY, nvidia: !!env.NVIDIA_API_KEY, openrouter: !!env.OPENROUTER_API_KEY, mistral: !!env.MISTRAL_API_KEY, cerebras: !!env.CEREBRAS_API_KEY },
+      caps: FREE_CAPS,
+      meters: Object.fromEntries(Object.keys(FREE_CAPS).map(n => {
+        const row = u.by[n] || {};
+        const usedN = (row.ok || 0) + (row.fail || 0);
+        return [n, { used: usedN, cap: FREE_CAPS[n], left: providerLeft(u, n), stopped: !!u.ban[n] }];
+      })),
       catalog: brainsCatalog(env),
       background: { finder: await env.RATE.get("finder:last").then(s => s ? JSON.parse(s) : null) },
     }, 200, cors);

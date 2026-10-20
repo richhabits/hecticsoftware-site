@@ -42,8 +42,13 @@ label{display:grid;gap:6px;font-size:13px;color:var(--muted)}
 .j-head>div:nth-child(2){flex:1}.j-name{font-weight:700;letter-spacing:.2em;font-size:13px}
 .orb{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffb39f,var(--accent) 45%,var(--teal) 120%);box-shadow:0 0 0 0 var(--accent-soft);transition:transform .3s}
 .orb.thinking{animation:pulse 1.2s ease-in-out infinite}.orb.speaking{animation:pulse .6s ease-in-out infinite}
+.orb.clap{animation:clap .7s ease-in-out 2}
 @keyframes pulse{50%{transform:scale(1.08);box-shadow:0 0 0 10px transparent}0%{box-shadow:0 0 0 0 var(--accent-soft)}}
-@media (prefers-reduced-motion:reduce){.orb.thinking,.orb.speaking{animation:none}}
+@keyframes clap{0%,100%{transform:scale(1)}40%{transform:scale(1.22) rotate(-8deg)}70%{transform:scale(1.18) rotate(8deg)}}
+@media (prefers-reduced-motion:reduce){.orb.thinking,.orb.speaking,.orb.clap{animation:none}}
+.desks{display:flex;gap:4px;flex-wrap:wrap}
+.desks button{border:1px solid var(--line);background:transparent;border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer;color:var(--muted)}
+.desks button[aria-pressed=true]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .chat{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
 .bubble{padding:9px 12px;border-radius:14px;max-width:92%;white-space:pre-wrap;font-size:13.5px;line-height:1.55}
 .bubble.me{align-self:flex-end;background:var(--fg);color:var(--bg);border-bottom-right-radius:4px}

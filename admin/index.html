@@ -23,6 +23,7 @@
       <button role="tab" data-tab="opps"><svg><use href="#i-target"/></svg>Find work</button>
       <button role="tab" data-tab="estate"><svg><use href="#i-stack"/></svg>Sites</button>
     </nav>
+    <nav class="desks" id="desks" aria-label="Studio desks"></nav>
     <span class="clock small muted" id="clock"></span>
     <button class="icon-btn" id="themeBtn" title="Light or dark"><svg><use href="#i-moon"/></svg></button>
     <button class="icon-btn" id="logout" title="Lock"><svg><use href="#i-lock"/></svg></button>
@@ -41,6 +42,7 @@
         <button data-q="Who is waiting on me, and what should I send them right now to move the deal forward?">Waiting</button>
         <button data-q="Which public jobs and hiring posts should I chase this week to make money? Name the shipped work we can cite. Skip anything we cannot evidence.">Hunt</button>
         <button data-q="What is the single best thing I can do in the next hour to get money in: a reply, a quote, a call, or a bid?">Close</button>
+        <button type="button" id="clapBtn">Clap hands</button>
       </div>
       <form class="ask" id="askForm">
         <button type="button" class="icon-btn" id="micBtn" title="Talk"><svg><use href="#i-mic"/></svg></button>
@@ -90,6 +92,7 @@
       <section data-panel="estate" hidden>
         <p class="small muted" id="eInfo"></p>
         <div class="kpis" id="eKpis"></div>
+        <h2>The four desks</h2><div class="list tiles" id="eDesks"></div>
         <h2>Sites</h2><div class="list tiles" id="eSites"></div>
         <h2>Code on this Mac</h2><div class="list" id="eRepos"></div>
       </section>
@@ -125,5 +128,5 @@
     <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4"/></symbol>
   </defs>
 </svg>
-<script src="/admin/admin.js?v=20261020j"></script>
+<script src="/admin/admin.js?v=20261020m"></script>
 </body></html>

@@ -44,6 +44,19 @@
     const a = el("a", { href: URL.createObjectURL(await r.blob()), download: f.name }); a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   };
   const toast = msg => { const t = el("div", { class: "toast", text: msg }); document.body.append(t); setTimeout(() => t.remove(), 2400) };
+  const DESKS = [
+    { id: "", name: "Studio", talk: "All four businesses on one desk." },
+    { id: "hectic", name: "Software", talk: "Hectic Software. Apps, sites, booking, portals." },
+    { id: "ghost", name: "Ghost", talk: "Ghost Detail. Cars, vans, fleet care. Public fleets only on Contracts Finder." },
+    { id: "forged", name: "Forged", talk: "Forged Landscapes. Grounds, paving, driveways around Watford." },
+    { id: "radio", name: "Radio", talk: "Hectic Radio. Kids, music, radio work we can evidence." },
+  ];
+  const DESK_LINKS = [
+    { name: "Hectic Software", url: "https://hecticsoftware.com", note: "This studio" },
+    { name: "Ghost Detail", url: "https://ghostdetail.autos", note: "Cars and vans" },
+    { name: "Forged Landscapes", url: "https://forgedlandscapes.co.uk", note: "Grounds" },
+    { name: "Hectic Radio", url: "https://radiohectic.com", note: "Stations" },
+  ];
 
   // ---------- session ----------
   function lock() { key = ""; try { sessionStorage.removeItem("hs-admin") } catch {} $("#app").hidden = true; $("#login").hidden = false; $("#key").focus() }
@@ -92,9 +105,15 @@
         kpi(chromeOn ? "On" : "Off", "On this computer (Chrome)", "stack", chromeOn ? "good" : ""),
         kpi(c.last ? c.last.split("/").pop() : "—", "Last free model", "spark"),
         kpi(c.resetAt ? new Date(c.resetAt).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) + " UTC" : "—", "Allowance tops up", "clock"));
-      if (br.catalog && $("#brainsList")) {
+      if ($("#brainsList")) {
         const bits = [];
-        for (const g of [...new Set(br.catalog.map(x => x.group))]) {
+        if (br.meters) {
+          bits.push(el("h2", { class: "group-h", text: "Left today · we stop before it costs money" }));
+          for (const [n, m] of Object.entries(br.meters)) bits.push(el("div", { class: "row", style: "cursor:default" },
+            el("div", {}, el("div", { class: "t", text: n }), el("div", { class: "s", text: m.stopped ? "Stopped — looked like a bill" : `${m.left} of ${m.cap} calls left` })),
+            el("div", { class: "score " + (m.left === 0 || m.stopped ? "hot" : "good"), text: String(m.left) })));
+        }
+        if (br.catalog) for (const g of [...new Set(br.catalog.map(x => x.group))]) {
           bits.push(el("h2", { class: "group-h", text: g }));
           for (const x of br.catalog.filter(y => y.group === g)) bits.push(el("div", { class: "row", style: "cursor:default" }, el("div", {}, el("div", { class: "t", text: x.name }), el("div", { class: "s", text: x.job + " — " + x.catch }))));
         }
@@ -165,7 +184,7 @@
       save.disabled = true;
       try {
         const r = await post("/job", { name: name.value, email: email.value, phone: phone.value, company: company.value, project_type: type.value, platforms: platforms.value, budget: budget.value, description: desc.value });
-        toast("Job added"); closeDrawer(); await loadClients(); openProject(r.id);
+        toast("Job added"); closeDrawer(); await loadClients(); openProject(r.id); clapHands("New job on the desk.");
       } catch { toast("Need a name, a real email and a short description"); save.disabled = false }
     } }, "Save job");
     openDrawer(el("h1", { text: "Add a job" }), el("p", { class: "muted", text: "Call, PIING, email or walk-in. This creates a client page they can open." }),
@@ -248,11 +267,19 @@
 
   // ---------- opportunities ----------
   let oBiz = store.get("hs-obiz") || "", oStatus = "", oKind = "", profiles = {};
+  function renderDesks() {
+    fill($("#desks"), ...DESKS.map(d => el("button", { "aria-pressed": (oBiz || "") === d.id, onclick: () => {
+      oBiz = d.id; store.set("hs-obiz", d.id);
+      renderDesks();
+      showTab("opps");
+      talkBack(d.talk);
+    } }, d.name)));
+  }
   async function loadOpps() {
     const r = await api(`/opps?min=${$("#oMin").value}${oBiz ? "&business=" + oBiz : ""}`);
     opps = r.rows; profiles = r.profiles;
-    fill($("#oBiz"), el("button", { "aria-pressed": !oBiz, onclick: () => { oBiz = ""; store.set("hs-obiz", ""); loadOpps() } }, "All"),
-      ...Object.entries(profiles).map(([k, n]) => el("button", { "aria-pressed": oBiz === k, onclick: () => { oBiz = k; store.set("hs-obiz", k); loadOpps() } }, n)));
+    fill($("#oBiz"), el("button", { "aria-pressed": !oBiz, onclick: () => { oBiz = ""; store.set("hs-obiz", ""); renderDesks(); loadOpps() } }, "All"),
+      ...Object.entries(profiles).map(([k, n]) => el("button", { "aria-pressed": oBiz === k, onclick: () => { oBiz = k; store.set("hs-obiz", k); renderDesks(); loadOpps() } }, n)));
     const s = stats || await api("/stats"); stats = s;
     const f = s.finder; $("#oInfo").textContent = f ? `Last hunt ${ago(f.at)} ago: looked at ${f.checked}, kept ${f.kept}.${f.errors.length ? " Could not reach: " + f.errors.join("; ") : ""} Sources: Contracts Finder, Find a Tender, Hacker News, Reddit. Nothing is emailed. You send letters from hello@hecticsoftware.com (iCloud).` : "The hunt runs every hour. Nothing is emailed until you copy a letter.";
     renderOpps();
@@ -293,7 +320,7 @@
   }
   $("#oMin").onchange = loadOpps;
   $("#oSearch") && ($("#oSearch").oninput = renderOpps);
-  $("#oRun").onclick = async () => { const b = $("#oRun"); b.disabled = true; try { const r = await post("/finder/run", {}); toast(`Looked at ${r.checked}, kept ${r.kept}`) } catch { toast("Search limit reached, try later") } b.disabled = false; stats = null; loadOpps() };
+  $("#oRun").onclick = async () => { const b = $("#oRun"); b.disabled = true; try { const r = await post("/finder/run", {}); toast(`Looked at ${r.checked}, kept ${r.kept}`); stats = null; await loadOpps(); clapHands(`Hunt done. Looked at ${r.checked}, kept ${r.kept}.`) } catch { toast("Search limit reached, try later") } b.disabled = false };
   $("#oPaste").onclick = () => {
     const url = el("input", { placeholder: "https://www.contractsfinder.service.gov.uk/Notice/…" });
     const biz = el("select", {}, el("option", { value: "" }, "Best match"), ...Object.entries(profiles).map(([k, n]) => el("option", { value: k }, n)));
@@ -314,7 +341,7 @@
   function openOpp(x) {
     const pitch = el("textarea", { class: "pitch", placeholder: "Letter to copy. Nothing is sent until you paste it into email yourself." }, x.pitch || ""), notes = el("textarea", { placeholder: "Private notes" }, x.notes || "");
     const fromMail = { hectic: "hello@hecticsoftware.com", radio: "hello@hecticsoftware.com", forged: "hello@forgedlandscapes.co.uk" }[x.business] || "";
-    const set = async status => { await post("/opp", { id: x.id, status, notes: notes.value, pitch: pitch.value }); toast("Saved"); closeDrawer(); stats = null; tab === "opps" ? loadOpps() : loadOverview() };
+    const set = async status => { await post("/opp", { id: x.id, status, notes: notes.value, pitch: pitch.value }); toast("Saved"); closeDrawer(); stats = null; tab === "opps" ? loadOpps() : loadOverview(); if (status === "won") clapHands("Won. Catch-up.") };
     const nextOpp = x.deadline && x.deadline < Date.now() + 3 * 86400000 ? "Closes very soon. Open the notice, check we can evidence it, then write or skip today."
       : x.kind === "tender" ? "Open the notice. If we can name shipped work that matches, write an interest note. If we cannot evidence insurance or staff they ask for, skip."
       : "Read the post. Reply with what we would build, named work we have shipped, and a fixed written quote.";
@@ -350,12 +377,13 @@
   // ---------- estate ----------
   async function loadEstate() {
     const e = await api("/estate");
-    if (!e) { $("#eInfo").textContent = "No snapshot yet. On the Mac, run: node ~/HecticSoftwareSite/tools/estate.mjs"; fill($("#eKpis"), ); fill($("#eSites"), ); fill($("#eRepos"), ); return }
+    if (!e) { $("#eInfo").textContent = "No snapshot yet. On the Mac, run: node ~/HecticSoftwareSite/tools/estate.mjs"; fill($("#eKpis"), ); fill($("#eDesks"), ...DESK_LINKS.map(s => row("stack", s.name, s.note, "Open", "", () => window.open(s.url, "_blank", "noopener,noreferrer")))); fill($("#eSites"), ); fill($("#eRepos"), ); return }
     $("#eInfo").textContent = `Snapshot from the Mac, ${ago(e.at)} ago. It refreshes every few hours while the Mac is on.`;
     const repos = e.repos || [], sites = e.sites || [];
     const dirty = repos.filter(r => r.dirty), ahead = repos.filter(r => r.ahead), down = sites.filter(s => !s.ok);
     fill($("#eKpis"), kpi(repos.length, "Repositories", "stack"), kpi(sites.length - down.length + "/" + sites.length, "Sites up", "check", down.length ? "hot" : "good"),
       kpi(dirty.length, "With local changes", "file", dirty.length ? "hot" : ""), kpi(ahead.length, "Not pushed", "up", ahead.length ? "hot" : ""));
+    fill($("#eDesks"), ...DESK_LINKS.map(s => row("stack", s.name, s.note, "Open", "", () => window.open(s.url, "_blank", "noopener,noreferrer"))));
     fill($("#eSites"), ...sites.map(s => row(s.ok ? "check" : "x", s.name, s.url, s.ok ? `${s.ms} ms` : `Down (${s.status})`, s.ok ? "good" : "hot", () => safeUrl(s.url) && window.open(s.url, "_blank", "noopener,noreferrer"))));
     fill($("#eRepos"), ...repos.map(r => row("stack", r.name, [r.visibility, r.local ? "on this Mac" : "GitHub only", r.branch, r.lastCommit].filter(Boolean).join(" · "),
       r.dirty ? `${r.dirty} changed` : r.ahead ? `${r.ahead} unpushed` : ago(r.pushedAt), r.dirty || r.ahead ? "hot" : "", () => safeUrl(r.url) && window.open(r.url, "_blank", "noopener,noreferrer"))));
@@ -367,6 +395,27 @@
   $("#voiceBtn").setAttribute("aria-pressed", speak);
   $("#voiceBtn").onclick = () => { speak = !speak; store.set("hs-voice", speak ? "on" : "off"); $("#voiceBtn").setAttribute("aria-pressed", speak); if (!speak) speechSynthesis.cancel() };
   const bubble = (who, text) => { const b = el("div", { class: "bubble " + who, text }); $("#chat").append(b); $("#chat").scrollTop = $("#chat").scrollHeight; return b };
+  function clapAnim() {
+    const o = $("#orb"); o.classList.remove("clap"); void o.offsetWidth; o.classList.add("clap");
+    setTimeout(() => o.classList.remove("clap"), 1500);
+  }
+  async function clapHands(why) {
+    clapAnim();
+    let s = stats;
+    try { s = await api("/stats"); stats = s } catch {}
+    const desk = DESKS.find(d => d.id === oBiz) || DESKS[0];
+    const bits = [
+      why || "Catch-up.",
+      desk.name === "Studio" ? "Whole studio." : desk.talk,
+      s ? `${s.awaitingReply || 0} waiting on a reply. ${s.newUnanswered || 0} new briefs untouched. ${s.quoted || 0} quotes sitting out. ${s.oppsClosingSoon || 0} public jobs close this week.` : "Could not read the desk just now.",
+      s && s.awaitingReply ? "Next: answer the people waiting." : s && s.newUnanswered ? "Next: open the new briefs." : s && s.quoted ? "Next: nudge a quiet quote." : s && s.oppsClosingSoon ? "Next: Find work, jobs closing this week." : "Desk is quiet. Hunt if you want work in.",
+    ];
+    const line = bits.join(" ");
+    bubble("ai", line);
+    toast("Catch-up");
+    say(line);
+  }
+  function talkBack(text) { bubble("ai", text); say(text); }
   function voice() { const v = speechSynthesis.getVoices(); return v.find(x => /Daniel|Arthur|Serena|Google UK English Male/.test(x.name) && x.lang === "en-GB") || v.find(x => x.lang === "en-GB") || null }
   function say(text) {
     if (!speak || !("speechSynthesis" in window)) return;
@@ -397,13 +446,14 @@
       const local = await localAI();
       reply = local ? await local.prompt(q) : (await post("/jarvis", { messages: history })).reply;
       if (!local) $("#brain").textContent = "Studio AI (Cloudflare, free tier)";
-    } catch { reply = "I couldn't reach the studio brain just now, Romeo. Try again in a moment." }
+    } catch (e) { reply = e === 503 ? "Free daily cap reached. I stop instead of spending. Use Clap hands for a facts-only catch-up." : "I couldn't reach the studio brain just now, Romeo. Try again in a moment." }
     $("#orb").classList.remove("thinking");
     out.textContent = reply; history.push({ role: "assistant", content: reply }); $("#chat").scrollTop = $("#chat").scrollHeight;
     say(reply);
   }
   $("#askForm").addEventListener("submit", e => { e.preventDefault(); const i = $("#askInput"); const q = i.value; i.value = ""; ask(q) });
-  $$("#quick button").forEach(b => b.onclick = () => ask(b.dataset.q));
+  $$("#quick button").forEach(b => { if (b.id !== "clapBtn") b.onclick = () => ask(b.dataset.q) });
+  $("#clapBtn").onclick = () => clapHands();
   const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!Rec) $("#micBtn").hidden = true;
   else $("#micBtn").onclick = () => {
@@ -438,8 +488,8 @@
   function start() {
     $("#login").hidden = true; $("#app").hidden = false;
     const h = new Date().getHours();
-    bubble("ai", `Good ${h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"}, Romeo. Tap Today for money and people waiting, Hunt to chase public work, Close for the next hour. I only use facts on record.`);
-    showTab(tab); pulse();
+    bubble("ai", `Good ${h < 12 ? "morning" : h < 18 ? "afternoon" : "evening"}, Romeo. Tap Clap hands for a catch-up. Desk chips switch Software, Ghost, Forged, Radio. I only use facts on record.`);
+    renderDesks(); showTab(tab); pulse();
   }
   if (key) api("/stats").then(start).catch(() => lock()); else lock();
 })();
