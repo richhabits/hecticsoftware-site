@@ -92,7 +92,7 @@ Clients work with the studio through the Hectic app for iPhone, iPad and Android
 Estimator Get a feel for scope before we talk.
 Briefs Send your idea, screens and files in one place.
 Project tracking See status, quote and every dated update.
-Chat on PIING Message the studio directly at @hectic.
+Chat on PIING Message the studio directly at @hecticsoftware.
 Start a project My project
 HECTIC .
 Brief sent DONE

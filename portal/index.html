@@ -7,7 +7,7 @@
 <div class="card"><span class="mono">Messages</span><div id="msgs" style="display:grid;gap:10px"></div><form id="mf" class="row"><input id="mi" maxlength="4000" placeholder="Write a message…" aria-label="Message" style="flex:1"><button class="btn">Send</button></form></div>
 <div class="card"><span class="mono">Files</span><div id="files" style="display:grid;gap:6px"></div><form id="ff" class="row"><input type="file" id="fi" aria-label="Add a file" style="flex:1"><button class="btn ghost">Upload</button></form><span class="note" id="fnote"></span></div>
 <div class="card"><span class="mono">Your brief</span><p id="brief" style="white-space:pre-wrap;color:var(--fg)"></p></div></div>
-</div><script src="/config.js"></script><script src="/chat.js?v=5"></script><script>
+</div><script src="/config.js"></script><script src="/chat.js?v=6"></script><script>
 const token=(location.hash.slice(1)||(()=>{try{return localStorage.getItem('hs-portal')}catch{return''}})()||'');
 const order=['new','reviewing','quoted','accepted','in_progress','beta','live'],names={new:'Received',reviewing:'Reviewing',quoted:'Quote sent',accepted:'Accepted',in_progress:'Building',beta:'Beta',live:'Live',closed:'Closed'};
 const esc=t=>{const d=document.createElement('span');d.textContent=t;return d};
