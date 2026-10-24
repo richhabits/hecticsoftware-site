@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.hecticsoftware.app",
+      "sha256_cert_fingerprints": [
+        "9F:42:38:81:65:42:1D:DD:AB:AC:7A:DF:B3:EB:37:E4:D6:6C:29:CF:B5:08:E2:30:E9:7C:68:B6:02:76:D1:82"
+      ]
+    }
+  }
+]

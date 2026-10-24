@@ -1,0 +1,23 @@
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-8Td+ouPAz2DUhvN0Mih3HwD0lBTN0zHjHbogMRNwAqk=' 'sha256-FiTRYI6yiLU/eaON6ILYZGpx+d+rDuRZFLQhAqa5yzQ=' 'sha256-G8YxXso6Gu1BrFu5PUfLjuJF37pGgWxAbLT0kxD8E80=' 'sha256-ST68W/78m4bkk4p3f3T/E8MraRpYAU3KwfGSDVne/UQ=' 'sha256-elCJhORdb5ODcqZw1QvXFrz/5xdQE+XjB55gwemzDHk=' 'sha256-fWoyKjKR6rZ7JNGw2D8zS/W9Fw8VCVVRlkc7Aa/itCM=' 'sha256-lar2iRituqC554Z3rI9MMiYf48FAfEbuexT3t2L957w=' 'sha256-m2adXYpA8mps6sSDBWP4QcKpJFc7WvcERAgmdA3eUL8='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' https://hectic-api.forged-landscapes.workers.dev; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' https://hectic-api.forged-landscapes.workers.dev; frame-src 'none'; frame-ancestors 'none'; worker-src 'self'; manifest-src 'self'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+
+/apple-app-site-association
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600
+
+/.well-known/apple-app-site-association
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600
+
+/.well-known/assetlinks.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
