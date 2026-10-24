@@ -69,21 +69,23 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-padding-top:72px}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 var(--sans);letter-spacing:-.011em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
-.wrap{width:100%;max-width:1200px;margin:0 auto;padding-left:var(--gut);padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{width:100%;max-width:1120px;margin:0 auto;padding-left:var(--gut);padding-right:max(16px,env(safe-area-inset-right,0px))}
 .skip{position:absolute;left:-9999px;top:8px;z-index:100;background:var(--ink);color:var(--paper);padding:12px 16px}
 .skip:focus{left:8px}
 h1,h2,h3{margin:0;font-weight:400}
 h2{font:700 clamp(26px,3.2vw,40px)/1.1 var(--display);letter-spacing:-.025em;max-width:22ch}
 h3{font:600 18px/1.3 var(--sans);letter-spacing:-.005em}
 p{margin:0}
-.eyebrow{font:600 13px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.eyebrow{font:600 clamp(16px,1.6vw,19px)/1.3 var(--sans);letter-spacing:-.01em;color:var(--accent);margin-bottom:10px}
 .lead{font-size:clamp(18px,1.6vw,20px);color:var(--muted);max-width:58ch;margin-top:16px}
 section{padding-block:clamp(64px,9vw,120px)}
-section+section{border-top:1px solid var(--rule)}
+section.alt{background:var(--card)}
+@media (prefers-color-scheme:dark){section.alt{background:#141312}}
+section.alt .card,section.alt .tile{background:var(--paper)}
 
 /* Buttons: 48px tall (>=44px HIG/M3 tap target) */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:999px;font:600 16px/1.2 var(--sans);text-decoration:none;border:2px solid var(--accent);background:var(--accent);color:var(--on-accent);transition:filter .15s}
@@ -94,11 +96,11 @@ section+section{border-top:1px solid var(--rule)}
 
 /* Header */
 .bar{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--paper) 90%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(14px);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--rule)}
-.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px}
-.mark{font:900 26px/1 var(--sans);letter-spacing:-.045em;color:var(--brand);text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:56px}
+.mark{font:900 22px/1 var(--sans);letter-spacing:-.045em;color:var(--brand);text-decoration:none;display:inline-flex;align-items:center;min-height:44px}
 .mark span{color:var(--ink)}
 .nav{display:flex;align-items:center;gap:4px}
-.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font:500 15px var(--sans);text-decoration:none;border-radius:999px}
+.nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font:500 14px var(--sans);opacity:.85;text-decoration:none;border-radius:999px}
 .nav a:hover{background:color-mix(in srgb,var(--ink) 7%,transparent)}
 .nav .btn{min-height:44px;padding:8px 18px;font-size:15px;margin-left:8px;color:var(--on-accent)}
 .nav .btn:hover{background:var(--accent)}
@@ -119,18 +121,19 @@ section+section{border-top:1px solid var(--rule)}
 @media (max-width:860px){.hero .wrap{grid-template-columns:1fr}.phones{max-width:440px;margin:24px auto 0;width:100%}}
 
 /* What we build */
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:44px}
-.card{background:var(--card);border:1px solid var(--rule);border-radius:var(--r);padding:28px;min-width:0}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:44px}
+.card{background:var(--paper);border:0;border-radius:22px;padding:28px 24px;min-width:0;display:flex;flex-direction:column}
+.card .go{margin-top:auto;padding-top:18px;font-weight:600;color:var(--accent);text-decoration:none}.card .go::after{content:" ›"}
 .card .tag{font:600 13px var(--sans);color:var(--muted)}
 .card h3{font:700 22px/1.2 var(--display);letter-spacing:-.015em;margin:10px 0 12px}
 .card ul{margin:16px 0 0;padding-left:20px;color:var(--muted)}
 .card li+li{margin-top:4px}
-@media (max-width:900px){.cards{grid-template-columns:1fr}}
+@media (max-width:1040px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media (max-width:620px){.cards{grid-template-columns:1fr}}
 
 /* Work */
 .head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:16px;margin-top:44px}
-.tile{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--rule);border-radius:24px;overflow:hidden;text-decoration:none;min-width:0;transition:transform .2s,box-shadow .2s}
+.tile{display:flex;flex-direction:column;background:var(--card);border:0;border-radius:22px;overflow:hidden;text-decoration:none;min-width:0;transition:transform .2s,box-shadow .2s}
 .tile:hover{transform:translateY(-3px);box-shadow:0 18px 40px -24px rgba(0,0,0,.4)}
 .tile .pic{aspect-ratio:4/3;background:radial-gradient(120% 90% at 20% 0%,color-mix(in srgb,var(--brand) 16%,transparent),transparent 60%),radial-gradient(120% 90% at 100% 100%,color-mix(in srgb,var(--teal) 16%,transparent),transparent 60%),color-mix(in srgb,var(--ink) 4%,var(--card));display:grid;place-items:center;overflow:hidden;position:relative}
 .tile .pic img{width:100%;height:100%;object-fit:cover}
@@ -152,7 +155,7 @@ section+section{border-top:1px solid var(--rule)}
 
 /* Steps */
 .steps{list-style:none;padding:0;margin:44px 0 0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;counter-reset:s}
-.steps li{counter-increment:s;border-top:3px solid var(--ink);padding-top:18px;min-width:0}
+.steps li{counter-increment:s;border-top:2px solid var(--rule);padding-top:18px;min-width:0}
 .steps li::before{content:"0" counter(s);font:700 14px var(--sans);font-variant-numeric:tabular-nums;color:var(--accent)}
 .steps h3{margin:8px 0 6px}
 .steps p{color:var(--muted);font-size:15px}
@@ -201,6 +204,9 @@ section+section{border-top:1px solid var(--rule)}
 .piing{margin-top:8px}.piing a{display:inline-flex;align-items:center;min-height:44px;font-weight:600;color:var(--accent)}
 .mail{display:inline-flex;align-items:center;min-height:44px;margin-top:24px;font:700 clamp(18px,2.4vw,26px) var(--sans);letter-spacing:-.01em;color:var(--accent);word-break:break-all}
 
+.band-cta{background:var(--accent);color:var(--on-accent);text-align:center}
+.band-cta h2{margin:0 auto}.band-cta p{margin:14px auto 0;max-width:52ch;opacity:.92}
+.band-cta .ctas{justify-content:center}.band-cta .btn{background:var(--on-accent);color:var(--accent);border-color:var(--on-accent)}.band-cta .btn.ghost{background:transparent;color:var(--on-accent)}
 footer{border-top:1px solid var(--rule);padding-block:28px calc(96px + env(safe-area-inset-bottom,0px));font-size:14px;color:var(--muted)}
 footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 24px}
 footer a{display:inline-flex;align-items:center;min-height:44px}
@@ -226,7 +232,7 @@ button.hs-chat-btn{min-height:48px;border-radius:999px;padding:12px 20px;backgro
 <header class="bar"><div class="wrap">
   <a class="mark" href="/" aria-label="Hectic Software, home">HECTIC<span>.</span></a>
   <nav class="nav" aria-label="Main">
-    <a href="#work">Work</a><a href="#how">How it works</a><a href="#promise">Promise</a><a href="#faq">FAQ</a>
+    <a href="#build">Services</a><a href="#work">Work</a><a href="#how">How it works</a><a href="#promise">Promise</a><a href="#faq">FAQ</a>
     <a class="btn" href="/start/">Start a project</a>
   </nav>
 </div></header>
@@ -247,14 +253,15 @@ button.hs-chat-btn{min-height:48px;border-radius:999px;padding:12px 20px;backgro
   </div>
 </div></section>
 
-<section id="build" aria-labelledby="build-h"><div class="wrap">
+<section id="build" class="alt" aria-labelledby="build-h"><div class="wrap">
   <p class="eyebrow">What we build</p>
-  <h2 id="build-h">One studio for your whole app.</h2>
+  <h2 id="build-h">Apps and websites, built properly.</h2>
   <p class="lead">Native means built with each platform's own tools, so your app is fast, feels right in the hand and is ready for every new version of iOS and Android.</p>
   <div class="cards">
-    <article class="card"><p class="tag">Swift · SwiftUI</p><h3>Apple</h3><p>Apps for iPhone and iPad, with versions for Mac, Apple Watch, Apple TV and Vision Pro when you want them.</p><ul><li>Widgets, Siri and Live Activities</li><li>On-device AI that keeps data on the phone</li><li>App Store launch</li></ul></article>
-    <article class="card"><p class="tag">Kotlin · Material 3</p><h3>Android</h3><p>Apps for Android phones and tablets that follow Google's own design system, so they feel at home.</p><ul><li>Built natively, not a web wrapper</li><li>Matches your Apple app feature for feature</li><li>Google Play launch</li></ul></article>
-    <article class="card"><p class="tag">Websites · back ends</p><h3>Behind the app</h3><p>Everything your app needs to run a business, built by the same person.</p><ul><li>Website, accounts and sign-in</li><li>Payments, booking and chat</li><li>Admin console for you and your team</li></ul></article>
+    <article class="card"><p class="tag">Swift · SwiftUI</p><h3>Apple</h3><p>Apps for iPhone and iPad, with versions for Mac, Apple Watch, Apple TV and Vision Pro when you want them.</p><ul><li>Widgets, Siri and Live Activities</li><li>On-device AI that keeps data on the phone</li><li>App Store launch</li></ul><a class="go" href="/start/">Brief an Apple app</a></article>
+    <article class="card"><p class="tag">Kotlin · Material 3</p><h3>Android</h3><p>Apps for Android phones and tablets that follow Google's own design system, so they feel at home.</p><ul><li>Built natively, not a web wrapper</li><li>Matches your Apple app feature for feature</li><li>Google Play launch</li></ul><a class="go" href="/start/">Brief an Android app</a></article>
+    <article class="card"><p class="tag">Websites</p><h3>Websites</h3><p>Fast, accessible websites that explain what you do and turn visitors into enquiries, on their own or alongside an app.</p><ul><li>Designed for phones first</li><li>Search-ready pages and structured data</li><li>Enquiry forms that reach you</li></ul><a class="go" href="/start/">Brief a website</a></article>
+    <article class="card"><p class="tag">Back ends</p><h3>Behind the app</h3><p>Everything your app needs to run a business, built by the same person.</p><ul><li>Website, accounts and sign-in</li><li>Payments, booking and chat</li><li>Admin console for you and your team</li></ul><a class="go" href="/start/">Talk it through</a></article>
   </div>
 </div></section>
 
@@ -278,7 +285,13 @@ button.hs-chat-btn{min-height:48px;border-radius:999px;padding:12px 20px;backgro
   <p class="more">Concepts in the sketchbook: <a href="/work/blam/">BLAM</a>, <a href="/work/hecticsuite/">HecticSuite</a> and <a href="/work/hecticmag/">HecticMag</a>.</p>
 </div></section>
 
-<section id="how" aria-labelledby="how-h"><div class="wrap">
+<section class="band-cta" aria-labelledby="cta-h"><div class="wrap">
+  <h2 id="cta-h">Have an idea for an app or a website?</h2>
+  <p>Send a short brief. You get a reply within one working day and a fixed written quote.</p>
+  <div class="ctas"><a class="btn" href="/start/">Start a project</a><a class="btn ghost" href="https://www.piingapp.co.uk/b/hecticsoftware" rel="noopener">Message @hecticsoftware on PIING</a></div>
+</div></section>
+
+<section id="how" class="alt" aria-labelledby="how-h"><div class="wrap">
   <p class="eyebrow">How it works</p>
   <h2 id="how-h">From first call to launch, in five steps.</h2>
   <ol class="steps">
@@ -327,7 +340,7 @@ button.hs-chat-btn{min-height:48px;border-radius:999px;padding:12px 20px;backgro
   </div>
 </div></section>
 
-<section id="faq" aria-labelledby="faq-h"><div class="wrap">
+<section id="faq" class="alt" aria-labelledby="faq-h"><div class="wrap">
   <p class="eyebrow">FAQ</p>
   <h2 id="faq-h">Good questions.</h2>
   <div class="faq">
